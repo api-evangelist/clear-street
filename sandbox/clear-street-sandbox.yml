@@ -1,0 +1,77 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.clearstreet.io/studio/docs/sandbox
+environments:
+- name: Studio Demo
+  api: Clear Street Studio API
+  base_url: https://demo-api.clearstreet.io/studio/v2
+  websocket_url: wss://demo-api.clearstreet.io/studio/v2/ws
+  documented_at: https://docs.clearstreet.io/studio/docs/sandbox
+  credentials: >
+    Separate demo credentials are issued through Studio; the same OAuth2 client-credentials
+    flow against https://auth.clearstreet.io/oauth/token applies.
+  characteristics:
+  - Uses mocked data rather than live market data.
+  - Orders are automatically filled based on simulated rules rather than real market execution.
+  - Replays recorded market data, which drives simplified but realistic risk, P&L and buying-power
+    calculations.
+  reset:
+    cadence: daily
+    note: 'The demo environment is reset daily, and information from the previous day is not saved.'
+- name: Studio Sandbox (spec server)
+  api: Clear Street Studio API
+  base_url: https://sandbox-api.clearstreet.io/studio/v2
+  source: openapi/clear-street-studio-openapi.yml servers[]
+  note: >
+    Declared as the "Sandbox environment" server in the Studio OpenAPI. The Studio docs describe
+    the demo host above; both are recorded verbatim rather than reconciled.
+- name: Legacy API sandbox
+  api: Clear Street API (Trades and Uploads)
+  base_url: https://api.sandbox.clearstreet.io/v1
+  source: openapi/clear-street-legacy-api-swagger.yml servers[]
+- name: Trading API development
+  api: Clear Street Trading API
+  base_url: https://api-dev.clearstreet.com
+  source: openapi/clear-street-trading-api-openapi.yml servers[]
+  note: >
+    Declared as "Clear Street Development API" in the spec. No public documentation describes
+    how to obtain access, so this is recorded as a declared server, not a published sandbox.
+test_data:
+  note: >
+    Published verbatim from the Studio sandbox documentation. These are the symbols the demo
+    environment carries market data for — no test values were invented.
+  etb_symbols:
+    description: Easy-to-borrow symbols with market data (15)
+    values: [AAPL, NVDA, MSFT, AMZN, GOOG, META, TSLA, BRK.B, TSM, AVGO, WMT, LLY, JPM, V, UNH]
+  non_etb_symbols:
+    description: Non-ETB symbols with market data (5) — require locates
+    values: [XOM, ORCL, MA, NVO, COST]
+  unlisted_symbol_behaviour:
+    reference_price: '0.01'
+    treatment: non-ETB, requires locate
+    note: 'For symbols outside the two lists above, the reference price defaults to $0.01.'
+test_vs_live:
+  separation: separate hosts
+  key_prefixes: none
+  note: >
+    Clear Street separates test from live by HOST, not by key prefix — there is no sk_test_/
+    sk_live_ style discriminator. Credentials are environment-scoped.
+test_clocks:
+  supported: false
+fixture_tooling:
+  published: false
+  note: >
+    No trigger/fixture CLI or event-simulation tooling is documented. Order fills are simulated
+    automatically by the demo environment instead.
+trading_api_sandbox:
+  published: false
+  note: >
+    The Clear Street Trading API (api.clearstreet.com) publishes no documented sandbox or paper-
+    trading environment. The api-dev.clearstreet.com server appears in the spec but is not
+    documented for external use.
+x-evidence:
+  fetched: '2026-08-02'
+  sources:
+  - {url: 'https://docs.clearstreet.io/studio/docs/sandbox', http_status: 200}
+  - {url: 'https://docs.clearstreet.io/studio/docs/websockets', http_status: 200}
+  - {file: 'openapi/clear-street-studio-openapi.yml', field: 'servers[]'}

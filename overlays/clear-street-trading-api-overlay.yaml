@@ -1,0 +1,66 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Clear Street Trading API
+  version: 1.0.0
+extends: openapi/clear-street-trading-api-openapi.yml
+x-generated: '2026-08-02'
+x-method: generated
+x-source: >
+  Enhancements derived from artifacts harvested in this repo. The original harvested
+  specification is never mutated; apply this overlay to obtain the enriched document.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-slug: clear-street
+    x-apievangelist-api: clear-street:trading-api
+    x-apievangelist-harvested-from: https://docs.clearstreet.com/openapi.yaml
+    x-apievangelist-harvested-on: '2026-08-02'
+    x-changelog: https://docs.clearstreet.com/changelog/
+    x-llms-txt: https://docs.clearstreet.com/llms.txt
+    x-agent-skills: https://github.com/clear-street/clearstreet-skills
+    x-mcp-server: https://api.clearstreet.com/v1/mcp
+    x-cli: https://github.com/clear-street/clear-street-cli
+- target: $.info
+  update:
+    x-conventions:
+      artifact: conventions/clear-street-conventions.yml
+      pagination: {style: cursor, params: [page_size, page_token], response: [next_page_token,
+          previous_page_token, page_number, total_items, total_pages]}
+      envelope: {data: object, error: object-or-null, metadata: object}
+      request_id_field: metadata.request_id
+      idempotency:
+        supported: true
+        mechanism: caller-supplied body field
+        fields: [submit_orders.id, submit_position_instructions.instruction_id]
+        duplicate_status: 409
+      versioning: {scheme: uri-path + dated release, path: /v1, current: '2025-10-31'}
+- target: $.info
+  update:
+    x-error-catalog: errors/clear-street-problem-types.yml
+    x-error-format: vendor
+    x-error-envelope: {code: integer-or-string, message: string, details: array-or-object}
+- target: $.info
+  update:
+    x-authentication: authentication/clear-street-authentication.yml
+    x-auth-style: bearer
+    x-api-key-shape: '<id>.<secret>'
+    x-oauth-scopes: scopes/clear-street-scopes.yml
+- target: $.info
+  update:
+    x-lifecycle: lifecycle/clear-street-lifecycle.yml
+    x-status-page: null
+    x-sla: null
+    x-deprecation-policy: https://docs.clearstreet.com/changelog/
+    x-breaking-change-note: >
+      11 breaking changes were published between 2026-05-08 and 2026-07-24 — pin to the
+      changelog before generating clients.
+- target: $.info
+  update:
+    x-agentic-access: agentic-access/clear-street-agentic-access.yml
+    x-data-model: data-model/clear-street-data-model.yml
+    x-conformance: conformance/clear-street-conformance.yml
+- target: $.servers
+  update:
+    x-apievangelist-note: >
+      The third declared server, http://localhost:5001 ("Clear Street Local API"), is a
+      development artifact and is not a callable public host.

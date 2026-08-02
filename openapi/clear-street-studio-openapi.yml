@@ -1,0 +1,2961 @@
+openapi: 3.0.0
+info:
+  title: Common API Models
+  description: Common API models for all of Studio's APIs
+  version: 2.0.0
+servers:
+  - url: https://api.clearstreet.io/studio/v2
+    description: Production environment
+  - url: https://sandbox-api.clearstreet.io/studio/v2
+    description: Sandbox environment
+tags:
+  - name: Performance
+    x-displayName: Performance
+  - name: Holdings
+    x-displayName: Holdings
+  - name: Orders
+    x-displayName: Orders
+  - name: Trades
+    x-displayName: Trades
+  - name: Positions
+    x-displayName: Positions
+  - name: Locates
+    x-displayName: Locates
+  - name: Rates
+    x-displayName: Rates
+  - name: Inventories
+    x-displayName: Inventories
+  - name: Entities
+    x-displayName: Entities
+  - name: Accounts
+    x-displayName: Accounts
+  - name: Instruments
+    x-displayName: Instruments
+  - name: PNL
+    x-displayName: PNL
+  - name: Margin
+    x-displayName: Margin
+  - name: Margin Simulations
+    x-displayName: Margin Simulations
+externalDocs:
+  url: https://docs.clearstreet.io/
+paths:
+  /accounts/{account_id}/pnl-sums:
+    get:
+      operationId: listPNLSums
+      summary: List PNL Sums
+      description: >-
+        List historical PNL summations for a given account over a given date range, filtered on the given
+        query parameters.
+      tags:
+        - Performance
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to list PNL sums for.
+        - in: query
+          name: starting_date
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+            description: The starting date to accumulate PNL data for.
+        - in: query
+          name: ending_date
+          required: true
+          schema:
+            $ref: '#/components/schemas/Date'
+            description: The ending date to accumulate PNL data for, inclusive.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  starting_date:
+                    $ref: '#/components/schemas/Date'
+                    description: Echoed back from the provided query param.
+                  ending_date:
+                    $ref: '#/components/schemas/Date'
+                    description: Echoed back from the provided query param.
+                  entity_id:
+                    $ref: '#/components/schemas/EntityId'
+                  account_id:
+                    $ref: '#/components/schemas/AccountId'
+                  account_number:
+                    $ref: '#/components/schemas/AccountNumber'
+                  starting_equity:
+                    type: number
+                    format: double
+                    description: >-
+                      The equity at the start of the date range. Start of day equity of the starting date in
+                      the date range.
+                  ending_equity:
+                    type: number
+                    format: double
+                    description: >-
+                      The equity at the end of the date range. End of day equity of the ending date in the
+                      date range.
+                  day_pnl:
+                    type: number
+                    format: double
+                    description: >-
+                      Sum of profit and loss from intraday trading activities for the given date range across
+                      all symbols.
+                  position_pnl:
+                    type: number
+                    format: double
+                    description: Sum of profit and loss from previous trading date across all symbols.
+                  unrealized_pnl:
+                    type: number
+                    format: double
+                    description: Sum of profit and loss from market changes across all symbols.
+                  realized_pnl:
+                    type: number
+                    format: double
+                    description: >-
+                      Sum of profit and loss realized from position closing trading activity across all
+                      symbols.
+                  total_pnl:
+                    type: number
+                    format: double
+                    description: |
+                      `realized_pnl + unrealized_pnl`
+                  net_pnl:
+                    type: number
+                    format: double
+                    description: >
+                      `P&L after netting all realized and unrealized P&L, adjustments, dividends, change in
+                      accruals, income and expenses`
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PnlSum'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/holdings:
+    get:
+      operationId: listHoldings
+      summary: List holdings
+      description: >-
+        List holdings for a given account, filtered on the given query parameters. This endpoint will return
+        either historical or real-time holdings directly from our custodial systems. Positions returned here
+        are can be different than positions returned from the Execution API. While the Execution API returns
+        positions based on trading activity within Studio, our custodial system returns all positions
+        regardless of where trades occur.
+      tags:
+        - Holdings
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to list holdings for.
+        - in: query
+          name: date
+          schema:
+            $ref: '#/components/schemas/Date'
+            description: >-
+              The historical date to get holdings for. If omitted, current real-time holdings will be
+              returned.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account_id:
+                    $ref: '#/components/schemas/AccountId'
+                  account_number:
+                    $ref: '#/components/schemas/AccountNumber'
+                  date:
+                    $ref: '#/components/schemas/Date'
+                  sod_equity:
+                    type: number
+                    format: double
+                    description: Start of day equity.
+                  eod_equity:
+                    type: number
+                    format: double
+                    description: For historical holdings, the end of day equity. Omitted for real-time holdings.
+                  timestamp:
+                    $ref: '#/components/schemas/Timestamp'
+                    description: >-
+                      For real-time holdings, the timestamp reflecting the last update made to the holdings
+                      data. Omitted for historical holdings.
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Holding'
+                required:
+                  - account_id
+                  - account_number
+                  - date
+                  - sod_equity
+                  - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/bulk-orders:
+    post:
+      operationId: createBulkOrders
+      summary: Create bulk orders
+      description: >
+        Creates multiple orders in a single request, up to 1000. Note that a successful call to this endpoint
+        does not necessarily mean your orders have been accepted, e.g. a downstream venue might reject your
+        order. You should therefore utilize our WebSocket APIs to listen for changes in order lifecycle
+        events.
+
+
+        The response will contain an array of objects, indicating whether your order was submitted. If the
+        order was submitted, the `order_id` field will be populated with the order ID assigned to this order.
+        If the order was rejected, the `reason` field will be populated with the reason for rejection. The
+        data array returned in the response object is guaranteed to be ordered in the same order as the orders
+        you provided in the request. Again, note that even if your order was submitted, that doesn't mean it
+        was _accepted_, and may still be rejected by downstream venues.
+      tags:
+        - Orders
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to create orders for.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orders:
+                  type: array
+                  description: An array of orders to create.
+                  items:
+                    $ref: '#/components/schemas/CreateOrder'
+                  minItems: 1
+                  maxItems: 1000
+              required:
+                - orders
+              additionalProperties: false
+      responses:
+        '201':
+          description: Orders received. Indicates the orders were received and are pending further processing.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  submitted:
+                    type: integer
+                    description: Total number of orders submitted
+                  rejected:
+                    type: integer
+                    description: Total number of orders rejected
+                  data:
+                    type: array
+                    description: >-
+                      Array indicating whether each respective order was submitted or not. This array is
+                      guaranteed to be sorted in the same order as the orders you provided in your request.
+                    items:
+                      type: object
+                      properties:
+                        submitted:
+                          type: boolean
+                          description: True if the order was submitted successfully, false otherwise.
+                        order_id:
+                          $ref: '#/components/schemas/OrderId'
+                          description: >-
+                            If the order was submitted, the order ID assigned to this order. Empty if the
+                            order was rejected.
+                        reason:
+                          type: string
+                          description: If the order rejected, the reason for rejection. Empty if the order was accepted.
+                      required:
+                        - submitted
+                required:
+                  - submitted
+                  - rejected
+                  - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/orders:
+    post:
+      operationId: createOrder
+      summary: Create order
+      description: >-
+        Creates a new order and sends to our internal systems for execution. Note that a successful call to
+        this endpoint does not necessarily mean your order has been accepted, e.g. a downstream venue might
+        reject your order. You should therefore utilize our WebSocket APIs to listen for changes in order
+        lifecycle events.
+      tags:
+        - Orders
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to create the order for.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrder'
+      responses:
+        '201':
+          description: Order received. Indicates the the order was received and is pending further processing.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                    example: 234usdfa3
+                    description: An internally generated unique ID for this order.
+                required:
+                  - order_id
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+    get:
+      operationId: listOrders
+      summary: List orders
+      description: List orders for a given account for the current trading day, filtered on the given query parameters.
+      tags:
+        - Orders
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to list orders for.
+        - in: query
+          name: from
+          schema:
+            $ref: '#/components/schemas/Timestamp'
+            description: >-
+              Milliseconds since epoch timestamp. This will constrain the search for orders created after this
+              timestamp, inclusively. Timestamps for orders prior the current trading day will be ignored.
+        - in: query
+          name: to
+          schema:
+            $ref: '#/components/schemas/Timestamp'
+            description: >-
+              Milliseconds since epoch timestamp. This will constrain the search for orders created before
+              this timestamp, inclusively. Timestamps for orders beyond the current trading day will be
+              ignored.
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 2000
+            default: 25
+            description: Number of orders to return per page.
+        - in: query
+          name: page_token
+          schema:
+            type: string
+            description: Cursor for the page to return.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+                  next_page_token:
+                    type: string
+                    description: Cursor for the next page of results.
+                required:
+                  - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+    delete:
+      operationId: deleteAllOrders
+      summary: Delete all orders
+      description: >-
+        Attempts to cancel all open orders for a given account. Cancelling an order cannot be guaranteed as
+        there might be in-flight executions.
+      tags:
+        - Orders
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to cancel orders for.
+        - in: query
+          name: symbol
+          schema:
+            $ref: '#/components/schemas/Symbol'
+            description: >-
+              Cancel orders only for this specific symbol. If this is omitted, all open orders will be
+              cancelled.
+        - in: query
+          name: symbol_format
+          schema:
+            $ref: '#/components/schemas/SymbolFormat'
+            default: cms
+            description: Format of the provided symbol.
+      responses:
+        '201':
+          description: Successfully attempted to cancel all open orders.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderId'
+                    description: Array of order IDs that were attempted to be cancelled.
+                required:
+                  - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/orders/{order_id}:
+    get:
+      operationId: getOrder
+      summary: Get order
+      description: Get an order that was previously created.
+      tags:
+        - Orders
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to get the order for.
+        - in: path
+          name: order_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/OrderId'
+      responses:
+        '200':
+          description: The order associated with the given `order_id`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order:
+                    $ref: '#/components/schemas/Order'
+                required:
+                  - order
+                additionalProperties: false
+      security:
+        - BearerAuth: []
+    delete:
+      operationId: deleteOrder
+      summary: Delete order
+      description: >-
+        Attempts to cancel an existing order. Cancelling an order cannot be guaranteed as there might be
+        in-flight executions.
+      tags:
+        - Orders
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to attempt to cancel the order for.
+        - in: path
+          name: order_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/OrderId'
+      responses:
+        '201':
+          description: Order cancel successfully attempted.
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+    patch:
+      operationId: updateOrder
+      summary: Update order
+      description: >-
+        Attempts to update an existing order. This can be used to update a subset of an order's attributes,
+        for example price and quantity.
+      tags:
+        - Orders
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to attempt to update the order for.
+        - in: path
+          name: order_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/OrderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrder'
+      responses:
+        '201':
+          description: Order update successfully attempted.
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/trades/{trade_id}:
+    get:
+      operationId: getTrade
+      summary: Get trade
+      description: Get trade a trade by its unique trade ID.
+      tags:
+        - Trades
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to get the trade for.
+        - in: path
+          name: trade_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/TradeId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trade'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/trades:
+    get:
+      operationId: listTrades
+      summary: List trades
+      description: List trades for a given account for the current trading day.
+      tags:
+        - Trades
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to list trades for.
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 2000
+            default: 25
+            description: Number of trades to return per page.
+        - in: query
+          name: page_token
+          schema:
+            type: string
+            description: Cursor for the page to return.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Trade'
+                  next_page_token:
+                    type: string
+                    description: Cursor for the next page of results.
+                required:
+                  - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/positions/{symbol}:
+    get:
+      operationId: getPosition
+      summary: Get position
+      description: Get current position for a given account for a given symbol.
+      tags:
+        - Positions
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to get the position for.
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            $ref: '#/components/schemas/Symbol'
+            description: Symbol to get position for.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Position'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/positions:
+    get:
+      operationId: listPositions
+      summary: List positions
+      description: List current positions for a given account.
+      tags:
+        - Positions
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to list positions for.
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 2000
+            default: 25
+            description: Number of positions to return per page.
+        - in: query
+          name: page_token
+          schema:
+            type: string
+            description: Cursor for the page to return.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Position'
+                  next_page_token:
+                    type: string
+                    description: Cursor for the next page of results.
+                required:
+                  - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/locate-orders:
+    post:
+      operationId: createLocateOrder
+      summary: Create locate order
+      description: Create locate order to borrow inventory for short-selling.
+      tags:
+        - Locates
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to create the locate order for.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                symbol:
+                  $ref: '#/components/schemas/Symbol'
+                quantity:
+                  $ref: '#/components/schemas/Quantity'
+                mpid:
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+                  description: The market participant where the locate will be sent.
+                reference_id:
+                  $ref: '#/components/schemas/ReferenceId'
+                  description: Your unique ID for this locate order.
+                comments:
+                  type: string
+                  description: Any additional comments for the locate request.
+              required:
+                - symbol
+                - quantity
+                - mpid
+                - reference_id
+      responses:
+        '200':
+          description: Locate order successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocateOrder'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+    get:
+      operationId: listLocateOrders
+      summary: List locate orders
+      description: List all locate orders
+      tags:
+        - Locates
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to list locate orders for.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LocateOrder'
+                required:
+                  - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/locate-orders/{locate_order_id}:
+    get:
+      operationId: getLocateOrder
+      summary: Get locate order
+      description: Get locate order by its unique locate order ID.
+      tags:
+        - Locates
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to get the locate order for.
+        - in: path
+          name: locate_order_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/LocateOrderId'
+            description: Locate order ID to get.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocateOrder'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+    patch:
+      operationId: updateLocateOrder
+      summary: Update locate order
+      description: Accept or decline locate order that has been offered.
+      tags:
+        - Locates
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to update the locate order for.
+        - in: path
+          name: locate_order_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/LocateOrderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accept:
+                  type: boolean
+                  description: Accept or decline the locate order.
+              required:
+                - accept
+      responses:
+        '200':
+          description: Locate accepted or declined successfully.
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/easy-borrows:
+    get:
+      operationId: listEasyBorrows
+      summary: List easy borrows
+      description: List all current easy-to-borrow stock symbols. This list changes dynamically daily.
+      tags:
+        - Rates
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to list easy borrows for.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Symbol'
+                required:
+                  - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/inventories/{symbol}:
+    get:
+      operationId: getInventory
+      summary: Get inventory
+      description: Get located inventory for a symbol.
+      tags:
+        - Inventories
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to get the inventory for.
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            $ref: '#/components/schemas/Symbol'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocateInventory'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /entities:
+    get:
+      operationId: listEntities
+      summary: List entities
+      description: List all available entities.
+      tags:
+        - Entities
+      responses:
+        '200':
+          description: A list of entities
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Entity'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /entities/{entity_id}:
+    get:
+      operationId: getEntity
+      summary: Get entity
+      description: Get an entity by its ID.
+      tags:
+        - Entities
+      parameters:
+        - name: entity_id
+          in: path
+          required: true
+          description: The ID of the entity to get.
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        '200':
+          description: The entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts:
+    get:
+      operationId: listAccounts
+      summary: List accounts
+      description: List all available accounts.
+      tags:
+        - Accounts
+      responses:
+        '200':
+          description: A list of accounts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Account'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}:
+    get:
+      operationId: getAccount
+      summary: Get account
+      description: Get an account by its ID or number.
+      tags:
+        - Accounts
+      parameters:
+        - name: account_id
+          in: path
+          required: true
+          description: The ID or number of the account to get.
+          schema:
+            $ref: '#/components/schemas/AccountId'
+      responses:
+        '200':
+          description: The account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /instruments:
+    get:
+      operationId: listInstruments
+      summary: List instruments
+      description: List all available instruments.
+      tags:
+        - Instruments
+      responses:
+        '200':
+          description: Successful response containing the list of instruments.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Instrument'
+      default:
+        $ref: '#/components/responses/error'
+  /instruments/{symbol}:
+    get:
+      operationId: getInstrument
+      summary: Get instrument
+      description: Get an instrument by the given symbol
+      tags:
+        - Instruments
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          description: The symbol for the instrument.
+          schema:
+            $ref: '#/components/schemas/Symbol'
+        - name: symbol_format
+          in: query
+          description: The format of the provided symbol.
+          schema:
+            $ref: '#/components/schemas/SymbolFormat'
+            default: cms
+      responses:
+        '200':
+          description: Successful response containing the associated instrument.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /entities/{entity_id}/pnl-summary:
+    get:
+      operationId: getEntityPnlSummary
+      summary: Get entity PNL summary
+      description: Get PNL summary for all accounts in an entity.
+      tags:
+        - PNL
+      parameters:
+        - in: path
+          name: entity_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        '200':
+          description: Entity PNL summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PnlSummary'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/pnl-summary:
+    get:
+      operationId: getAccountPnlSummary
+      summary: Get account PNL summary
+      description: Get PNL summary for a given account.
+      tags:
+        - PNL
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to get a PNL summary for.
+      responses:
+        '200':
+          description: Account PNL summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PnlSummaryForAccount'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /accounts/{account_id}/pnl-details:
+    get:
+      operationId: listPnlDetails
+      summary: List account PNL details
+      description: List PNL details for a given account.
+      tags:
+        - PNL
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/AccountId'
+            description: The account ID or account number to list PNL details for.
+      responses:
+        '200':
+          description: Account PNL details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PnlDetails'
+                required:
+                  - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /entities/{entity_id}/regt-margin:
+    get:
+      operationId: getRegTMargin
+      summary: Get Reg-T margin
+      description: Get the latest Reg-T margin calculation for the given entity
+      tags:
+        - Margin
+      parameters:
+        - in: path
+          name: entity_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+          description: Entity ID
+      responses:
+        '200':
+          description: Reg-T margin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegTMargin'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /entities/{entity_id}/portfolio-margin:
+    get:
+      operationId: getPortfolioMargin
+      summary: Get portfolio margin
+      description: Get latest portfolio margin calculation for the given entity
+      tags:
+        - Margin
+      parameters:
+        - in: path
+          name: entity_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+          description: Entity ID
+      responses:
+        '200':
+          description: Portfolio margin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioMargin'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /entities/{entity_id}/regt-margin-simulations:
+    post:
+      operationId: createRegTMarginSimulation
+      summary: Create Reg-T simulation
+      description: >
+        Simulate Reg-T margin calculation for a given hypothetical set of prices and/or trades. This is useful
+        for understanding the impact of price fluctuations or trades on margin requirements. Once a simulation
+        is created, it remains available for 48-hours, after which it will automatically be deleted.
+
+
+        Simulations created through the API are visible in the Studio UI under the Risk & Margin section,
+        after enabling the "Risk Simulations" toggle.
+      tags:
+        - Margin Simulations
+      parameters:
+        - in: path
+          name: entity_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+          description: Entity ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: '#/components/schemas/SimulationName'
+                  description: A name for this simulation for reference.
+                prices:
+                  type: array
+                  description: >-
+                    List of prices to use in the simulation, i.e. fair-market-values you specify for each
+                    symbol. If this is not provided, current market prices will be used, if they are
+                    available.
+                  items:
+                    $ref: '#/components/schemas/SimulationPrice'
+                trades:
+                  type: array
+                  description: List of hypothetical trades to include in the simulation, if any.
+                  items:
+                    $ref: '#/components/schemas/SimulationTrade'
+                ignore_existing:
+                  type: boolean
+                  default: false
+                  description: >-
+                    If true, the simulation will ignore any existing positions and balances in the account.
+                    Set to true if you want to simulate from a clean slate, i.e. an empty account.
+              required:
+                - name
+      responses:
+        '200':
+          description: Reg-T margin simulation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  simulation_id:
+                    $ref: '#/components/schemas/SimulationId'
+                required:
+                  - simulation_id
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+  /entities/{entity_id}/regt-margin-simulations/{simulation_id}:
+    get:
+      operationId: getRegTMarginSimulation
+      summary: Get Reg-T simulation
+      description: >-
+        Get a Reg-T margin simluation that was previously created. Note, simulations are automatically deleted
+        after 48-hours.
+      tags:
+        - Margin Simulations
+      parameters:
+        - in: path
+          name: entity_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+          description: Entity ID
+        - in: path
+          name: simulation_id
+          required: true
+          schema:
+            $ref: '#/components/schemas/SimulationId'
+          description: Simulation ID
+      responses:
+        '200':
+          description: Reg-T margin simulation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegTMarginSimulation'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+        - BearerAuth: []
+components:
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  schemas:
+    Date:
+      type: integer
+      format: int32
+      minimum: 20150101
+      maximum: 29999999
+      example: 20240101
+      description: Integer in YYYYMMDD representing a date.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
+    EntityId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Entity ID for the legal entity.
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
+    Currency:
+      type: string
+      minLength: 3
+      maxLength: 3
+      example: USD
+      description: ISO 4217 currency code.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    SymbolFormat:
+      type: string
+      enum:
+        - cms
+        - osi
+      description: Denotes the format of the provided `symbol` field.
+    AssetClass:
+      type: string
+      enum:
+        - other
+        - currency
+        - equity
+        - option
+        - debt
+        - fund
+      description: The asset class of the symbol.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    Price:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '123.99'
+      description: String representation of a price.
+    Rate:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '0.23'
+      description: String representation of a rate.
+    Balance:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '123.99'
+      description: String representation of a cash balance.
+    BuySell:
+      type: string
+      enum:
+        - buy
+        - sell
+      description: Either buy or sell side.
+    LongShort:
+      type: string
+      enum:
+        - long
+        - short
+      description: Either long or short position.
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: >-
+            An absolute URI that identifies the specific occurrence of the problem. It may or may not yield
+            further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    PnlSum:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        day_pnl:
+          type: number
+          format: double
+          description: Sum of profit and loss from intraday trading activities for the given date range
+        position_pnl:
+          type: number
+          format: double
+          description: Sum of profit and loss from previous trading date.
+        unrealized_pnl:
+          type: number
+          format: double
+          description: Sum of profit and loss from market changes.
+        realized_pnl:
+          type: number
+          format: double
+          description: Sum of profit and loss realized from position closing trading activity.
+        total_pnl:
+          type: number
+          format: double
+          description: |
+            `realized_pnl + unrealized_pnl`
+        net_pnl:
+          type: number
+          format: double
+          description: >
+            `P&L after netting all realized and unrealized P&L, adjustments, dividends, change in accruals,
+            income and expenses`
+        sold_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: Sum of quantity sold.
+        sold_notional:
+          type: number
+          format: double
+          description: Sum of the notional sold.
+        bought_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: Sum of quantity bought.
+        bought_notional:
+          type: number
+          format: double
+          description: Sum of the notional bought.
+    Holding:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        symbol_description:
+          type: string
+          description: Description of the symbol.
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: >-
+            The quantity held for the given symbol. This is an EOD quantity if querying historically, else the
+            current real-time quantity for the current date.
+        sod_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity held for the given symbol at the start of the day.
+      required:
+        - symbol
+        - asset_class
+        - quantity
+        - sod_quantity
+    OrderId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique order ID assigned by us.
+    TradeId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique trade ID assigned by us.
+    ReferenceId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: my-order-id-123
+      description: An ID that you provide.
+    OrderSide:
+      type: string
+      enum:
+        - buy
+        - sell
+        - sell-short
+      description: Buy, sell, sell-short indicator.
+    TimeInForce:
+      type: string
+      enum:
+        - day
+        - ioc
+        - day-plus
+        - at-open
+        - at-close
+      description: >
+        The lifecycle enforcement of this order.
+
+        - `day`: The order will exist for the duration of the current trading session
+
+        - `ioc`: The order will immediately be executed or cancelled
+
+        - `day-plus`: The order will exist only for the duration the current trading session plus extended
+        hours, if applicable
+
+        - `at-open`: The order will exist only for the opening auction of the next session
+
+        - `at-close`: The order will exist only for the closing auction of the current session
+    OrderType:
+      type: string
+      enum:
+        - limit
+        - market
+        - stop
+        - stop-limit
+      description: >
+        The type of order, can be one of the following:
+
+        - `limit`: A limit order will execute at-or-better than the limit price you specify
+
+        - `market`: An order that will execute at the prevailing market prices
+
+        - `stop`: A stop order will result in a market order when the market price reaches the specified stop
+        price
+
+        - `stop-limit`: A stop limit order will result in a limit order when the market price reaches the
+        specified stop price
+    OrderState:
+      type: string
+      enum:
+        - open
+        - rejected
+        - closed
+      description: >
+        Simplified order state, which is inferred from `OrderStatus`. Makes it easier to determine whether an
+        order can be executed against.
+
+        - `open`: Order *can* potentially be executed against.
+
+        - `rejected`: Order *cannot* be executed against because it was rejected. This is a terminal state.
+
+        - `closed`: Order *cannot* be executed against. This is a terminal state.
+    OrderStatus:
+      type: string
+      enum:
+        - new
+        - partially-filled
+        - filled
+        - canceled
+        - replaced
+        - pending-cancel
+        - stopped
+        - rejected
+        - suspended
+        - pending-new
+        - calculated
+        - expired
+        - accepted-for-bidding
+        - pending-replace
+        - done-for-day
+      description: >-
+        Granular order status using [standard values come FIX tag
+        39](https://www.fixtrading.org/online-specification/order-state-changes).
+    OrderUpdateReason:
+      type: string
+      enum:
+        - place
+        - modify
+        - cancel
+        - execution-report
+        - cancel-reject
+        - reject
+    OpenCloseIndicator:
+      type: string
+      enum:
+        - open
+        - close
+    Destination:
+      type: string
+      enum:
+        - arcx
+        - bats
+        - baty
+        - edga
+        - edgx
+        - eprl
+        - iexg
+        - memx
+        - xase
+        - xbos
+        - xcis
+        - xnms
+        - xnys
+      description: |
+        Order Destination.
+        <table><thead>
+        <tr>
+        <th>MIC</th>
+        <th>Exchange</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+        <td>ARCX</td>
+        <td>NYSE ARCA</td>
+        </tr>
+        <tr>
+        <td>BATS</td>
+        <td>BATS Exchange</td>
+        </tr>
+        <tr>
+        <td>BATY</td>
+        <td>BATS Y Exchange</td>
+        </tr>
+        <tr>
+        <td>EDGA</td>
+        <td>EDGA Exchange</td>
+        </tr>
+        <tr>
+        <td>EDGX</td>
+        <td>EDGX Exchange</td>
+        </tr>
+        <tr>
+        <td>EPRL</td>
+        <td>MIAX Pearl Equities</td>
+        </tr>
+        <tr>
+        <td>IEXG</td>
+        <td>Investors' Exchange</td>
+        </tr>
+        <tr>
+        <td>MEMX</td>
+        <td>Members' Exchange</td>
+        </tr>
+        <tr>
+        <td>XASE</td>
+        <td>NYSE American</td>
+        </tr>
+        <tr>
+        <td>XBOS</td>
+        <td>NASDAQ BX Exchange</td>
+        </tr>
+        <tr>
+        <td>XCIS</td>
+        <td>NYSE National</td>
+        </tr>
+        <tr>
+        <td>XNMS</td>
+        <td>NASDAQ/NMS (Global Market)</td>
+        </tr>
+        <tr>
+        <td>XNYS</td>
+        <td>New York Stock Exchange</td>
+        </tr>
+        </tbody></table>
+    CreateOrder:
+      type: object
+      properties:
+        reference_id:
+          $ref: '#/components/schemas/ReferenceId'
+        order_type:
+          $ref: '#/components/schemas/OrderType'
+        side:
+          $ref: '#/components/schemas/OrderSide'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The maximum quantity to be executed.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The price to execute at-or-better for limit orders.
+        stop_price:
+          $ref: '#/components/schemas/Price'
+          description: The price at which stop orders become marketable.
+        time_in_force:
+          $ref: '#/components/schemas/TimeInForce'
+        locate_broker:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: If you're short-selling and using an away broker for a locate, provide the broker name here.
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol this order is for. See `symbol_format` for supported symbol formats.
+        symbol_format:
+          $ref: '#/components/schemas/SymbolFormat'
+          default: cms
+        strategy:
+          $ref: '#/components/schemas/Strategy'
+          description: >-
+            The execution strategy to use for this order. If not provided, our smart order-router will handle
+            execution for your order.
+        open_close_indicator:
+          $ref: '#/components/schemas/OpenCloseIndicator'
+          description: Open/Close indicator for option orders.
+      required:
+        - order_type
+        - side
+        - quantity
+        - time_in_force
+        - symbol
+      additionalProperties: false
+    UpdateOrder:
+      type: object
+      properties:
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The maximum quantity to be executed.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The price to execute at-or-better for limit orders.
+        stop_price:
+          $ref: '#/components/schemas/Price'
+          description: The price at which stop orders become marketable.
+      required:
+        - quantity
+      additionalProperties: false
+    Order:
+      type: object
+      properties:
+        created_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: When the order was created in milliseconds since epoch.
+        updated_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: When the order was updated in milliseconds since epoch.
+        order_id:
+          $ref: '#/components/schemas/OrderId'
+          description: An internally generated unique ID for this order.
+        reference_id:
+          $ref: '#/components/schemas/ReferenceId'
+          description: The ID you provided when creating this order.
+        version:
+          type: integer
+          example: 1
+          description: >-
+            A monotonically increasing number indicating the version of this order. A higher number indicates
+            a more recent version of the order.
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        state:
+          $ref: '#/components/schemas/OrderState'
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        order_type:
+          $ref: '#/components/schemas/OrderType'
+        side:
+          $ref: '#/components/schemas/OrderSide'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The requested quantity on this order.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The requested limit price on this order.
+        stop_price:
+          $ref: '#/components/schemas/Price'
+          description: The requested stop price on this order.
+        time_in_force:
+          $ref: '#/components/schemas/TimeInForce'
+        average_price:
+          type: number
+          format: double
+          description: Calculated average price of all fills on this order.
+        filled_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity that has been filled.
+        order_update_reason:
+          $ref: '#/components/schemas/OrderUpdateReason'
+          description: The last reason why this order was updated
+        text:
+          type: string
+          description: Free form text typically contains reasons for a reject.
+        strategy:
+          $ref: '#/components/schemas/Strategy'
+          description: The execution strategy used for this order.
+        running_position:
+          $ref: '#/components/schemas/Quantity'
+          description: The position quantity at the time of this order.
+        open_close_indicator:
+          $ref: '#/components/schemas/OpenCloseIndicator'
+          description: Open/Close indicator for option orders.
+      required:
+        - created_at
+        - updated_at
+        - order_id
+        - version
+        - account_id
+        - account_number
+        - state
+        - status
+        - symbol
+        - order_type
+        - side
+        - quantity
+        - time_in_force
+        - filled_quantity
+        - running_position
+    Trade:
+      type: object
+      properties:
+        created_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: When this trade happened in milliseconds since epoch.
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        trade_id:
+          $ref: '#/components/schemas/TradeId'
+        order_id:
+          $ref: '#/components/schemas/OrderId'
+          description: The order ID of the order this trade occurred on.
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol this trade was for.
+        side:
+          $ref: '#/components/schemas/OrderSide'
+          description: The side this trade occurred on.
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The amount that was traded.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The traded price.
+        running_position:
+          $ref: '#/components/schemas/Quantity'
+          description: The position quantity at the time of this trade.
+      required:
+        - created_at
+        - trade_id
+        - order_id
+        - side
+        - quantity
+        - price
+        - running_position
+    Position:
+      type: object
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+        average_cost:
+          type: number
+          format: double
+          description: The average cost of the position.
+      required:
+        - account_id
+        - account_number
+        - symbol
+        - quantity
+        - average_cost
+    BuyingPower:
+      type: object
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        amount:
+          type: number
+          format: double
+          description: The buying power available for this account.
+      required:
+        - account_id
+        - account_number
+        - buying_power
+    LocateInventory:
+      type: object
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        available:
+          $ref: '#/components/schemas/Quantity'
+        reserved:
+          $ref: '#/components/schemas/Quantity'
+        used:
+          $ref: '#/components/schemas/Quantity'
+    StrategyType:
+      type: string
+      enum:
+        - sor
+        - dark
+        - ap
+        - pov
+        - twap
+        - vwap
+        - dma
+      description: >
+        Strategy type used for execution, can be one of below.
+
+        - `sor`: Smart order router (default)
+
+        - `dark`: Dark pool
+
+        - `ap`: Arrival price
+
+        - `pov`: Percentage of volume
+
+        - `twap`: Time weighted average price
+
+        - `vwap`: Volume weighted average price
+
+        - `dma`: Direct market access
+
+
+        For more information on these strategies, please refer to our
+        [documentation](https://docs.clearstreet.io/studio/docs/execution-strategies).
+      default: sor
+    Urgency:
+      type: string
+      enum:
+        - super-passive
+        - passive
+        - moderate
+        - aggressive
+        - super-aggressive
+      description: The urgency associated with the execution strategy.
+      default: moderate
+    MinPercent:
+      type: integer
+      minimum: 0
+      maximum: 100
+      example: 1
+      description: The minimum percentage of market volume. Must be an integer between 0 and 100 (inclusive).
+    TargetPercent:
+      type: integer
+      minimum: 0
+      maximum: 100
+      example: 50
+      description: The target percentage of market volume. Must be an integer between 0 and 100 (inclusive).
+    MaxPercent:
+      type: integer
+      minimum: 0
+      maximum: 100
+      example: 50
+      description: The maximum percentage of market volume. Must be an integer between 0 and 100 (inclusive).
+    MaxPercentVolume:
+      type: integer
+      minimum: 0
+      maximum: 50
+      example: 35
+      description: The maximum percentage of market volume. Must be an integer between 0 and 50 (inclusive).
+    BaseStrategy:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/StrategyType'
+          description: The type of strategy. This must be set to the respective strategy type.
+        start_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp to start routing.
+        end_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp to stop routing, defaults to market close.
+        urgency:
+          $ref: '#/components/schemas/Urgency'
+      required:
+        - type
+    SorStrategy:
+      allOf:
+        - $ref: '#/components/schemas/BaseStrategy'
+    ApStrategy:
+      allOf:
+        - $ref: '#/components/schemas/BaseStrategy'
+        - type: object
+          properties:
+            min_percent:
+              $ref: '#/components/schemas/MinPercent'
+            max_percent:
+              $ref: '#/components/schemas/MaxPercent'
+    DarkStrategy:
+      allOf:
+        - $ref: '#/components/schemas/BaseStrategy'
+        - type: object
+          properties:
+            max_percent:
+              $ref: '#/components/schemas/MaxPercent'
+    DmaStrategy:
+      properties:
+        type:
+          $ref: '#/components/schemas/StrategyType'
+        destination:
+          $ref: '#/components/schemas/Destination'
+      required:
+        - type
+        - destination
+    PovStrategy:
+      allOf:
+        - $ref: '#/components/schemas/BaseStrategy'
+        - type: object
+          properties:
+            target_percent:
+              $ref: '#/components/schemas/TargetPercent'
+          required:
+            - target_percent
+    TwapStrategy:
+      allOf:
+        - $ref: '#/components/schemas/BaseStrategy'
+        - type: object
+          properties:
+            min_percent:
+              $ref: '#/components/schemas/MinPercent'
+            max_percent:
+              $ref: '#/components/schemas/MaxPercentVolume'
+    VwapStrategy:
+      allOf:
+        - $ref: '#/components/schemas/BaseStrategy'
+        - type: object
+          properties:
+            min_percent:
+              $ref: '#/components/schemas/MinPercent'
+            max_percent:
+              $ref: '#/components/schemas/MaxPercentVolume'
+    Strategy:
+      discriminator:
+        propertyName: type
+        mapping:
+          sor: '#/components/schemas/SorStrategy'
+          vwap: '#/components/schemas/VwapStrategy'
+          twap: '#/components/schemas/TwapStrategy'
+          ap: '#/components/schemas/ApStrategy'
+          pov: '#/components/schemas/PovStrategy'
+          dark: '#/components/schemas/DarkStrategy'
+          dma: '#/components/schemas/DmaStrategy'
+      anyOf:
+        - $ref: '#/components/schemas/SorStrategy'
+        - $ref: '#/components/schemas/VwapStrategy'
+        - $ref: '#/components/schemas/TwapStrategy'
+        - $ref: '#/components/schemas/ApStrategy'
+        - $ref: '#/components/schemas/PovStrategy'
+        - $ref: '#/components/schemas/DarkStrategy'
+        - $ref: '#/components/schemas/DmaStrategy'
+    MpId:
+      type: string
+      minLength: 1
+      maxLength: 12
+      example: CLST
+      description: Unique MPID assigned by us.
+    LocateId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique locate ID assigned by us.
+    LocateOrderId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique locate ID assigned by us.
+    LocateOrderStatus:
+      type: string
+      enum:
+        - pending
+        - offered
+        - filled
+        - rejected
+        - declined
+        - expired
+        - cancelled
+      description: The status of the locate order.
+    LocateOrder:
+      type: object
+      properties:
+        locate_order_id:
+          $ref: '#/components/schemas/LocateOrderId'
+        requested_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp indicating when the locate order was requested.
+        updated_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp indicating when the locate order was last updated.
+        mpid:
+          $ref: '#/components/schemas/MpId'
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        status:
+          $ref: '#/components/schemas/LocateOrderStatus'
+        requested_quantity:
+          $ref: '#/components/schemas/Quantity'
+        locate_id:
+          $ref: '#/components/schemas/LocateId'
+          description: The locate ID, available once the locate order has been offered
+        located_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp indicating when the locate-order was located.
+        expires_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp indicating when the locate-order will expire.
+        borrow_rate:
+          $ref: '#/components/schemas/Rate'
+          description: The rate charged if the instrument is held overnight.
+        located_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity that has been located.
+        total_cost:
+          $ref: '#/components/schemas/Price'
+          description: The total cost of the locate.
+        desk_comment:
+          type: string
+          description: Comment from the desk.
+        trader_comment:
+          type: string
+          description: Comment from the trader.
+        reference_id:
+          $ref: '#/components/schemas/ReferenceId'
+          description: The reference ID provided by you.
+      required:
+        - locate_order_id
+        - requested_at
+        - updated_at
+        - mpid
+        - account_id
+        - account_number
+        - symbol
+        - status
+        - requested_quantity
+    BorrowRate:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for which the rate is provided.
+        created_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp indicating when the rate was created.
+        expires_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp indicating when the rate will expire.
+        rate:
+          $ref: '#/components/schemas/Rate'
+          description: The indicative borrow rate expressed as a percentage for the instrument if held overnight.
+        mpid:
+          $ref: '#/components/schemas/MpId'
+          description: The MPID that provided the rate.
+      required:
+        - symbol
+        - created_at
+        - expires_at
+        - rate
+        - mpid
+    Entity:
+      type: object
+      properties:
+        entity_id:
+          $ref: '#/components/schemas/EntityId'
+        legal_name:
+          type: string
+          example: Clear Street
+        client_code:
+          type: string
+          example: CLST
+      required:
+        - entity_id
+        - name
+        - client_code
+    Account:
+      type: object
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        entity_id:
+          $ref: '#/components/schemas/EntityId'
+        name:
+          type: string
+          example: Clear Street
+      required:
+        - account_id
+        - account_number
+        - entity_id
+        - name
+    SymbolTuple:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        symbol_format:
+          $ref: '#/components/schemas/SymbolFormat'
+    Instrument:
+      type: object
+      properties:
+        symbols:
+          type: array
+          items:
+            $ref: '#/components/schemas/SymbolTuple'
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        primary_exchange:
+          type: string
+          description: The primary exchange for the instrument.
+          example: NASDAQ
+        description:
+          type: string
+          description: A description of the instrument.
+          example: Apple Inc.
+      required:
+        - symbols
+        - asset_class
+        - primary_exchange
+        - description
+    MarginType:
+      type: string
+      enum:
+        - none
+        - regt
+        - pm
+        - rbh-bd
+        - rbh-mm
+        - fut-total-equity
+        - fut-nlv
+    SimulationId:
+      type: string
+      format: uuid
+      example: 6460030d-8ed4-19d3-818e-e87b36e90005
+      description: Unique ID for a simulation.
+    SimulationName:
+      type: string
+      minimum: 1
+      maximum: 256
+      description: Name of a simulation.
+    Shocks:
+      type: object
+      description: Maps shock scenarios to their resulting pnl.
+      additionalProperties:
+        type: number
+        format: double
+        description: The resulting pnl from the shock.
+    SimulationPrice:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for the instrument.
+        symbol_format:
+          $ref: '#/components/schemas/SymbolFormat'
+          default: cms
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The price to use in the simulation.
+      required:
+        - symbol
+        - price
+    SimulationTrade:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for the instrument.
+        symbol_format:
+          $ref: '#/components/schemas/SymbolFormat'
+          default: cms
+        side:
+          $ref: '#/components/schemas/BuySell'
+          description: The side of the simulated trade.
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity of the simulated trade.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The price of the simulated trade.
+      required:
+        - symbol
+        - side
+        - quantity
+        - price
+    RegTGroupMember:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for the instrument.
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity held for this instrument.
+        market_value:
+          type: number
+          format: double
+          description: Market value of the instrument.
+        market_value_percent:
+          type: number
+          format: double
+          description: >
+            The percentage market value of the instrument in terms of the total `net_market_value` of all
+            positions held.
+
+            Formula: `market_value / net_market_value`
+      required:
+        - symbol
+        - asset_class
+        - quantity
+        - market_value
+        - market_value_percent
+    RegTGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name of the group, typically the symbol of the underlier.
+        market_value:
+          type: number
+          format: double
+          description: The aggregated market value of all instruments for the symbol group.
+        market_value_percent:
+          type: number
+          format: double
+          description: >
+            The percentage market value of the symbol group in terms of the total net_market_value of all
+            positions.
+
+            Formula: `(market_value / net_market_value)`
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect for the symbol group.
+        house_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on Clear Street's house margin methodology for the symbol group.
+        exchange_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on regulatory rules for the symbol group.
+        margin_percent:
+          type: number
+          format: double
+          description: |
+            The percentage effective margin requirement in terms of the symbol group market value.
+            Formula: `(effective_requirement / net_market_value)`
+        margin_percent_contribution:
+          type: number
+          format: double
+          description: |
+            The percentage effective margin requirement in terms of the total effective requirement.
+            Formula: `(effective_requirement / sum(effective_requirement))`
+        members:
+          type: array
+          description: A list of securities that comprise this group.
+          items:
+            $ref: '#/components/schemas/RegTGroupMember'
+      required:
+        - name
+        - market_value
+        - market_value_percent
+        - effective_requirement
+        - house_requirement
+        - exchange_requirement
+        - margin_percent
+        - margin_percent_contribution
+        - members
+    RegTMargin:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Unique identifier for this margin calculation.
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+          description: Timestamp of when this margin was calculated.
+        net_market_value:
+          type: number
+          format: double
+          description: Market value net of long and short market values.
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect.
+        effective_excess:
+          type: number
+          format: double
+          description: >-
+            The maring amount by taking the difference between total equity and the effective requirement. A
+            negative number reflects an effective margin deficit.
+        house_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on Clear Street's house margin methodology.
+        house_excess:
+          type: number
+          format: double
+          description: >-
+            The margin amount by taking the difference between total equity and the house requirement. A
+            negative number reflects a house margin deficit.
+        exchange_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on regulatory rules.
+        exchange_excess:
+          type: number
+          format: double
+          description: >-
+            The margin amount by taking the difference between total equity and the exchange requirement. A
+            negative number reflects an regulatory margin deficit.
+        sma:
+          type: number
+          format: double
+          description: >-
+            Special Memorandum Account (SMA). The regulatory line of credit amount for margin trading based on
+            market value, trading activity, and available cash.
+        sod_buying_power:
+          type: number
+          format: double
+          description: The limit, or "up-to" amount, of securities value that can be day-traded for a given trading day.
+        overnight_buying_power:
+          type: number
+          format: double
+          description: The limit, or "up-to" amount, of securities value that can be purchased and held overnight.
+        day_trade_buying_power:
+          type: number
+          format: double
+          description: The remaining amount of start_of_day_buying_power that captures any day-trading activity.
+        groups:
+          type: array
+          description: Reg-T margin groups
+          items:
+            $ref: '#/components/schemas/RegTGroup'
+      required:
+        - version
+        - timestamp
+        - net_market_value
+        - effective_requirement
+        - effecive_excess
+        - house_requirement
+        - house_excess
+        - exchange_requirement
+        - exchange_deficit
+        - sma
+        - sod_buying_power
+        - overnight_buying_power
+        - day_trade_buying_power
+        - groups
+    RegTMarginSimulation:
+      type: object
+      properties:
+        created_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: Timestamp of when this simulation was created.
+        name:
+          $ref: '#/components/schemas/SimulationName'
+          description: Name of this simulation that you provided when creating it.
+        simulation_id:
+          $ref: '#/components/schemas/SimulationId'
+        before:
+          $ref: '#/components/schemas/RegTMargin'
+          description: The margin calculation before applying simulated trades.
+        after:
+          $ref: '#/components/schemas/RegTMargin'
+          description: The margin calculation after applying simulated trades.
+      required:
+        - created_at
+        - name
+        - simulation_id
+        - before
+        - after
+    PortfolioMarginGroupMember:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for the instrument.
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity held for this instrument.
+        market_value:
+          type: number
+          format: double
+          description: Market value of the instrument.
+        market_value_percent:
+          type: number
+          format: double
+          description: >
+            The percentage market value of the instrument in terms of the total `net_market_value` of all
+            positions held.
+
+            Formula: `market_value / net_market_value`
+        shocks:
+          $ref: '#/components/schemas/Shocks'
+    PortfolioMarginGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name of the group, typically the symbol of the underlier.
+        market_value:
+          type: number
+          format: double
+          description: The aggregated market value of all instruments for the group.
+        market_value_percent:
+          type: number
+          format: double
+          description: |
+            The percentage market value of the group in terms of the total net_market_value of all positions.
+            Formula: `(market_value / net_market_value)`
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect for the group.
+        margin_percent:
+          type: number
+          format: double
+          description: |
+            The percentage effective margin requirement in terms of the group market value.
+            Formula: `(effective_requirement / net_market_value)`
+        margin_percent_contribution:
+          type: number
+          format: double
+          description: |
+            The percentage effective margin requirement in terms of the total effective requirement.
+            Formula: `(effective_requirement / sum(effective_requirement))`
+        risk_based_requirement:
+          type: number
+          format: double
+          description: >-
+            A component margin requirement that captures base-case risk for the group under house margin
+            methodology
+        non_marginable_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk for the group that are not margin eligible.
+        liquidity_requirement:
+          type: number
+          format: double
+          description: >-
+            A component margin requirement that captures risk for the group based on liquidity, Market Cap,
+            and Average Daily Volume factors.
+        concentration_requirement:
+          type: number
+          format: double
+          description: >-
+            A component margin requirement that captures risk for the group based on gross exposure to total
+            equity
+        discretionary_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures miscellaneous risk factors for the group.
+        regulatory_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on OCC TIMS regulatory margin methodology
+        var_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on value-at-risk over any 5-day period in a 2 year historic lookback
+        shocks:
+          $ref: '#/components/schemas/Shocks'
+        members:
+          type: array
+          description: A list of securities that comprise this group.
+          items:
+            $ref: '#/components/schemas/PortfolioMarginGroupMember'
+      required:
+        - name
+        - market_value
+        - market_value_percent
+        - effective_requirement
+        - house_requirement
+        - exchange_requirement
+        - margin_percent
+        - margin_percent_contribution
+        - members
+    PortfolioMargin:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Unique identifier for this margin calculation.
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+          description: Timestamp of when this margin was calculated.
+        net_market_value:
+          type: number
+          format: double
+          description: Sum of market values across all positions.
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect.
+        effecive_excess:
+          type: number
+          format: double
+          description: >-
+            The maring amount by taking the difference between total equity and the effective requirement. A
+            negative number reflects an effective margin deficit.
+        house_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on Clear Street's house margin methodology.
+        house_excess:
+          type: number
+          format: double
+          description: >-
+            The margin amount by taking the difference between total equity and the house requirement. A
+            negative number reflects a house margin deficit.
+        risk_based_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures base-case risk under house margin methodology.
+        risk_based_requirement_percent:
+          type: number
+          format: double
+          description: |
+            The percentage risk_base margin requirement in terms of total house requirement
+            Formula: `risk_based_requirement / house_requirement`
+        non_marginable_requirement:
+          type: number
+          format: double
+          description: >-
+            A component margin requirement that captures risk for security instruments that are not margin
+            eligible.
+        non_marginable_requirement_percent:
+          type: number
+          format: double
+          description: |
+            The percentage non-marginable requirement in terms of total house requirement
+            Formula: `non_marginable_requirement / house_requirement`
+        add_on_requirement:
+          type: number
+          format: double
+          description: |
+            Sum of add-on margin requirements.
+            Formula: `liquidity_add_on + concentration_add_on + discretionary_requirement`
+        add_on_requirement_percent:
+          type: number
+          format: double
+          description: |
+            The percentage add-on margin requirements in terms of total house requirement.
+            Formula: `add_on_requirement / house_requirement`
+        liquidity_add_on:
+          type: number
+          format: double
+          description: >-
+            A component margin requirement that captures risk based on liquidity, Market Cap, and Average
+            Daily Volume factors.
+        liquidity_add_on_percent:
+          type: number
+          format: double
+          description: |
+            The percentage liquidity add-on margin requirements in terms of total house requirement.
+            Formula: `liquidity_add_on / house_requirement`
+        concentration_add_on:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk based on gross exposure to total equity.
+        concentration_add_on_percent:
+          type: number
+          format: double
+          description: |
+            The percentage concentration add-on margin requirements in terms of total house requirement.
+            Formula: `concentration_add_on / house_requirement`
+        discretionary_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures miscellaneous risk factors.
+        discretionary_requirement_percent:
+          type: number
+          format: double
+          description: |
+            The percentage discretionary margin requirements in terms of total house requirement
+            Formula: `discretionary_requirement / house_requirement`
+        vega_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk based on vega.
+        groups:
+          type: array
+          description: Portfolio margin groups
+          items:
+            $ref: '#/components/schemas/PortfolioMarginGroup'
+    PnlSummary:
+      type: object
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+        entity_id:
+          $ref: '#/components/schemas/EntityId'
+        sod_equity:
+          type: number
+          format: double
+          description: Net value of instruments held in the portfolio at the start of a trading day.
+        equity:
+          type: number
+          format: double
+          description: Net value of instruments held in the portfolio.
+        sod_gross_market_value:
+          type: number
+          format: double
+          description: Absolute market value at the start of a trading day.
+        gross_market_value:
+          type: number
+          format: double
+          description: Absolute market value of long and short market values.
+        net_market_value:
+          type: number
+          format: double
+          description: Market value net of long and short market values.
+        long_market_value:
+          type: number
+          format: double
+          description: Market value of securities positioned long.
+        short_market_value:
+          type: number
+          format: double
+          description: Market value of securities positioned short.
+        sod_long_market_value:
+          type: number
+          format: double
+          description: Market value of securities positioned long at the start of a trading day.
+        sod_short_market_value:
+          type: number
+          format: double
+          description: Market value of securities positioned short at the start of a trading day.
+        overnight_pnl:
+          type: number
+          format: double
+          description: Profit and loss from previous trading date.
+        day_pnl:
+          type: number
+          format: double
+          description: Profit and loss from intraday trading activities.
+        realized_pnl:
+          type: number
+          format: double
+          description: Profit and loss realized from position closing trading activity
+        unrealized_pnl:
+          type: number
+          format: double
+          description: Profit and loss from market changes.
+        total_pnl:
+          type: number
+          format: double
+          description: |
+            `realized_pnl + unrealized_pnl`
+        net_pnl:
+          type: number
+          format: double
+          description: |
+            `total_pnl + total_fees`
+        total_fees:
+          type: number
+          format: double
+          description: Total fees incurred from trading activities.
+      required:
+        - timestamp
+        - entity_id
+        - sod_equity
+        - equity
+        - sod_gross_market_value
+        - gross_market_value
+        - net_market_value
+        - long_market_value
+        - short_market_value
+        - sod_long_market_value
+        - sod_short_market_value
+        - overnight_pnl
+        - day_pnl
+        - realized_pnl
+        - unrealized_pnl
+        - total_pnl
+        - net_pnl
+        - total_fees
+    PnlDetails:
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+        entity_id:
+          $ref: '#/components/schemas/EntityId'
+          description: Name of the legal entity.
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        symbol_description:
+          type: string
+          description: Description of the symbol.
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        day_pnl:
+          type: number
+          format: double
+          description: Profit and loss from intraday trading activities.
+        unrealized_pnl:
+          type: number
+          format: double
+          description: Profit and loss from market changes.
+        realized_pnl:
+          type: number
+          format: double
+          description: Profit and loss realized from position closing trading activity.
+        total_pnl:
+          type: number
+          format: double
+          description: |
+            `realized_pnl + unrealized_pnl`
+        overnight_pnl:
+          type: number
+          format: double
+          description: Profit and loss from previous trading date.
+        total_fees:
+          type: number
+          format: double
+          description: Total fees incurred from trading activities.
+        net_market_value:
+          type: number
+          format: double
+          description: Market value net of long and short market values.
+        gross_market_value:
+          type: number
+          format: double
+          description: Absolute market value of long and short market values.
+        sod_market_value:
+          type: number
+          format: double
+          description: Market value of a given instrument a the start of a trading day.
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+        sod_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: Quantity of a given instrument at the start of a trading day.
+        bought_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: Quantity of a given instrument bought.
+        sold_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: Quantity of a given instrument sold.
+        buys:
+          type: integer
+          format: int32
+          description: Total buys of a given instrument.
+        sells:
+          type: integer
+          format: int32
+          description: Total sells of a given instrument.
+        price:
+          type: number
+          format: double
+          description: Price used in this pnl calculation.
+        sod_price:
+          type: number
+          format: double
+          description: Price at the start of a trading day.
+        underlier:
+          $ref: '#/components/schemas/Symbol'
+          description: The underlying instrument.
+      required:
+        - timestamp
+        - entity_id
+        - entity_name
+        - account_id
+        - account_number
+        - side
+        - symbol
+        - symbol_description
+        - asset_class
+        - day_pnl
+        - unrealized_pnl
+        - realized_pnl
+        - total_pnl
+        - overnight_pnl
+        - total_fees
+        - net_market_value
+        - gross_market_value
+        - sod_market_value
+        - quantity
+        - sod_quantity
+        - bought_quantity
+        - sold_quantity
+        - buys
+        - sells
+        - price
+        - sod_price
+        - underlier
+    PnlSummaryForAccount:
+      allOf:
+        - $ref: '#/components/schemas/PnlSummary'
+        - properties:
+            account_id:
+              type: string
+            account_number:
+              type: string
+          required:
+            - account_id
+            - account_number
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-tagGroups:
+  - name: Custodial API
+    tags:
+      - Performance
+      - Holdings
+  - name: Execution API
+    tags:
+      - Orders
+      - Trades
+      - Positions
+  - name: Lending API
+    tags:
+      - Locates
+      - Rates
+      - Inventories
+  - name: Reference API
+    tags:
+      - Entities
+      - Accounts
+      - Instruments
+  - name: Risk & Margin API
+    tags:
+      - PNL
+      - Margin
+      - Margin Simulations

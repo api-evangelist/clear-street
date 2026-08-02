@@ -1,0 +1,69 @@
+generated: '2026-08-02'
+method: searched
+source: live probes of every apis.yml baseURL host, every OpenAPI servers[] host, and the docs/auth hosts
+hosts_probed:
+- www.clearstreet.io
+- clearstreet.io
+- www.clearstreet.com
+- clearstreet.com
+- api.clearstreet.com
+- api.clearstreet.io
+- docs.clearstreet.com
+- docs.clearstreet.io
+- auth.clearstreet.io
+documents:
+- host: auth.clearstreet.io
+  path: /.well-known/openid-configuration
+  status: 200
+  file: clear-street-openid-configuration.json
+  note: Auth0 tenant backing Studio OAuth2 client-credentials and the app login.
+- host: auth.clearstreet.io
+  path: /.well-known/oauth-authorization-server
+  status: 200
+  file: clear-street-oauth-authorization-server.json
+  note: RFC 8414 metadata; same issuer as the OIDC document.
+- host: auth.clearstreet.io
+  path: /.well-known/jwks.json
+  status: 200
+  file: null
+  note: Signing keys — not archived (rotating key material).
+- host: api.clearstreet.com
+  path: /.well-known/oauth-protected-resource/v1/mcp
+  status: 200
+  file: clear-street-mcp-oauth-protected-resource.json
+  note: >
+    RFC 9728 protected-resource metadata for the Clear Street MCP server. Discovered from
+    the WWW-Authenticate challenge returned by an anonymous request to
+    https://api.clearstreet.com/v1/mcp.
+- host: api.clearstreet.com
+  path: /.well-known/oauth-protected-resource
+  status: 200
+  file: null
+  note: >
+    Same document scoped to resource "https://api.clearstreet.com" rather than the /v1/mcp
+    resource; identical authorization_servers and scopes_supported.
+- host: api.clearstreet.com
+  path: /oauth/mcp/.well-known/oauth-authorization-server
+  status: 200
+  file: clear-street-mcp-oauth-authorization-server.json
+  note: MCP authorization server (authorization_code + PKCE S256); tokens minted at auth.clearstreet.io.
+- host: api.clearstreet.com
+  path: /oauth/mcp/.well-known/openid-configuration
+  status: 200
+  file: null
+  note: Mirror of the MCP oauth-authorization-server document.
+misses:
+- {path: /.well-known/security.txt, status: 404, hosts: [clearstreet.io, www.clearstreet.io,
+    clearstreet.com, www.clearstreet.com, auth.clearstreet.io]}
+- {path: /.well-known/api-catalog, status: 404, hosts: [all probed]}
+- {path: /.well-known/ai-plugin.json, status: 404, hosts: [all probed]}
+- {path: /.well-known/agent-card.json, status: 404, hosts: [all probed]}
+- {path: /.well-known/agent.json, status: 404, hosts: [all probed]}
+x-evidence:
+  fetched: '2026-08-02'
+  method: curl -L, browser User-Agent, per-host sweep
+  note: >
+    No RFC 9116 security.txt is published on any Clear Street host. A human-readable security
+    page and a security@clearstreet.io contact do exist — see security/clear-street-vulnerability-disclosure.yml.
+    No A2A agent card was found at either the canonical or the legacy well-known path, so no
+    a2a/ artifact was written.

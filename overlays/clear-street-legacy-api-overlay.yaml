@@ -1,0 +1,26 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the legacy Clear Street API
+  version: 1.0.0
+extends: openapi/clear-street-legacy-api-swagger.yml
+x-generated: '2026-08-02'
+x-method: generated
+actions:
+- target: $.info
+  update:
+    x-apievangelist-slug: clear-street
+    x-apievangelist-api: clear-street:legacy-api
+    x-apievangelist-harvested-from: https://raw.githubusercontent.com/clear-street/docs/HEAD/api_0.0.4.yaml
+    x-apievangelist-harvested-on: '2026-08-02'
+    x-spec-format: swagger-2.0
+    x-status: legacy
+    x-status-note: >
+      A five-operation post-trade API (Trades, Uploads) published in the clear-street/docs
+      repository alongside the FIX 4.2 trade specification, the OMS guide and SFTP
+      documentation. Superseded for new integrations by the Studio and Trading APIs.
+    x-security-gap: >
+      The document declares NO securityDefinitions and no security requirement, despite
+      documenting write operations that book and cancel trades.
+    x-companion-docs:
+      fix: https://clear-street.github.io/FIX-docs/
+      portal: https://clear-street.github.io/docs/

@@ -1,0 +1,71 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Clear Street Studio API
+  version: 1.0.0
+extends: openapi/clear-street-studio-openapi.yml
+x-generated: '2026-08-02'
+x-method: generated
+x-source: >
+  Enhancements derived from artifacts harvested in this repo. The original harvested
+  specification is never mutated; apply this overlay to obtain the enriched document.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-slug: clear-street
+    x-apievangelist-api: clear-street:studio-api
+    x-apievangelist-harvested-from: https://storage.googleapis.com/stainless-sdk-openapi-specs/clear-street/studio-sdk-98dfb44f601d554dc983f950da3663b22a0dc6495d283001aecf76c26bde84f9.yml
+    x-apievangelist-harvested-on: '2026-08-02'
+    x-apievangelist-harvest-note: >
+      The Studio OpenAPI is not served from the docs host; this is the canonical spec URL
+      recorded in the .stats.yml of Clear Street's own studio-sdk-node / studio-sdk-python
+      repositories.
+    x-documentation: https://docs.clearstreet.io/studio/docs/getting-started
+    x-title-note: >
+      info.title is "Common API Models", an internal build artifact name. The public product
+      name is the Clear Street Studio API.
+- target: $.info
+  update:
+    x-authentication: authentication/clear-street-authentication.yml
+    x-oauth2:
+      flow: clientCredentials
+      tokenUrl: https://auth.clearstreet.io/oauth/token
+      audience: https://api.clearstreet.io
+      scopes: [studio]
+      token_lifetime: 24h
+    x-oauth-scopes: scopes/clear-street-scopes.yml
+    x-auth-gap: >
+      The specification declares only the resulting BearerAuth token and does not model the
+      OAuth2 client-credentials flow that mints it.
+- target: $.info
+  update:
+    x-error-format: rfc9457
+    x-error-catalog: errors/clear-street-problem-types.yml
+    x-error-media-type-gap: >
+      ProblemDetails is served as application/json rather than the RFC 9457
+      application/problem+json media type.
+- target: $.info
+  update:
+    x-rate-limits:
+      artifact: conventions/clear-street-conventions.yml
+      retry_after_header: true
+      documented:
+      - {path: /orders, limit: 10, unit: per second}
+      - {path: /bulk-orders, limit: 1, unit: per second}
+      - {path: /locate-orders, limit: 20, unit: per second}
+      - {path: /instruments, limit: 200, unit: per second}
+- target: $.info
+  update:
+    x-events: asyncapi/clear-street-studio-events.yml
+    x-websocket:
+      production: wss://api.clearstreet.io/studio/v2/ws
+      demo: wss://demo-api.clearstreet.io/studio/v2/ws
+      subscribe_type: subscribe-activity
+    x-sandbox: sandbox/clear-street-sandbox.yml
+- target: $.info
+  update:
+    x-conventions: conventions/clear-street-conventions.yml
+    x-idempotency-gap: >
+      No idempotency key is defined on Studio write operations (createOrder,
+      createBulkOrders, createLocateOrder), unlike the Trading API.
+    x-data-model: data-model/clear-street-data-model.yml
+    x-conformance: conformance/clear-street-conformance.yml

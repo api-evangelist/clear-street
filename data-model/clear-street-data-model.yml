@@ -1,0 +1,171 @@
+generated: '2026-08-02'
+method: derived
+source: openapi/clear-street-trading-api-openapi.yml, openapi/clear-street-studio-openapi.yml
+note: >
+  Entity graph derived mechanically from schema `$ref` links and `*_id` / `*_ids` reference
+  fields across both specifications. Identifier formats are read from the schemas; no
+  id-prefix scheme is published by Clear Street.
+identifiers:
+  scheme: uuid
+  note: >
+    Most resource identifiers are UUIDs. Instruments are addressable by either a UUID or a
+    symbol via the InstrumentIdOrSymbol union (equity ticker or OSI option symbol). Accounts
+    additionally support prefix matching on account_id. There are no typed id prefixes.
+entities:
+- name: Account
+  api: trading
+  schemas: [Account, AccountWithPersonalDetails, AccountList, AccountSettings, AccountBalances]
+  key: account_id
+  relationships:
+  - {type: belongs_to, target: Entity, via: account_holder_entity_id}
+  - {type: has_one, target: AccountBalances, via: account_id}
+  - {type: has_many, target: Order, via: account_id}
+  - {type: has_many, target: Execution, via: account_id}
+  - {type: has_many, target: Position, via: account_id}
+  - {type: has_many, target: PositionInstruction, via: account_id}
+  - {type: has_many, target: Entitlement, via: account_id}
+  - {type: has_many, target: PortfolioHistory, via: account_id}
+- name: Order
+  api: trading
+  schemas: [Order, NewOrderRequest, CancelOrderRequest, OrderList]
+  key: order_id
+  relationships:
+  - {type: belongs_to, target: Account, via: account_id}
+  - {type: belongs_to, target: Instrument, via: instrument_id}
+  - {type: belongs_to, target: Instrument, via: underlying_instrument_id, note: options only}
+  - {type: has_many, target: Execution, via: order_id}
+  idempotency_key: client_order_id
+- name: Execution
+  api: trading
+  schemas: [Execution, ExecutionList]
+  relationships:
+  - {type: belongs_to, target: Order, via: order_id}
+  - {type: belongs_to, target: Instrument, via: instrument_id}
+- name: Position
+  api: trading
+  schemas: [Position, PositionList]
+  key: 'account_id + instrument_id'
+  relationships:
+  - {type: belongs_to, target: Account, via: account_id}
+  - {type: belongs_to, target: Instrument, via: instrument_id}
+  - {type: belongs_to, target: Instrument, via: underlying_instrument_id, note: options only}
+  - {type: has_many, target: PositionInstruction, via: instrument_id}
+- name: PositionInstruction
+  api: trading
+  schemas: [PositionInstruction, PositionInstructionSubmissionRequest, PositionInstructionType]
+  key: id
+  idempotency_key: instruction_id
+  relationships:
+  - {type: belongs_to, target: Account, via: account_id}
+  - {type: belongs_to, target: Instrument, via: instrument_id}
+- name: Instrument
+  api: trading
+  schemas: [Instrument, InstrumentCore, InstrumentCoreList, InstrumentIdOrSymbol, OptionsContract]
+  key: instrument_id
+  addressable_by: [uuid, symbol, OSI option symbol]
+  relationships:
+  - {type: has_many, target: OptionsContract, via: underlying_instrument_id}
+  - {type: has_one, target: InstrumentFundamentals, via: instrument_id}
+  - {type: has_one, target: InstrumentAnalystConsensus, via: instrument_id}
+  - {type: has_many, target: InstrumentEvent, via: instrument_id}
+  - {type: has_many, target: InstrumentIncomeStatement, via: instrument_id}
+  - {type: has_many, target: InstrumentBalanceSheetStatement, via: instrument_id}
+  - {type: has_many, target: InstrumentCashFlowStatement, via: instrument_id}
+  - {type: has_one, target: MarketDataSnapshot, via: instrument_id}
+  - {type: has_many, target: DailySummary, via: instrument_id}
+  - {type: has_many, target: NewsInstrument, via: instrument_id}
+- name: Watchlist
+  api: trading
+  schemas: [Watchlist, CreateWatchlistRequest, AddWatchlistItemRequest, AddWatchlistItemData]
+  key: watchlist_id
+  relationships:
+  - {type: has_many, target: WatchlistItem, via: item_id}
+  - {type: belongs_to, target: Instrument, via: instrument_id, note: via items}
+- name: Screener
+  api: trading
+  schemas: [CreateScreenerRequest, OpenScreenerAction]
+  key: screener_id
+  note: Saved screeners persist a filter definition; search_screener runs one ad hoc.
+- name: Thread
+  api: trading
+  domain: Omni AI
+  key: thread_id
+  relationships:
+  - {type: belongs_to, target: Account, via: account_id}
+  - {type: has_many, target: Message, via: thread_id}
+  - {type: has_many, target: Response, via: thread_id}
+- name: Message
+  api: trading
+  domain: Omni AI
+  schemas: [Message, MessageList, MessageContent, MessageContentPart, MessageRole, MessageOutcome]
+  key: message_id
+  relationships:
+  - {type: belongs_to, target: Thread, via: thread_id}
+  - {type: has_one, target: Feedback, via: feedback_id}
+- name: Response
+  api: trading
+  domain: Omni AI
+  key: response_id
+  relationships:
+  - {type: belongs_to, target: Thread, via: thread_id}
+  - {type: belongs_to, target: Message, via: user_message_id}
+  - {type: belongs_to, target: Message, via: output_message_id}
+- name: Entitlement
+  api: trading
+  domain: Omni AI
+  schemas: [EntitlementResource, EntitlementResourceList, EntitlementCode]
+  key: entitlement_id
+  relationships:
+  - {type: belongs_to, target: Account, via: account_id}
+  - {type: belongs_to, target: EntitlementAgreement, via: agreement_id}
+- name: EntitlementAgreement
+  api: trading
+  domain: Omni AI
+  schemas: [EntitlementAgreementResource, EntitlementAgreementResourceList, EntitlementAgreementKey]
+  key: agreement_id
+- name: Entity
+  api: studio
+  key: entity_id
+  description: The legal entity that owns one or more Studio accounts; margin is computed at
+    entity level.
+  relationships:
+  - {type: has_many, target: StudioAccount, via: entity_id}
+  - {type: has_one, target: RegTMargin, via: entity_id}
+  - {type: has_one, target: PortfolioMargin, via: entity_id}
+  - {type: has_many, target: RegTMarginSimulation, via: entity_id}
+- name: StudioAccount
+  api: studio
+  key: account_id
+  relationships:
+  - {type: belongs_to, target: Entity, via: entity_id}
+  - {type: has_many, target: Holding, via: account_id}
+  - {type: has_many, target: StudioOrder, via: account_id}
+  - {type: has_many, target: Trade, via: account_id}
+  - {type: has_many, target: StudioPosition, via: account_id}
+  - {type: has_many, target: LocateOrder, via: account_id}
+  - {type: has_many, target: EasyBorrow, via: account_id}
+  - {type: has_many, target: PnlDetail, via: account_id}
+- name: LocateOrder
+  api: studio
+  key: locate_order_id
+  description: A securities-lending locate request — the prime-brokerage capability with no
+    counterpart on the Trading API.
+  relationships:
+  - {type: belongs_to, target: StudioAccount, via: account_id}
+  - {type: belongs_to, target: StudioInstrument, via: symbol}
+- name: StudioInstrument
+  api: studio
+  key: symbol
+  relationships:
+  - {type: has_one, target: Inventory, via: symbol}
+cross_api_note: >
+  The Trading API and the Studio API are separate projections with separate identifier spaces:
+  Trading addresses instruments by UUID or symbol and has no `entity` concept, while Studio is
+  entity-rooted and addresses instruments by symbol only. Account ids are not documented as
+  shared between the two.
+subway: null
+x-evidence:
+  fetched: '2026-08-02'
+  method: >
+    Mechanical extraction of *_id / *_ids properties and $ref edges from
+    components.schemas in both specifications, grouped into entities by schema-name family.

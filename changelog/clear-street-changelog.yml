@@ -1,0 +1,101 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.clearstreet.com/changelog/
+api: Clear Street Trading API
+scheme: dated entries labelled ADDED | IMPROVED | FIXED | BREAKING | DEPRECATED | RELEASE
+current_version: '2025-10-31'
+first_release: '2026-05-08'
+window_captured: '2026-05-08 .. 2026-07-24'
+counts:
+  entries_captured: 41
+  breaking: 11
+  deprecated: 2
+entries:
+- {date: '2026-07-24', kind: IMPROVED, highlight: 'Plain-English rejection messages; machine-readable
+    codes updated — SUB_PENNY renamed INVALID_TICK_SIZE, LIQUIDATION_ONLY split into two variants'}
+- {date: '2026-07-23', kind: IMPROVED, highlight: 'Event date filtering defaults to the next
+    trading day on weekends and holidays'}
+- {date: '2026-07-23', kind: FIXED, highlight: 'Index option contracts now populate underlying_instrument_id'}
+- {date: '2026-07-21', kind: ADDED, highlight: 'Account responses include holder details —
+    mailing address, date of birth, phone, tax residency country (nullable)'}
+- {date: '2026-07-20', kind: BREAKING, highlight: 'Removed deprecated instrument fields expiry
+    and strike_price; time_in_force can no longer be modified on order replace'}
+- {date: '2026-07-20', kind: ADDED, highlight: 'Omni AI prefill orders support a modify action'}
+- {date: '2026-07-17', kind: BREAKING, highlight: 'instrument_id, symbol and instrument_type
+    are now nullable on order and fill responses'}
+- {date: '2026-07-17', kind: ADDED, highlight: 'security-type enum gains INDEX'}
+- {date: '2026-07-16', kind: BREAKING, highlight: 'Omni entitlements: trading_account_id renamed
+    account_id in requests and responses'}
+- {date: '2026-07-15', kind: ADDED, highlight: 'Fundamentals gain ANNUAL fiscal periods; earnings
+    events gain report timing (BMO/AMC)'}
+- {date: '2026-07-14', kind: ADDED, highlight: 'Option contracts gain is_tradable'}
+- {date: '2026-07-14', kind: IMPROVED, highlight: 'Symbols accepted alongside UUIDs; market-hours
+    calendar date parameter now optional'}
+- {date: '2026-07-07', kind: ADDED, highlight: 'Daily summaries gain a required not_applicable boolean'}
+- {date: '2026-07-07', kind: IMPROVED, highlight: 'Index snapshots report current level as price
+    with size always 0'}
+- {date: '2026-07-06', kind: BREAKING, highlight: 'position_effect removed from order submission payloads'}
+- {date: '2026-07-03', kind: BREAKING, highlight: 'Executions filter instrument_id renamed
+    instrument_ids, now comma-separated'}
+- {date: '2026-06-29', kind: BREAKING, highlight: 'Screener field_filter removed; option-specific
+    position types (LONG_CALL, SHORT_CALL, …) removed'}
+- {date: '2026-06-25', kind: IMPROVED, highlight: 'bid, ask and midpoint no longer required —
+    may be null for one-sided quotes'}
+- {date: '2026-06-23', kind: IMPROVED, highlight: 'Idle Omni threads return 200 with data: null
+    instead of 404'}
+- {date: '2026-06-22', kind: ADDED, highlight: 'Account listing supports account_id prefix match
+    and account_name substring match'}
+- {date: '2026-06-18', kind: ADDED, highlight: 'Orders endpoint accepts order_ids'}
+- {date: '2026-06-17', kind: RELEASE, highlight: 'Screener launched with saved-screener management'}
+- {date: '2026-06-17', kind: IMPROVED, highlight: 'instrument_ids filter accepts symbols as well
+    as UUIDs'}
+- {date: '2026-06-17', kind: DEPRECATED, highlight: 'Instrument expiry and strike_price deprecated
+    (return null); screener field_filter deprecated'}
+- {date: '2026-06-16', kind: ADDED, highlight: 'Real-time P&L — unrealized_pnl, daily_pnl,
+    daily_change on balances; daily_realized_pnl on positions'}
+- {date: '2026-06-10', kind: BREAKING, highlight: 'ENGINE_REJECTED removed from position-instruction
+    statuses'}
+- {date: '2026-06-08', kind: ADDED, highlight: 'Balances include per-session buying power via
+    intraday_details and overnight_details'}
+- {date: '2026-06-04', kind: DEPRECATED, highlight: 'day_trade_buying_power, day_trade_count and
+    pattern_day_trader marked for future removal'}
+- {date: '2026-06-04', kind: IMPROVED, highlight: 'Option search matches OSI prefixes and
+    root-scoped phrases'}
+- {date: '2026-06-03', kind: IMPROVED, highlight: 'Position instruction batch responses improved;
+    delete endpoints return typed bodies; underlying_instrument_ids accepts arrays'}
+- {date: '2026-05-28', kind: BREAKING, highlight: 'is_restricted removed; security types reduced
+    to COMMON_STOCK, OPTION and CASH'}
+- {date: '2026-05-28', kind: ADDED, highlight: 'Option snapshots include Greeks — delta, gamma,
+    theta, vega, rho, IV, theoretical price'}
+- {date: '2026-05-26', kind: ADDED, highlight: 'Instruments gain is_ptp for publicly-traded
+    partnerships, plus related filters'}
+- {date: '2026-05-22', kind: ADDED, highlight: 'New executions endpoint returns individual
+    execution reports'}
+- {date: '2026-05-21', kind: BREAKING, highlight: 'Omni AI format changes — ticker tags became
+    markdown links, entitlement field names updated, symbolChart removed'}
+- {date: '2026-05-21', kind: IMPROVED, highlight: 'Thread message queries return latest messages
+    first by default'}
+- {date: '2026-05-20', kind: ADDED, highlight: 'Instruments gain is_fractionable'}
+- {date: '2026-05-19', kind: ADDED, highlight: 'Last-trade snapshots gain a required size field'}
+- {date: '2026-05-19', kind: IMPROVED, highlight: 'instrument_type became optional on order
+    submission — now inferred'}
+- {date: '2026-05-18', kind: IMPROVED, highlight: 'Position-instruction lifecycle statuses fully
+    documented with rejection causes'}
+- {date: '2026-05-15', kind: ADDED, highlight: 'Batch position instruction semantics defined;
+    reporting_currency added to events and fundamentals'}
+- {date: '2026-05-15', kind: BREAKING, highlight: 'Top-level error field removed from
+    position-instruction responses'}
+- {date: '2026-05-13', kind: ADDED, highlight: 'Portfolio history can return 207 partial success'}
+- {date: '2026-05-12', kind: IMPROVED, highlight: 'Pagination supports bidirectional navigation
+    via page_token'}
+- {date: '2026-05-08', kind: RELEASE, highlight: 'Initial API release — accounts, orders,
+    positions, instruments, market data and Omni AI'}
+other_changelogs:
+- api: Clear Street Studio API
+  published: false
+  note: No dated changelog was found for the Studio API on docs.clearstreet.io.
+x-evidence:
+  fetched: '2026-08-02'
+  url: https://docs.clearstreet.com/changelog/index.md
+  http_status: 200
+  note: Recent-window capture; the live changelog remains the source of truth.

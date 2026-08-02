@@ -1,0 +1,71 @@
+generated: '2026-08-02'
+method: derived
+source: openapi/clear-street-trading-api-openapi.yml + probes of https://api.clearstreet.com/v1/mcp
+surfaces:
+  openapi:
+    file: openapi/clear-street-trading-api-openapi.yml
+    spec: OpenAPI 3.1.0
+    version: '2025-10-31'
+    server: https://api.clearstreet.com
+    operations: 61
+    gated: false
+    note: The specification itself is published anonymously at https://docs.clearstreet.com/openapi.yaml.
+  mcp:
+    url: https://api.clearstreet.com/v1/mcp
+    gated: true
+    note: >
+      tools/list returns 401 with an RFC 9728 WWW-Authenticate challenge. Tool names and
+      inputSchemas are not discoverable anonymously and Clear Street publishes no tool
+      listing in llms.txt, so no tool→operation rows are asserted below.
+  graphql:
+    present: false
+crosswalk: []
+crosswalk_note: >
+  NOT FABRICATED. Binding rows are deliberately empty: the live MCP tool set is auth-gated
+  and Clear Street does not publish tool names anywhere public. Re-run this crosswalk with an
+  authenticated tools/list to populate `crosswalk[]` — each tool will inherit its real
+  inputSchema from the backing operation's parameters + requestBody in the OpenAPI above.
+mcp_only: []
+rest_only:
+- capability: Accounts
+  operations: [get_accounts, get_account_by_id, patch_account_by_id, get_account_balances, get_portfolio_history]
+- capability: Orders
+  operations: [get_orders, get_order_by_id, submit_orders, replace_order, cancel_open_order,
+    cancel_all_open_orders, get_executions]
+- capability: Positions
+  operations: [get_positions, close_positions, close_position, get_position_instructions,
+    submit_position_instructions, cancel_position_instruction]
+- capability: Instruments
+  operations: [get_instruments, get_instrument_by_id, search_instruments, get_option_contracts]
+- capability: Instrument Data
+  operations: [get_instrument_fundamentals, get_instrument_analyst_consensus, get_instrument_events,
+    get_all_instrument_events, get_instrument_income_statements, get_instrument_balance_sheet_statements,
+    get_instrument_cash_flow_statements, get_snapshots, get_daily_summaries, get_news]
+- capability: Screener
+  operations: [search_screener, get_screeners, get_screener_by_id, create_screener, replace_screener,
+    delete_screener]
+- capability: Watchlist
+  operations: [get_watchlists, get_watchlist_by_id, create_watchlist, delete_watchlist,
+    add_watchlist_item, delete_watchlist_item]
+- capability: Omni AI
+  operations: [get_threads, get_thread_by_id, create_thread, get_thread_response, get_messages,
+    create_message, get_message_by_id, submit_feedback, get_response_by_id, cancel_response,
+    get_entitlements, create_entitlements, delete_entitlement, get_entitlement_agreements]
+- capability: Calendar
+  operations: [get_clock, get_market_hours_calendar]
+- capability: API version
+  operations: [get_version]
+coverage:
+  tools_named: 0
+  tools_bound: 0
+  mcp_only: 0
+  rest_operations_total: 61
+  rest_operations_with_tool: 0
+  status: mcp-tool-surface-gated
+related:
+  agent_skills: skills/_index.yml
+  note: >
+    Clear Street's five published Agent Skills (skills/) are the one public, unauthenticated
+    view of how the vendor intends agents to compose these operations. They call the REST API
+    directly with a bearer key rather than going through MCP, and each skill's reference.md
+    names the operations it uses — a useful cross-check once the MCP tool list is introspected.

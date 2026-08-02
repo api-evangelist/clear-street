@@ -1,0 +1,80 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.clearstreet.io/studio/docs/websockets
+spec_type: none
+spec_type_note: >
+  Clear Street publishes NO AsyncAPI document. It does publish a real asynchronous event
+  surface — a WebSocket activity stream on the Studio API — which is captured here as a
+  documented event catalog. Nothing below is fabricated; channel and event names are taken
+  verbatim from the Studio WebSocket documentation.
+surface:
+  kind: websocket
+  api: Clear Street Studio API
+  endpoints:
+  - {environment: production, url: 'wss://api.clearstreet.io/studio/v2/ws'}
+  - {environment: demo, url: 'wss://demo-api.clearstreet.io/studio/v2/ws'}
+  purpose: >
+    Listen for asynchronous events such as order updates and position updates, as the
+    complement to the synchronous REST surface.
+authentication:
+  scheme: oauth2-access-token
+  mechanism: >
+    The access token is carried in the `authorization` field of the subscription message sent
+    after the connection opens; the server validates it before streaming data.
+  token_source: https://auth.clearstreet.io/oauth/token
+  token_lifetime: 24h
+protocol:
+  subscribe_message:
+    authorization: <access-token>
+    payload:
+      type: subscribe-activity
+      account_id: <account-id>
+  constraints:
+  - Subscribe within 30 seconds of connecting or the server auto-disconnects.
+  - Access tokens expire after 24 hours.
+  - Once subscribed, the connection persists for the lifetime of the token.
+channels:
+- name: activity
+  subscribe_type: subscribe-activity
+  api_group: Execution
+  description: Provides trading related activity.
+  scope: per account_id
+messages:
+- name: subscribe-activity-ack
+  direction: server-to-client
+  description: Confirms successful subscription to the Activity channel.
+- name: heartbeat
+  direction: server-to-client
+  description: Server keepalive signal indicating the session is active.
+- name: error-notice
+  direction: server-to-client
+  description: Error message; may precede disconnection.
+message_schemas:
+  published: false
+  note: >
+    Per-event payload schemas for the activity stream are not published as machine-readable
+    definitions. Only the envelope/control messages above are documented by name.
+webhooks:
+  published: false
+  note: >
+    Clear Street publishes no HTTP webhook/callback surface. Neither OpenAPI declares a
+    `webhooks` object or `callbacks`. Push delivery is WebSocket-only.
+x-pointer-disclosure: >
+  DISCLOSURE — apis.yml wires this artifact under `type: Webhooks`, which is the catalog's
+  canonical pointer type for a published asynchronous event surface. Read literally, Clear
+  Street ships NO HTTP webhooks: the surface is a WebSocket activity stream. The pointer says
+  "this provider publishes an event surface", not "this provider publishes webhook callbacks".
+  Anyone scoring the operational `webhooks_advertised` check strictly should treat it as unmet.
+trading_api_events:
+  note: >
+    The Clear Street Trading API specification declares a `Websocket` tag ("Active Websocket.")
+    but binds no operations to it, and no public WebSocket documentation for
+    api.clearstreet.com was found. Recorded as declared-but-undocumented rather than asserted.
+x-evidence:
+  fetched: '2026-08-02'
+  sources:
+  - {url: 'https://docs.clearstreet.io/studio/docs/websockets', http_status: 200}
+  - {url: 'https://docs.clearstreet.io/studio/docs/getting-started', http_status: 200}
+  probes_missed:
+  - {url: 'https://docs.clearstreet.com/guides/websocket/index.md', http_status: 403}
+  - {url: 'https://api.clearstreet.io/studio/v2/asyncapi.yaml', http_status: 401}

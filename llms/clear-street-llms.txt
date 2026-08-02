@@ -1,0 +1,142 @@
+# Clear Street Trading API Documentation and Guides
+
+## Docs
+
+- [Changelog](/changelog/index.md): Notable additions and changes to the Clear Street Trading API.
+- [API Fundamentals](/guides/api-fundamentals/index.md): Understand response envelopes, pagination, and API error handling.
+- [Instrument Data](/guides/instrument-data/index.md): Learn about instrument data, market data, financial statement, and news endpoints for research and discovery.
+- [Omni AI](/guides/omni-ai/index.md): Learn to integrate with Clear Street’s financial copilot Omni AI through entitlements, threads, messages, and responses.
+- [Trading](/guides/trading/index.md): Learn about trading hours, orders submission, cancellation and replacement along with different order types.
+- [Trading Account Metrics](/guides/trading-account-metrics/index.md): Learn about account metrics like balance, positions, and portfolio history.
+- [Watchlists](/guides/watchlists/index.md): Create, populate, review, and delete watchlists of instruments.
+- [Get Started](/index.md): Set up your account, generate API keys, check balances, find instruments, and submit your first order.
+- [OpenAPI Spec](/openapi-spec/index.md): The OpenAPI specification for the Clear Street Trading API, available as a raw YAML document.
+
+## API Reference
+
+Links below point to language-neutral HTTP documentation. SDK-specific docs follow the same URL structure with the language inserted after the base path: `/api/{language}/resources/...`.
+
+Available languages: http, typescript, python, java, go, cli
+
+### [V1](/api/resources/v1/index.md)
+
+
+- [Accounts](/api/resources/v1/subresources/accounts/index.md)
+
+  - [Get Accounts](/api/resources/v1/subresources/accounts/methods/get_accounts/index.md): Get Accounts
+  - [Get Account By ID](/api/resources/v1/subresources/accounts/methods/get_account_by_id/index.md): Get Account By ID
+  - [Patch Account By ID](/api/resources/v1/subresources/accounts/methods/patch_account_by_id/index.md): Patch Account By ID
+  - [Get Account Balances](/api/resources/v1/subresources/accounts/methods/get_account_balances/index.md): Get Account Balances
+  - [Get Portfolio History](/api/resources/v1/subresources/accounts/methods/get_portfolio_history/index.md): Get Portfolio History
+
+
+- [API Version](/api/resources/v1/subresources/api-version/index.md)
+
+  - [Get Version](/api/resources/v1/subresources/api-version/methods/get_version/index.md): Get the API version.
+
+
+- [Calendar](/api/resources/v1/subresources/calendar/index.md)
+
+  - [Get Clock](/api/resources/v1/subresources/calendar/methods/get_clock/index.md): Get Clock
+  - [Get Market Hours Calendar](/api/resources/v1/subresources/calendar/methods/get_market_hours_calendar/index.md): Get Market Hours Calendar.
+
+
+- [Instrument Data](/api/resources/v1/subresources/instrument-data/index.md)
+
+  - [Get All Instrument Events](/api/resources/v1/subresources/instrument-data/methods/get_all_instrument_events/index.md): Get All Instrument Events
+  - [Get Instrument Events](/api/resources/v1/subresources/instrument-data/methods/get_instrument_events/index.md): Get Instrument Events
+  - [Get Instrument Fundamentals](/api/resources/v1/subresources/instrument-data/methods/get_instrument_fundamentals/index.md): Get Instrument Fundamentals
+  - [Get Instrument Balance Sheet Statements](/api/resources/v1/subresources/instrument-data/methods/get_instrument_balance_sheet_statements/index.md): Get Instrument Balance Sheet Statements
+  - [Get Instrument Income Statements](/api/resources/v1/subresources/instrument-data/methods/get_instrument_income_statements/index.md): Get Instrument Income Statements
+  - [Get Instrument Analyst Consensus](/api/resources/v1/subresources/instrument-data/methods/get_instrument_analyst_consensus/index.md): Get Instrument Analyst Consensus
+  - [Get Instrument Cash Flow Statements](/api/resources/v1/subresources/instrument-data/methods/get_instrument_cash_flow_statements/index.md): Get Instrument Cash Flow Statements
+
+  - [Market Data](/api/resources/v1/subresources/instrument-data/subresources/market_data/index.md)
+
+    - [Get Snapshots](/api/resources/v1/subresources/instrument-data/subresources/market_data/methods/get_snapshots/index.md): Get Snapshots
+    - [Get Daily Summaries](/api/resources/v1/subresources/instrument-data/subresources/market_data/methods/get_daily_summaries/index.md): Get Daily Aggregate Summaries
+
+
+  - [News](/api/resources/v1/subresources/instrument-data/subresources/news/index.md)
+
+    - [Get News](/api/resources/v1/subresources/instrument-data/subresources/news/methods/get_news/index.md): Get News
+
+- [Instruments](/api/resources/v1/subresources/instruments/index.md)
+
+  - [Get Instruments](/api/resources/v1/subresources/instruments/methods/get_instruments/index.md): Get Instruments
+  - [Get Instrument By ID](/api/resources/v1/subresources/instruments/methods/get_instrument_by_id/index.md): Get Instrument By ID
+  - [Search Instruments](/api/resources/v1/subresources/instruments/methods/search_instruments/index.md): Search Instruments
+  - [Get Option Contracts](/api/resources/v1/subresources/instruments/methods/get_option_contracts/index.md): Get Option Contracts
+
+
+- [Omni AI](/api/resources/v1/subresources/omni-ai/index.md)
+
+
+  - [Entitlements](/api/resources/v1/subresources/omni-ai/subresources/entitlements/index.md)
+
+    - [Get Entitlements](/api/resources/v1/subresources/omni-ai/subresources/entitlements/methods/get_entitlements/index.md): Get Entitlements
+    - [Create Entitlements](/api/resources/v1/subresources/omni-ai/subresources/entitlements/methods/create_entitlements/index.md): Create Entitlements
+    - [Delete Entitlement](/api/resources/v1/subresources/omni-ai/subresources/entitlements/methods/delete_entitlement/index.md): Delete Entitlement
+    - [Get Entitlement Agreements](/api/resources/v1/subresources/omni-ai/subresources/entitlements/methods/get_entitlement_agreements/index.md): Get Entitlement Agreements
+
+
+  - [Messages](/api/resources/v1/subresources/omni-ai/subresources/messages/index.md)
+
+    - [Get Message By ID](/api/resources/v1/subresources/omni-ai/subresources/messages/methods/get_message_by_id/index.md): Get Message By ID
+    - [Submit Feedback](/api/resources/v1/subresources/omni-ai/subresources/messages/methods/submit_feedback/index.md): Submit Feedback
+
+
+  - [Responses](/api/resources/v1/subresources/omni-ai/subresources/responses/index.md)
+
+    - [Get Response By ID](/api/resources/v1/subresources/omni-ai/subresources/responses/methods/get_response_by_id/index.md): Get Response By ID
+    - [Cancel Response](/api/resources/v1/subresources/omni-ai/subresources/responses/methods/cancel_response/index.md): Cancel Response
+
+
+  - [Threads](/api/resources/v1/subresources/omni-ai/subresources/threads/index.md)
+
+    - [Get Threads](/api/resources/v1/subresources/omni-ai/subresources/threads/methods/get_threads/index.md): Get Threads
+    - [Get Thread By ID](/api/resources/v1/subresources/omni-ai/subresources/threads/methods/get_thread_by_id/index.md): Get Thread By ID
+    - [Create Thread](/api/resources/v1/subresources/omni-ai/subresources/threads/methods/create_thread/index.md): Create Thread
+    - [Get Thread Response](/api/resources/v1/subresources/omni-ai/subresources/threads/methods/get_thread_response/index.md): Get Thread Response
+    - [Get Messages](/api/resources/v1/subresources/omni-ai/subresources/threads/methods/get_messages/index.md): Get Messages
+    - [Create Message](/api/resources/v1/subresources/omni-ai/subresources/threads/methods/create_message/index.md): Create Message
+
+- [Orders](/api/resources/v1/subresources/orders/index.md)
+
+  - [Get Orders](/api/resources/v1/subresources/orders/methods/get_orders/index.md): Get Orders
+  - [Get Order By ID](/api/resources/v1/subresources/orders/methods/get_order_by_id/index.md): Get Order By ID
+  - [Submit Orders](/api/resources/v1/subresources/orders/methods/submit_orders/index.md): Submit Orders
+  - [Replace Order](/api/resources/v1/subresources/orders/methods/replace_order/index.md): Replace Order
+  - [Cancel Open Order](/api/resources/v1/subresources/orders/methods/cancel_open_order/index.md): Cancel Open Order
+  - [Cancel All Open Orders](/api/resources/v1/subresources/orders/methods/cancel_all_open_orders/index.md): Cancel All Open Orders
+  - [Get Executions](/api/resources/v1/subresources/orders/methods/get_executions/index.md): Get Executions
+
+
+- [Positions](/api/resources/v1/subresources/positions/index.md)
+
+  - [Get Positions](/api/resources/v1/subresources/positions/methods/get_positions/index.md): Get Positions
+  - [Close Positions](/api/resources/v1/subresources/positions/methods/close_positions/index.md): Close Positions
+  - [Close Position](/api/resources/v1/subresources/positions/methods/close_position/index.md): Close Position
+  - [Get Position Instructions](/api/resources/v1/subresources/positions/methods/get_position_instructions/index.md): Get Position Instructions
+  - [Submit Position Instructions](/api/resources/v1/subresources/positions/methods/submit_position_instructions/index.md): Submit Position Instructions
+  - [Cancel Position Instruction](/api/resources/v1/subresources/positions/methods/cancel_position_instruction/index.md): Cancel Position Instruction
+
+
+- [Screener](/api/resources/v1/subresources/screener/index.md)
+
+  - [Search Screener](/api/resources/v1/subresources/screener/methods/search_screener/index.md): Search Screener
+  - [Get Screeners](/api/resources/v1/subresources/screener/methods/get_screeners/index.md): Get Screeners
+  - [Get Screener By ID](/api/resources/v1/subresources/screener/methods/get_screener_by_id/index.md): Get Screener By ID
+  - [Create Screener](/api/resources/v1/subresources/screener/methods/create_screener/index.md): Create Screener
+  - [Replace Screener](/api/resources/v1/subresources/screener/methods/replace_screener/index.md): Replace Screener
+  - [Delete Screener](/api/resources/v1/subresources/screener/methods/delete_screener/index.md): Delete Screener
+
+
+- [Watchlist](/api/resources/v1/subresources/watchlist/index.md)
+
+  - [Get Watchlists](/api/resources/v1/subresources/watchlist/methods/get_watchlists/index.md): Get Watchlists
+  - [Get Watchlist By ID](/api/resources/v1/subresources/watchlist/methods/get_watchlist_by_id/index.md): Get Watchlist By ID
+  - [Create Watchlist](/api/resources/v1/subresources/watchlist/methods/create_watchlist/index.md): Create Watchlist
+  - [Delete Watchlist](/api/resources/v1/subresources/watchlist/methods/delete_watchlist/index.md): Delete Watchlist
+  - [Add Watchlist Item](/api/resources/v1/subresources/watchlist/methods/add_watchlist_item/index.md): Add Watchlist Item
+  - [Delete Watchlist Item](/api/resources/v1/subresources/watchlist/methods/delete_watchlist_item/index.md): Delete Watchlist Item

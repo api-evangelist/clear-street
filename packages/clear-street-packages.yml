@@ -1,0 +1,102 @@
+generated: '2026-08-02'
+method: searched
+source: https://github.com/clear-street + npm/PyPI/Go module proxy/Maven Central registry probes
+notes: >
+  Clear Street ships two generations of first-party SDK, both generated with Stainless.
+  The `clear-street-*` family targets the Clear Street Trading API (api.clearstreet.com);
+  the `studio-sdk-*` family targets the Clear Street Studio prime-brokerage API
+  (api.clearstreet.io/studio/v2). Both are published from the clear-street GitHub org.
+packages:
+- language: typescript
+  registry: npm
+  name: '@clear-street/clearstreet'
+  version_observed: 0.92.1
+  url: https://www.npmjs.com/package/@clear-street/clearstreet
+  install: npm install @clear-street/clearstreet
+  repo: https://github.com/clear-street/clear-street-typescript
+  api: Clear Street Trading API
+  official: true
+- language: python
+  registry: pypi
+  name: clearstreet
+  version_observed: 0.6.0
+  url: https://pypi.org/project/clearstreet/
+  install: pip install clearstreet
+  repo: https://github.com/clear-street/clear-street-python
+  api: Clear Street Trading API
+  official: true
+- language: go
+  registry: pkg.go.dev
+  name: github.com/clear-street/clear-street-go
+  url: https://pkg.go.dev/github.com/clear-street/clear-street-go
+  install: go get github.com/clear-street/clear-street-go
+  repo: https://github.com/clear-street/clear-street-go
+  api: Clear Street Trading API
+  official: true
+- language: kotlin
+  registry: maven-central
+  name: com.clearstreet.api:clear-street-java
+  version_observed: 0.3.0
+  url: https://central.sonatype.com/artifact/com.clearstreet.api/clear-street-java
+  install: implementation("com.clearstreet.api:clear-street-java:0.3.0")
+  repo: https://github.com/clear-street/clear-street-java
+  api: Clear Street Trading API
+  official: true
+- language: go
+  registry: pkg.go.dev
+  name: github.com/clear-street/clear-street-cli/cmd/clst
+  url: https://pkg.go.dev/github.com/clear-street/clear-street-cli
+  install: go install github.com/clear-street/clear-street-cli/cmd/clst@latest
+  repo: https://github.com/clear-street/clear-street-cli
+  api: Clear Street Trading API
+  kind: cli
+  official: true
+- language: typescript
+  registry: npm
+  name: '@clear-street/studio-sdk'
+  version_observed: 0.1.0-alpha.24
+  url: https://www.npmjs.com/package/@clear-street/studio-sdk
+  install: npm install @clear-street/studio-sdk
+  repo: https://github.com/clear-street/studio-sdk-node
+  api: Clear Street Studio API
+  official: true
+- language: python
+  registry: pypi
+  name: clear-street-studio-sdk
+  version_observed: 0.1.0-alpha.24
+  url: https://pypi.org/project/clear-street-studio-sdk/
+  install: pip install clear-street-studio-sdk
+  repo: https://github.com/clear-street/studio-sdk-python
+  api: Clear Street Studio API
+  official: true
+- language: go
+  registry: pkg.go.dev
+  name: github.com/clear-street/studio-sdk-go
+  url: https://pkg.go.dev/github.com/clear-street/studio-sdk-go
+  install: go get github.com/clear-street/studio-sdk-go
+  repo: https://github.com/clear-street/studio-sdk-go
+  api: Clear Street Studio API
+  official: true
+- language: kotlin
+  registry: maven-central
+  name: io.clearstreet.studio:studio-sdk-java
+  version_observed: 0.1.0-alpha.1
+  url: https://central.sonatype.com/artifact/io.clearstreet.studio/studio-sdk-java
+  install: implementation("io.clearstreet.studio:studio-sdk-java:0.1.0-alpha.1")
+  repo: https://github.com/clear-street/studio-sdk-java
+  api: Clear Street Studio API
+  official: true
+x-evidence:
+  fetched: '2026-08-02'
+  probes:
+  - {url: 'https://registry.npmjs.org/@clear-street/clearstreet', http_status: 200}
+  - {url: 'https://registry.npmjs.org/@clear-street/studio-sdk', http_status: 200}
+  - {url: 'https://pypi.org/pypi/clearstreet/json', http_status: 200}
+  - {url: 'https://pypi.org/pypi/clear-street-studio-sdk/json', http_status: 200}
+  - {url: 'https://proxy.golang.org/github.com/clear-street/clear-street-go/@latest', http_status: 200}
+  - {url: 'https://proxy.golang.org/github.com/clear-street/studio-sdk-go/@latest', http_status: 200}
+  - {url: 'https://api.github.com/orgs/clear-street/repos', http_status: 200}
+  note: >
+    Maven coordinates were read verbatim from each repo's README install snippet and the
+    Maven Central badge; the repo1.maven.org directory listings returned 404 on probe, so
+    resolve via central.sonatype.com rather than the raw repo1 path.

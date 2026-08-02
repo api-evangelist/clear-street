@@ -1,0 +1,92 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.clearstreet.io/studio/docs/oauth2
+docs: https://docs.clearstreet.io/studio/docs/oauth2
+note: >
+  derive-oauth-scopes.py found no oauth2 securityScheme in either OpenAPI — both specs declare
+  only `BearerAuth` (http/bearer/JWT), which is the token those OAuth flows mint. The OAuth
+  surface below was therefore SEARCHED from the provider's own documentation and from the
+  anonymously-published discovery documents in well-known/, not derived from the specs.
+schemes:
+- name: Studio OAuth2 (client credentials)
+  api: Clear Street Studio API
+  issuer: https://auth.clearstreet.io/
+  provider: Auth0
+  source: https://docs.clearstreet.io/studio/docs/oauth2
+  credential_creation: >
+    Studio > Settings > Developer tab > enter an application description > "Create OAuth2 API
+    Credentials" — returns a generated client id and secret. Each application/script should have
+    its own credentials; they inherit the Studio account's permissions.
+  token_lifetime: 24h
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://auth.clearstreet.io/oauth/token
+    audience: https://api.clearstreet.io
+    scopes: [studio]
+- name: Clear Street MCP authorization server
+  api: Clear Street MCP Server
+  issuer: https://api.clearstreet.com/oauth/mcp
+  source: https://api.clearstreet.com/oauth/mcp/.well-known/oauth-authorization-server
+  file: well-known/clear-street-mcp-oauth-authorization-server.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api.clearstreet.com/oauth/mcp/authorize
+    tokenUrl: https://auth.clearstreet.io/oauth/token
+    pkce: [S256]
+    scopes: [openid, offline_access]
+  resource: https://api.clearstreet.com/v1/mcp
+  token_endpoint_auth_methods: [none, client_secret_post, client_secret_basic]
+- name: Auth0 tenant (app login / OIDC)
+  api: Clear Street application login
+  issuer: https://auth.clearstreet.io/
+  source: https://auth.clearstreet.io/.well-known/openid-configuration
+  file: well-known/clear-street-openid-configuration.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://auth.clearstreet.io/authorize
+    tokenUrl: https://auth.clearstreet.io/oauth/token
+scopes:
+- scope: studio
+  description: Access to the Clear Street Studio prime-brokerage API.
+  audience: https://api.clearstreet.io
+  flows: [clientCredentials]
+  sources: ['https://docs.clearstreet.io/studio/docs/oauth2']
+- scope: openid
+  description: OIDC — issue an ID token identifying the authenticated subject.
+  flows: [authorizationCode]
+  sources: ['well-known/clear-street-mcp-oauth-protected-resource.json',
+    'well-known/clear-street-openid-configuration.json']
+- scope: offline_access
+  description: Issue a refresh token so the client can renew access without re-consent.
+  flows: [authorizationCode]
+  sources: ['well-known/clear-street-mcp-oauth-protected-resource.json',
+    'well-known/clear-street-openid-configuration.json']
+- scope: profile
+  description: OIDC standard claim set — name, nickname, picture, updated_at.
+  flows: [authorizationCode]
+  sources: ['well-known/clear-street-openid-configuration.json']
+- scope: email
+  description: OIDC standard claim — email and email_verified.
+  flows: [authorizationCode]
+  sources: ['well-known/clear-street-openid-configuration.json']
+tenant_scopes_supported:
+  source: well-known/clear-street-openid-configuration.json
+  note: >
+    The Auth0 tenant advertises the standard OIDC claim scopes below. They govern identity
+    claims on the login flow, not API authorization; the API-level scope is `studio`.
+  values: [openid, profile, offline_access, name, given_name, family_name, nickname, email,
+    email_verified, picture, created_at, identities, phone, address]
+granularity:
+  per_resource_scopes: false
+  note: >
+    Clear Street does NOT publish per-resource or read/write-split OAuth scopes. Authorization
+    is coarse: a Studio credential inherits the full permission set of the Studio account that
+    created it, and the Trading API uses an opaque bearer API key with no scope dimension at
+    all. Least-privilege delegation is not currently expressible.
+x-evidence:
+  fetched: '2026-08-02'
+  sources:
+  - {url: 'https://docs.clearstreet.io/studio/docs/oauth2', http_status: 200}
+  - {url: 'https://auth.clearstreet.io/.well-known/openid-configuration', http_status: 200}
+  - {url: 'https://api.clearstreet.com/oauth/mcp/.well-known/oauth-authorization-server', http_status: 200}
+  - {url: 'https://api.clearstreet.com/.well-known/oauth-protected-resource/v1/mcp', http_status: 200}

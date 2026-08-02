@@ -1,0 +1,135 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.clearstreet.com/guides/api-fundamentals/ + https://docs.clearstreet.io/studio/docs/rest
+derived_from:
+- openapi/clear-street-trading-api-openapi.yml
+- openapi/clear-street-studio-openapi.yml
+apis:
+  trading:
+    base_url: https://api.clearstreet.com
+    version_path: /v1
+  studio:
+    base_url: https://api.clearstreet.io/studio/v2
+    demo_url: https://demo-api.clearstreet.io/studio/v2
+    sandbox_url: https://sandbox-api.clearstreet.io/studio/v2
+authentication:
+  trading:
+    style: bearer
+    header: 'Authorization: Bearer <api-key>'
+    format: JWT
+    key_shape: '<id>.<secret>'
+    note: API keys are created in the API Keys section of the Clear Street app; used as a raw
+      bearer token with no OAuth exchange.
+  studio:
+    style: oauth2-client-credentials
+    token_endpoint: https://auth.clearstreet.io/oauth/token
+    audience: https://api.clearstreet.io
+    scope: studio
+    token_lifetime: 24h
+  see: authentication/clear-street-authentication.yml
+idempotency:
+  supported: true
+  mechanism: caller-supplied identifier in the request body (not an HTTP header)
+  keys:
+  - api: trading
+    operation: submit_orders
+    field: id
+    scope: per account
+    max_length: 64
+    spec_text: Optional client-provided unique ID (idempotency). Required to be unique per account.
+    echoed_as: client_order_id
+  - api: trading
+    operation: submit_position_instructions
+    field: instruction_id
+    scope: per instruction
+    spec_text: >
+      Caller-supplied idempotency key. Echoed on the response. The server generates a unique
+      id when omitted.
+  duplicate_behaviour:
+    status: 409
+    description: All rows rejected as duplicates
+    note: >
+      Bulk/duplicate submissions surface a 409. Cancellation is separately idempotent —
+      cancelling an order that has already reached a terminal status is documented as an
+      idempotent success ("Cancellation accepted (idempotent)").
+  header_key: false
+  header_key_note: >
+    No `Idempotency-Key` HTTP header is defined in either specification; idempotency is
+    expressed through the body field above.
+pagination:
+  style: cursor
+  request_params: [page_size, page_token]
+  response_fields: [page_number, total_items, total_pages, next_page_token, previous_page_token]
+  bidirectional: true
+  bidirectional_since: '2026-05-12'
+  note: previous_page_token was added 2026-05-12 to allow backward navigation.
+response_envelope:
+  shape: {data: object|array, error: 'null on success, object on failure', metadata: object}
+  metadata_always: [request_id]
+  metadata_on_lists: [page_number, total_items, total_pages, next_page_token, previous_page_token]
+request_tracing:
+  field: metadata.request_id
+  schema: ResponseMetadata.request_id
+  note: Docs direct users to quote request_id when contacting support about persistent failures.
+error_envelope:
+  trading:
+    format: vendor
+    schema: ApiError / ErrorStatus
+    fields: [code, message, details]
+    note: >
+      `code` is an integer HTTP-aligned code on ApiError and a string enum on ErrorStatus;
+      machine-readable rejection codes (e.g. INVALID_TICK_SIZE) accompany plain-English
+      messages since the 2026-07-24 change.
+  studio:
+    format: rfc9457
+    media_type: application/json
+    schema: ProblemDetails
+    fields: [type, title, status, detail, instance]
+    note: >
+      Studio declares an RFC 9457 problem-details schema, but serves it as application/json
+      rather than application/problem+json.
+  see: errors/clear-street-problem-types.yml
+rate_limits:
+  signalled: true
+  retry_after_header: true
+  documented:
+  - {api: studio, path: /orders, limit: 10, unit: per second}
+  - {api: studio, path: /bulk-orders, limit: 1, unit: per second}
+  - {api: studio, path: /locate-orders, limit: 20, unit: per second}
+  - {api: studio, path: /instruments, limit: 200, unit: per second}
+  note: >
+    429 responses carry a Retry-After header. Per-endpoint limits above are published for the
+    Studio API; the Trading API does not publish numeric limits.
+versioning:
+  scheme: uri-path + date-stamped release version
+  path: /v1
+  current: '2025-10-31'
+  discovery_operation: get_version
+  discovery_endpoint: GET https://api.clearstreet.com/v1/version
+  studio_path: /studio/v2
+  see: lifecycle/clear-street-lifecycle.yml
+field_expansion:
+  supported: false
+  note: No expand/sparse-fieldset parameter is defined in either specification.
+filtering:
+  note: >
+    List endpoints accept resource-specific filters. Several accept either a UUID or a symbol
+    (InstrumentIdOrSymbol), and comma-separated multi-value filters (e.g. instrument_ids,
+    order_ids, underlying_instrument_ids).
+partial_success:
+  status: 207
+  note: get_portfolio_history can return 207 when one data segment fails.
+cross_links:
+  authentication: authentication/clear-street-authentication.yml
+  scopes: scopes/clear-street-scopes.yml
+  errors: errors/clear-street-problem-types.yml
+  lifecycle: lifecycle/clear-street-lifecycle.yml
+  changelog: changelog/clear-street-changelog.yml
+  sandbox: sandbox/clear-street-sandbox.yml
+  events: asyncapi/clear-street-studio-events.yml
+x-evidence:
+  fetched: '2026-08-02'
+  sources:
+  - {url: 'https://docs.clearstreet.com/guides/api-fundamentals/index.md', http_status: 200}
+  - {url: 'https://docs.clearstreet.io/studio/docs/rest', http_status: 200}
+  - {url: 'https://docs.clearstreet.com/openapi.yaml', http_status: 200}

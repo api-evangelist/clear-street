@@ -1,0 +1,66 @@
+generated: '2026-08-02'
+method: searched
+probe: true
+probe_result: none
+probe_note: >
+  probe-security-programs.py returned trust=none because Clear Street hosts no trust.<domain>
+  or security.<domain> subdomain and no /trust path. The trust center is a page nested under
+  the corporate legal section, which the mechanical probe does not reach. Found by following
+  the link from https://www.clearstreet.io/legal/security.
+url: https://www.clearstreet.io/legal/clear-street-trust-center
+name: Clear Street Trust Center
+hosted: first-party
+platform: null
+platform_note: No third-party trust portal (SafeBase/Vanta/Drata/Conveyor/Whistic) is in use.
+certifications:
+- name: SOC 2 Type II
+  scope: Prime Brokerage Platform
+  status: maintained
+  validation: independent third-party
+  evidence: 'maintains a SOC 2 Type II report covering the Prime Brokerage Platform'
+certifications_absent:
+  note: >
+    No ISO 27001, ISO 27017/27018, PCI DSS, HIPAA, FedRAMP, CSA STAR or FIPS 140 claim appears
+    on the trust center or the security page. Recorded as absent, not as failing.
+  checked: [ISO 27001, ISO 27017, ISO 27018, PCI DSS, HIPAA, FedRAMP, CSA STAR, FIPS 140, GDPR]
+report_access:
+  self_serve: false
+  mechanism: email request
+  contact: security@clearstreet.io
+  note: No self-serve NDA-gated document portal; reports are requested by email.
+security_program:
+  governance:
+  - Board-level oversight of security controls
+  - Ongoing risk assessments
+  - Defined security policies and procedures
+  control_domains:
+  - Identity & Access Management
+  - Data Protection & Encryption
+  - Infrastructure & Network Security
+  - Application Security
+  - Monitoring & Threat Detection
+  - Vulnerability Management
+  - Incident Response
+  - Risk Management
+  - Change Management
+regulatory_status:
+  source: https://www.clearstreet.io/legal/security
+  memberships:
+  - FINRA member broker-dealer
+  - SIPC member
+  - CFTC-registered Futures Commission Merchant
+  - NFA member
+  - FCA-authorised in the UK (Clear Street UK Limited)
+  - London Metals Exchange Category 1 member
+  brokercheck: https://brokercheck.finra.org/firm/summary/288933
+contact:
+  security_email: security@clearstreet.io
+  address: 4 World Trade Center, 150 Greenwich St, Floor 45, New York, NY 10007
+  phone: '+1 (646) 845-0036'
+evidence:
+- {source: 'https://www.clearstreet.io/legal/clear-street-trust-center', http_status: 200,
+   keywords: [soc 2 type ii, trust center, security program, control domains]}
+- {source: 'https://www.clearstreet.io/legal/security', http_status: 200,
+   keywords: [security, trust center, finra, sipc, cftc, fca]}
+x-evidence:
+  fetched: '2026-08-02'

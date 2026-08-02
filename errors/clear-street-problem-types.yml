@@ -1,0 +1,96 @@
+generated: '2026-08-02'
+method: derived
+source: openapi/clear-street-trading-api-openapi.yml, openapi/clear-street-studio-openapi.yml
+enriched_from: https://docs.clearstreet.com/guides/api-fundamentals/ + https://docs.clearstreet.com/changelog/
+formats:
+  trading:
+    format: vendor
+    media_type: application/json
+    envelope: {code: integer|string, message: string, details: array|object|null}
+    schemas: [ApiError, ErrorDetails, ErrorStatus]
+    note: >
+      Errors are returned inside the standard response envelope on the `error` key, alongside
+      `data: null` and `metadata.request_id`.
+  studio:
+    format: rfc9457
+    media_type: application/json
+    schema: ProblemDetails
+    fields: [type, title, status, detail, instance]
+    note: >
+      Declared as an RFC 9457 problem-details object on the shared `default` response of every
+      Studio operation, but served as application/json rather than application/problem+json.
+problems:
+- status: 400
+  title: Invalid request
+  api: trading
+  occurrences: 31
+  remediation: Validation failure — correct the request body or query parameters.
+- status: 403
+  title: Forbidden
+  api: trading
+  occurrences: 27
+  remediation: Credentials are valid but lack permission for this account or resource.
+- status: 404
+  title: Account not found
+  api: trading
+  occurrences: 34
+  remediation: The account, order, instrument, thread or watchlist id does not exist or is not
+    visible to these credentials.
+- status: 409
+  title: All rows rejected as duplicates
+  api: trading
+  occurrences: 6
+  remediation: >
+    Idempotency conflict — every submitted row reused an id already seen for this account.
+    See conventions/clear-street-conventions.yml#idempotency.
+- status: 422
+  title: Malformed order request payload
+  api: trading
+  occurrences: 5
+  remediation: >
+    Downstream rejection — the payload parsed but the trading engine refused it. Read the
+    machine-readable rejection code in the error body.
+- status: 500
+  title: Internal server error
+  api: trading
+  occurrences: 55
+  remediation: Retry with backoff; quote metadata.request_id to support if persistent.
+- status: 503
+  title: Service temporarily unavailable
+  api: trading
+  occurrences: 4
+  remediation: Retry after the interval in Retry-After.
+- status: 401
+  title: Missing or invalid credentials
+  api: both
+  occurrences: null
+  source: docs
+  remediation: Supply a valid bearer token in the Authorization header.
+- status: 207
+  title: Partial success
+  api: trading
+  kind: non-error
+  operations: [get_portfolio_history]
+  remediation: One data segment failed; inspect the per-segment status in the payload.
+- status: 429
+  title: Rate limit exceeded
+  api: studio
+  source: docs
+  remediation: Honour the Retry-After header. Per-endpoint limits are in
+    conventions/clear-street-conventions.yml#rate_limits.
+rejection_codes:
+  note: >
+    Clear Street publishes machine-readable order-rejection codes alongside plain-English
+    messages. These are not enumerated in the OpenAPI, so only the codes named verbatim in the
+    public changelog are recorded here. Do not treat this as the complete registry.
+  observed:
+  - {code: INVALID_TICK_SIZE, since: '2026-07-24', note: 'renamed from SUB_PENNY'}
+  - {code: SUB_PENNY, status: renamed, superseded_by: INVALID_TICK_SIZE}
+  - {code: LIQUIDATION_ONLY, status: split, since: '2026-07-24', note: 'split into two variants'}
+  - {code: ENGINE_REJECTED, status: removed, since: '2026-06-10', scope: position-instruction statuses}
+  source: https://docs.clearstreet.com/changelog/
+x-evidence:
+  fetched: '2026-08-02'
+  method: >
+    Status codes and titles enumerated mechanically from every 4xx/5xx response object across
+    both specifications; rejection codes read from the dated public changelog.

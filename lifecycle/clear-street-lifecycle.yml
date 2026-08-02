@@ -1,0 +1,66 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.clearstreet.com/changelog/ + openapi/clear-street-trading-api-openapi.yml
+versioning:
+  scheme: uri-path + date-stamped release version
+  path_version: v1
+  current: '2025-10-31'
+  discovery:
+    operation: get_version
+    endpoint: GET https://api.clearstreet.com/v1/version
+    observed_response: '{"data":{"version":"2025-10-31"},"metadata":{"request_id":"..."}}'
+  studio:
+    path_version: v2
+    spec_version: '2.0.0'
+  legacy:
+    path_version: v1
+    spec_version: '0.0.3'
+    spec: Swagger 2.0
+    docs: https://clear-street.github.io/docs/
+deprecation:
+  policy_url: https://docs.clearstreet.com/changelog/
+  policy_kind: changelog-announced
+  sunset_header: false
+  rfc8594: false
+  practice: >
+    Clear Street announces deprecations and breaking changes in a dated public changelog with
+    explicit DEPRECATED and BREAKING labels, and a field is typically marked DEPRECATED
+    (returning null) before it is removed in a later BREAKING entry. There is no separate
+    written deprecation-policy page, no stated notice window, and no Sunset/Deprecation
+    response headers in either specification.
+  worked_examples:
+  - {field: 'instrument.expiry', deprecated: '2026-06-17', removed: '2026-07-20', notice_days: 33}
+  - {field: 'instrument.strike_price', deprecated: '2026-06-17', removed: '2026-07-20', notice_days: 33}
+  - {field: 'screener.field_filter', deprecated: '2026-06-17', removed: '2026-06-29', notice_days: 12}
+  pending:
+  - {fields: [day_trade_buying_power, day_trade_count, pattern_day_trader], deprecated: '2026-06-04',
+     scope: balances, status: marked-for-future-removal}
+deprecated_operations: []
+deprecated_operations_note: >
+  No operation in either specification carries `deprecated: true`. Deprecation at Clear Street
+  has so far been expressed at the field and enum level, not the operation level.
+breaking_change_cadence:
+  window_observed: '2026-05-08 .. 2026-07-24'
+  breaking_entries: 11
+  note: >
+    A high breaking-change rate for a GA API — roughly one breaking change every eight days
+    since the 2026-05-08 initial release. Integrators should pin to the changelog.
+sla:
+  published: false
+  note: No public SLA or uptime commitment was found on clearstreet.com, clearstreet.io, or
+    either docs host.
+status_page:
+  published: false
+  probed:
+  - {url: 'https://status.clearstreet.io', result: 'DNS does not resolve'}
+  - {url: 'https://status.clearstreet.com', result: 'DNS does not resolve'}
+  - {url: 'https://clearstreet.statuspage.io', http_status: 200, result: 'generic Atlassian
+      Statuspage marketing page — not a Clear Street status page'}
+  note: >
+    No StatusPage pointer is wired in apis.yml because no Clear Street status page exists. The
+    clearstreet.statuspage.io host answers 200 but serves Atlassian's own product page.
+x-evidence:
+  fetched: '2026-08-02'
+  sources:
+  - {url: 'https://docs.clearstreet.com/changelog/index.md', http_status: 200}
+  - {url: 'https://api.clearstreet.com/v1/version', http_status: 200, note: anonymous}

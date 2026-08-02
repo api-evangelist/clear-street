@@ -1,0 +1,87 @@
+generated: '2026-08-02'
+method: searched
+source: openapi/clear-street-studio-openapi.yml, openapi/clear-street-trading-api-openapi.yml
+docs:
+- https://docs.clearstreet.com/guides/api-fundamentals/
+- https://docs.clearstreet.io/studio/docs/oauth2
+note: >
+  Upgraded from the mechanical derive. Both OpenAPI documents declare a single `BearerAuth`
+  (http/bearer/JWT) scheme, which understates the real model: the two APIs mint that bearer
+  token in completely different ways, and a third surface (the MCP server) is protected by a
+  separate OAuth authorization server discovered via RFC 9728.
+summary:
+  types: [http, oauth2, openIdConnect]
+  api_key_in: [header]
+  oauth2_flows: [clientCredentials, authorizationCode]
+  transport: TLS 1.3 on every probed host
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  applied: 'global — security: [{BearerAuth: []}] at the document root'
+  sources:
+  - openapi/clear-street-studio-openapi.yml
+  - openapi/clear-street-trading-api-openapi.yml
+- name: Trading API key
+  api: Clear Street Trading API
+  type: http
+  scheme: bearer
+  key_shape: '<id>.<secret>'
+  header: 'Authorization: Bearer <CLEARSTREET_API_KEY>'
+  issuance: Created by the account holder in the API Keys section of the Clear Street app.
+  exchange_required: false
+  exchange_note: 'Used as a raw bearer token — no OAuth exchange.'
+  docs: https://docs.clearstreet.com/guides/api-fundamentals/
+  source: https://github.com/clear-street/clearstreet-skills
+- name: Studio OAuth2
+  api: Clear Street Studio API
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://auth.clearstreet.io/oauth/token
+    audience: https://api.clearstreet.io
+    scopes: [studio]
+  issuer: https://auth.clearstreet.io/
+  provider: Auth0
+  token_lifetime: 24h
+  issuance: Studio > Settings > Developer > Create OAuth2 API Credentials
+  per_application_credentials: true
+  docs: https://docs.clearstreet.io/studio/docs/oauth2
+- name: MCP OAuth
+  api: Clear Street MCP Server
+  type: oauth2
+  spec: RFC 9728 OAuth 2.0 Protected Resource Metadata
+  resource: https://api.clearstreet.com/v1/mcp
+  authorization_server: https://api.clearstreet.com/oauth/mcp
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api.clearstreet.com/oauth/mcp/authorize
+    tokenUrl: https://auth.clearstreet.io/oauth/token
+    pkce: [S256]
+    scopes: [openid, offline_access]
+  discovery: well-known/clear-street-mcp-oauth-protected-resource.json
+- name: Auth0 OIDC
+  api: Clear Street application login
+  type: openIdConnect
+  openIdConnectUrl: https://auth.clearstreet.io/.well-known/openid-configuration
+  issuer: https://auth.clearstreet.io/
+  grant_types: [authorization_code, client_credentials, refresh_token, device_code,
+    token-exchange, implicit, password]
+  dpop_supported: true
+  discovery: well-known/clear-street-openid-configuration.json
+websocket:
+  scheme: oauth2 access token in the subscribe message `authorization` field
+  note: See asyncapi/clear-street-studio-events.yml.
+mutual_tls: false
+gaps:
+- The specifications do not model the OAuth2 flows at all — only the resulting bearer token —
+  so tooling generated straight from the spec cannot obtain a Studio credential.
+- No per-resource scopes; see scopes/clear-street-scopes.yml#granularity.
+x-evidence:
+  fetched: '2026-08-02'
+  sources:
+  - {url: 'https://docs.clearstreet.io/studio/docs/oauth2', http_status: 200}
+  - {url: 'https://docs.clearstreet.com/guides/api-fundamentals/index.md', http_status: 200}
+  - {url: 'https://auth.clearstreet.io/.well-known/openid-configuration', http_status: 200}
+  - {url: 'https://api.clearstreet.com/v1/mcp', http_status: 401, note: 'RFC 9728 WWW-Authenticate challenge'}

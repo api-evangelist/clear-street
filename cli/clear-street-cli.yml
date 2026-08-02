@@ -1,0 +1,57 @@
+generated: '2026-08-02'
+method: searched
+source: https://github.com/clear-street/clear-street-cli
+cli:
+  name: clst
+  full_name: Clear Street CLI
+  description: The official CLI for the Clear Street REST API, generated with Stainless.
+  api: openapi/clear-street-trading-api-openapi.yml
+  language: go
+  license: check repo
+  repository: https://github.com/clear-street/clear-street-cli
+  official: true
+install:
+- method: go install
+  requires: Go 1.22+
+  command: go install 'github.com/clear-street/clear-street-cli/cmd/clst@latest'
+  note: Binary lands in $HOME/go/bin (or $GOPATH/bin); add it to PATH.
+- method: from source
+  command: ./scripts/run args...
+  note: After cloning the repository.
+usage:
+  pattern: clst [resource] <command> [flags...]
+  example: |
+    clst v1:accounts get-accounts \
+      --api-key 'My API Key'
+  note: >
+    Commands follow the API's resource structure, namespaced by version (v1:accounts,
+    v1:orders, …) and mapping one subcommand per operationId in kebab-case. Use --help on any
+    resource for its command list.
+global_flags:
+- {flag: --api-key, description: A JWT issued by the authentication service}
+- {flag: --base-url, description: Use a custom API backend URL}
+- {flag: --format, description: 'Output format: auto, explore, json, jsonl, pretty, raw, yaml'}
+- {flag: --format-error, description: Output format for errors (same value set)}
+- {flag: --transform, description: Transform the data output using GJSON syntax}
+- {flag: --transform-error, description: Transform the error output using GJSON syntax}
+- {flag: --debug, description: Enable debug logging including HTTP request/response details}
+- {flag: '--version, -v', description: Show the CLI version}
+- {flag: --help, description: Show command line usage}
+resource_surface:
+  note: >
+    DERIVED from the OpenAPI the CLI is generated against — the repo's .stats.yml records
+    `configured_endpoints: 61`, matching the 61 operations in
+    openapi/clear-street-trading-api-openapi.yml one-for-one.
+  namespaces: [v1:accounts, v1:orders, v1:positions, v1:instruments, v1:instrument-data,
+    v1:market-data, v1:news, v1:calendar, v1:screener, v1:saved-screeners, v1:watchlist,
+    v1:omni-ai, v1:api-version]
+  operations: 61
+release:
+  automation: release-please + goreleaser
+  workflows: [ci, publish-release, release-doctor, release-please, security]
+x-evidence:
+  fetched: '2026-08-02'
+  sources:
+  - {url: 'https://raw.githubusercontent.com/clear-street/clear-street-cli/HEAD/README.md', http_status: 200}
+  - {url: 'https://raw.githubusercontent.com/clear-street/clear-street-cli/HEAD/.stats.yml', http_status: 200,
+     content: 'configured_endpoints: 61'}
