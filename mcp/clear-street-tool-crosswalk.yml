@@ -61,7 +61,8 @@ coverage:
   mcp_only: 0
   rest_operations_total: 61
   rest_operations_with_tool: 0
-  status: mcp-tool-surface-gated
+  status: gated
+  status_raw: mcp-tool-surface-gated
 related:
   agent_skills: skills/_index.yml
   note: >
