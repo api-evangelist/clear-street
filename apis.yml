@@ -35,73 +35,13 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 apis:
-- aid: clear-street:trading-api
-  name: Clear Street Trading API
-  description: 'A unified RESTful API for client interactions with the Clear Street Active
-    trading platform: accounts and balances, order submission/replacement/cancellation,
-    executions, positions and position instructions, instrument reference and fundamentals,
-    market data snapshots and daily summaries, news, calendars, screeners, watchlists, and
-    the Omni AI financial copilot (threads, messages, responses, entitlements). Bearer JWT
-    auth; cursor pagination; a data/error/metadata response envelope carrying request_id.'
-  humanURL: https://docs.clearstreet.com/
-  baseURL: https://api.clearstreet.com
-  tags:
-  - Trading
-  - Orders
-  - Positions
-  - Market Data
-  - Instruments
-  - Accounts
-  properties:
-  - type: OpenAPI
-    url: openapi/clear-street-trading-api-openapi.yml
-  - type: Documentation
-    url: https://docs.clearstreet.com/
-  - type: APIReference
-    url: https://docs.clearstreet.com/api/
-  - type: GettingStarted
-    url: https://docs.clearstreet.com/
-  - type: ChangeLog
-    url: https://docs.clearstreet.com/changelog/
-  - type: LLMsTxt
-    url: llms/clear-street-llms.txt
-  - type: Overlay
-    url: overlays/clear-street-trading-api-overlay.yaml
-- aid: clear-street:studio-api
-  name: Clear Street Studio API
-  description: 'The Clear Street Studio prime-brokerage API — an integrated Risk Management,
-    Portfolio Management and Execution Management surface. Covers entities and accounts,
-    holdings, orders and bulk orders, trades, positions, locate orders and easy-borrows,
-    inventories, instruments, P&L summaries and details, and Reg-T / portfolio margin plus
-    margin simulations. OAuth2 client-credentials bearer tokens; RFC 9457 problem details
-    for errors; a companion WebSocket activity stream.'
-  humanURL: https://docs.clearstreet.io/studio/docs/getting-started
-  baseURL: https://api.clearstreet.io/studio/v2
-  tags:
-  - Prime Brokerage
-  - Locates
-  - Margin
-  - Holdings
-  - Orders
-  - Securities Lending
-  properties:
-  - type: OpenAPI
-    url: openapi/clear-street-studio-openapi.yml
-  - type: Documentation
-    url: https://docs.clearstreet.io/studio/docs/getting-started
-  - type: APIReference
-    url: https://docs.clearstreet.io/studio/reference/
-  - type: Webhooks
-    url: asyncapi/clear-street-studio-events.yml
-  - type: Overlay
-    url: overlays/clear-street-studio-overlay.yaml
 - aid: clear-street:mcp
   name: Clear Street MCP Server
-  description: 'Clear Street''s official remote Model Context Protocol server, exposing the
-    Clear Street Trading API to AI assistants such as Claude and Gemini. OAuth-protected
-    per RFC 9728 — an anonymous request returns a WWW-Authenticate challenge pointing at
-    /.well-known/oauth-protected-resource/v1/mcp, whose authorization server is
-    https://api.clearstreet.com/oauth/mcp (authorization_code + PKCE S256).'
+  description: >-
+    Clear Street's official remote Model Context Protocol server, exposing the Clear Street Trading API
+    to AI assistants such as Claude and Gemini. OAuth-protected per RFC 9728 — an anonymous request returns
+    a WWW-Authenticate challenge pointing at /.well-known/oauth-protected-resource/v1/mcp, whose authorization
+    server is https://api.clearstreet.com/oauth/mcp (authorization_code + PKCE S256).
   humanURL: https://www.clearstreet.com/api
   baseURL: https://api.clearstreet.com/v1/mcp
   tags:
@@ -115,10 +55,10 @@ apis:
     url: mcp/clear-street-tool-crosswalk.yml
 - aid: clear-street:legacy-api
   name: Clear Street API (Trades and Uploads)
-  description: 'Clear Street''s legacy post-trade API for booking and cancelling trades and
-    for submitting bulk trade-file uploads. Published as a Swagger 2.0 document in the
-    clear-street/docs GitHub repository alongside the FIX 4.2 trade specification, the OMS
-    guide, and SFTP file-transfer documentation.'
+  description: >-
+    Clear Street's legacy post-trade API for booking and cancelling trades and for submitting bulk trade-file
+    uploads. Published as a Swagger 2.0 document in the clear-street/docs GitHub repository alongside
+    the FIX 4.2 trade specification, the OMS guide, and SFTP file-transfer documentation.
   humanURL: https://clear-street.github.io/docs/
   baseURL: https://api.clearstreet.io/v1
   tags:
@@ -127,11 +67,565 @@ apis:
   - Clearing
   properties:
   - type: Swagger
-    url: openapi/clear-street-legacy-api-swagger.yml
+    url: openapi/_original/clear-street-legacy-api-swagger.yml
   - type: Documentation
     url: https://clear-street.github.io/docs/
   - type: Overlay
     url: overlays/clear-street-legacy-api-overlay.yaml
+- aid: clear-street:clear-street-accounts-api
+  name: Clear Street Accounts API
+  description: The Accounts API from Clear Street — 6 operation(s) for accounts.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-api-version-api
+  name: Clear Street API version API
+  description: Endpoints for API service metadata.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - API version
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-api-version-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-calendar-api
+  name: Clear Street Calendar API
+  description: Access clocks and financial calendars for market sessions and events.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Calendar
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-calendar-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-entities-api
+  name: Clear Street Entities API
+  description: The Entities API from Clear Street — 2 operation(s) for entities.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Entities
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-entities-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-holdings-api
+  name: Clear Street Holdings API
+  description: The Holdings API from Clear Street — 1 operation(s) for holdings.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Holdings
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-holdings-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-instrument-data-api
+  name: Clear Street Instrument Data API
+  description: Retrieve instrument analytics, market data, news, and related reference data.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Instrument Data
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-instrument-data-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-instruments-api
+  name: Clear Street Instruments API
+  description: The Instruments API from Clear Street — 6 operation(s) for instruments.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Instruments
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-instruments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-inventories-api
+  name: Clear Street Inventories API
+  description: The Inventories API from Clear Street — 1 operation(s) for inventories.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Inventories
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-inventories-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-locates-api
+  name: Clear Street Locates API
+  description: The Locates API from Clear Street — 2 operation(s) for locates.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Locates
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-locates-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-margin-api
+  name: Clear Street Margin API
+  description: The Margin API from Clear Street — 2 operation(s) for margin.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Margin
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-margin-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-margin-simulations-api
+  name: Clear Street Margin Simulations API
+  description: The Margin Simulations API from Clear Street — 2 operation(s) for margin simulations.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Margin Simulations
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-margin-simulations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-omni-ai-api
+  name: Clear Street Omni AI API
+  description: >-
+    Thread-centric AI assistant for conversational trading. Create threads to start conversations, poll
+    response objects for in-progress output, and read finalized messages from thread history. Thread/message/response
+    endpoints require an explicit account_id. Entitlement endpoints are caller-scoped and use account_ids.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Omni AI
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-omni-ai-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-orders-api
+  name: Clear Street Orders API
+  description: The Orders API from Clear Street — 6 operation(s) for orders.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-orders-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-performance-api
+  name: Clear Street Performance API
+  description: The Performance API from Clear Street — 1 operation(s) for performance.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Performance
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-performance-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-pnl-api
+  name: Clear Street PNL API
+  description: The PNL API from Clear Street — 3 operation(s) for pnl.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - PNL
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-pnl-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-positions-api
+  name: Clear Street Positions API
+  description: The Positions API from Clear Street — 6 operation(s) for positions.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Positions
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-positions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-rates-api
+  name: Clear Street Rates API
+  description: The Rates API from Clear Street — 1 operation(s) for rates.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Rates
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-rates-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-screener-api
+  name: Clear Street Screener API
+  description: Search instruments and manage saved screeners.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Screener
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-screener-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-trades-api
+  name: Clear Street Trades API
+  description: Trade endpoints are used to insert or cancel trades into a our systems.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Trades
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-trades-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-uploads-api
+  name: Clear Street Uploads API
+  description: >-
+    Upload endpoints allow you to upload a `CSV` file that contain trades, in the same format as our <b>[trade-file
+    specification](https://github.com/clear-street/docs/blob/master/trade_file.md)</b>. You may prefer
+    to use a file-upload if you have a extremely large number of trades (> 10000), or if you have dependency
+    on legacy systems that deal with `CSV` files. We recommend using <b><a href="#tag/Trades">trade endpoints</a></b>
+    when possible, especially for real-time trade reporting.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Uploads
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-uploads-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
+- aid: clear-street:clear-street-watchlist-api
+  name: Clear Street Watchlist API
+  description: Create and manage watchlists.
+  humanURL: https://docs.clearstreet.com/
+  baseURL: https://api.clearstreet.com
+  tags:
+  - Watchlist
+  properties:
+  - type: OpenAPI
+    url: openapi/clear-street-watchlist-api-openapi.yml
+  - type: Documentation
+    url: https://docs.clearstreet.com/
+  - type: APIReference
+    url: https://docs.clearstreet.com/api/
+  - type: GettingStarted
+    url: https://docs.clearstreet.com/
+  - type: ChangeLog
+    url: https://docs.clearstreet.com/changelog/
+  - type: LLMsTxt
+    url: llms/clear-street-llms.txt
+  - type: Documentation
+    url: https://docs.clearstreet.io/studio/docs/getting-started
+  - type: APIReference
+    url: https://docs.clearstreet.io/studio/reference/
+  - type: Webhooks
+    url: asyncapi/clear-street-studio-events.yml
 common:
 - type: AgenticAccess
   url: agentic-access/clear-street-agentic-access.yml
