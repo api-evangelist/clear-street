@@ -1,0 +1,1851 @@
+{
+  "item": [
+    {
+      "id": "99625604-a202-4c0d-bebe-41f43464bb05",
+      "name": "Accounts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cbe7d876-b830-42b5-a881-95423dbc97aa",
+          "name": "List accounts",
+          "request": {
+            "name": "List accounts",
+            "description": {
+              "content": "List all available accounts.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts"
+              ],
+              "host": [
+                "{{accounts-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "54853cdd-f9f5-4178-936f-7c3bc93d8383",
+              "name": "A list of accounts",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts"
+                  ],
+                  "host": [
+                    "{{accounts-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": \"100000\",\n      \"account_number\": \"ACC0001\",\n      \"entity_id\": \"100000\",\n      \"name\": \"Clear Street\"\n    },\n    {\n      \"account_id\": \"100000\",\n      \"account_number\": \"ACC0001\",\n      \"entity_id\": \"100000\",\n      \"name\": \"Clear Street\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc97a81d-f350-4b75-a8f9-ff22603166af",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts"
+                  ],
+                  "host": [
+                    "{{accounts-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://UHHUQUhhcVUQziqi.qzjqQjwF-7U.QNhX\",\n  \"title\": \"string\",\n  \"status\": 272.5786654615132,\n  \"detail\": \"string\",\n  \"instance\": \"http://vStEvqlcfpv.skmF,+K,g9pvWS+v8CW5IQqfv,sOuGVvOBK0DGH\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ecf760db-a6d8-42cb-a92f-9cc9c46c2839",
+          "name": "Get account",
+          "request": {
+            "name": "Get account",
+            "description": {
+              "content": "Get an account by its ID or number.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id"
+              ],
+              "host": [
+                "{{accounts-account_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) The ID or number of the account to get."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "eae7a88b-d338-41b7-8d25-f95282522f6f",
+              "name": "The account",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) The ID or number of the account to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_id\": \"100000\",\n  \"account_number\": \"ACC0001\",\n  \"entity_id\": \"100000\",\n  \"name\": \"Clear Street\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ce2aa6d-388a-4611-aeaf-ec682eb84439",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) The ID or number of the account to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://UHHUQUhhcVUQziqi.qzjqQjwF-7U.QNhX\",\n  \"title\": \"string\",\n  \"status\": 272.5786654615132,\n  \"detail\": \"string\",\n  \"instance\": \"http://vStEvqlcfpv.skmF,+K,g9pvWS+v8CW5IQqfv,sOuGVvOBK0DGH\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7b273eb2-56b4-407e-85d8-e41a872420e5",
+          "name": "Get Accounts",
+          "request": {
+            "name": "Get Accounts",
+            "description": {
+              "content": "List accounts the authenticated user has permission to access.\n\nResults can be narrowed with the optional `account_id` and `account_name`\nfilters. `account_id` is a lexicographic prefix match on the decimal account\nid (e.g. `100` matches `100345` and `100567`); `account_name` is a\ncase-insensitive substring match on the account's full name. When both are\nsupplied an account must match both. When neither is supplied every\naccessible account is returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts"
+              ],
+              "host": [
+                "{{v1-accounts-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "1000",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<string>",
+                  "description": "Filter to accounts whose id starts with this value (lexicographic prefix match on the decimal id, e.g. `100` matches `100345`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "account_name",
+                  "value": "<string>",
+                  "description": "Filter to accounts whose full name contains this value (case-insensitive substring match)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e9568ca5-9d18-4e4c-b44d-a5232d274f78",
+              "name": "List of accounts",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts"
+                  ],
+                  "host": [
+                    "{{v1-accounts-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "account_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "account_name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_holder_entity_id\": 987654321,\n      \"close_date\": null,\n      \"full_name\": \"Test Trading Account\",\n      \"id\": 19816,\n      \"open_date\": \"2023-01-15\",\n      \"options_level\": 1,\n      \"short_name\": \"TST-ACCOUNT-01\",\n      \"status\": \"ACTIVE\",\n      \"subtype\": \"MARGIN\",\n      \"type\": \"CUSTOMER\"\n    },\n    {\n      \"account_holder_entity_id\": 987654322,\n      \"close_date\": \"2024-08-01\",\n      \"full_name\": \"Old Test Account\",\n      \"id\": 19817,\n      \"open_date\": \"2021-05-20\",\n      \"options_level\": 0,\n      \"short_name\": \"TST-ACCOUNT-02-CLOSED\",\n      \"status\": \"CLOSED\",\n      \"subtype\": \"CASH\",\n      \"type\": \"CUSTOMER\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"next_page_token\": \"cGFnZT0yJmxhc3RfaWQ9MTk4MTc=\",\n    \"page_number\": 1,\n    \"request_id\": \"a1b2c3d4-e5f6-7890-1234-567890abcdef\",\n    \"total_items\": 25,\n    \"total_pages\": 3\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b66c891-be67-4ade-b398-97f1ea48c285",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts"
+                  ],
+                  "host": [
+                    "{{v1-accounts-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "account_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "account_name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "449ea567-56ef-4f09-afc0-724cae962a04",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts"
+                  ],
+                  "host": [
+                    "{{v1-accounts-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "account_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "account_name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 3719.653896115078,\n      \"key_1\": 3637.3538307703125,\n      \"key_2\": 5009\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "84196ac2-415d-4ab7-9520-e795d5c74c55",
+          "name": "Get Account By ID",
+          "request": {
+            "name": "Get Account By ID",
+            "description": {
+              "content": "Fetch account details by ID, including the mailing address, date of\nbirth, phone number, and country of tax residency of the account-holder\nentity when on file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7a97251c-f975-437f-9cac-dc06eefc07a0",
+              "name": "Account details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"account_holder_entity_id\": 987654321,\n    \"close_date\": null,\n    \"country_of_tax_residency\": \"US\",\n    \"date_of_birth\": \"1985-03-15\",\n    \"full_name\": \"Test Trading Account\",\n    \"id\": 19816,\n    \"mailing_address\": {\n      \"city\": \"New York\",\n      \"country\": \"USA\",\n      \"line1\": \"4 World Trade Center\",\n      \"line2\": \"150 Greenwich Street, Floor 45\",\n      \"postal_code\": \"10007\",\n      \"state\": \"NY\"\n    },\n    \"open_date\": \"2023-01-15\",\n    \"options_level\": 1,\n    \"phone_number\": \"+12125550123\",\n    \"short_name\": \"TST-ACCOUNT-01\",\n    \"status\": \"ACTIVE\",\n    \"subtype\": \"MARGIN\",\n    \"type\": \"CUSTOMER\"\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"b7e2d3f4-a1b2-4c3d-8e4f-5a6b7c8d9e0f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31c582e8-1b0d-4a2b-80a1-a50734e19ac4",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d667710-9a1d-4fc5-8d10-3de87c483081",
+              "name": "Account not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Some requested entity was not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"67e95eb4-93b9-4010-8c9b-7ada7c2be93f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b8d41bf-7b4f-4554-80bb-483c06d45972",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8741.202593893888,\n      \"key_1\": 4158.1157928290495\n    },\n    {\n      \"key_0\": 2779,\n      \"key_1\": true,\n      \"key_2\": 6465\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e272f3fa-2b50-4eb3-b189-82778916621f",
+          "name": "Patch Account By ID",
+          "request": {
+            "name": "Patch Account By ID",
+            "description": {
+              "content": "Update account risk settings",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"risk\": \"<null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1b93cd50-b6c6-4cb2-a1ac-9ad29ea1b23f",
+              "name": "Account updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"risk\": \"<null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"risk\": {\n      \"max_notional\": \"5000000.00\"\n    }\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"c8f3e4a5-b2c3-5d4e-9f0a-6b7c8d9e0f1a\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "114a9a4a-2974-47df-8d89-2f60c30ae353",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"risk\": \"<null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to parse the request body as JSON: EOF while parsing an object at line 5 column 3\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5805829b-238e-4669-846b-d768bc5d279c\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7cf15e1-dbf9-44cd-a36b-d31ef8cd8c98",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"risk\": \"<null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c516fde2-ac2c-47bc-9aae-e5436f5f38c7",
+              "name": "Account not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"risk\": \"<null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Some requested entity was not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"67e95eb4-93b9-4010-8c9b-7ada7c2be93f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b3e0248-6cfb-4cad-8854-52b1546d5e40",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"risk\": \"<null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8741.202593893888,\n      \"key_1\": 4158.1157928290495\n    },\n    {\n      \"key_0\": 2779,\n      \"key_1\": true,\n      \"key_2\": 6465\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd5bc8d2-4196-43fb-88e8-f748c7399cda",
+          "name": "Get Account Balances",
+          "request": {
+            "name": "Get Account Balances",
+            "description": {
+              "content": "Fetch account balance information",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "balances"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-balances-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "top_margin_contributors_limit",
+                  "value": "<integer>",
+                  "description": "Limit the number of top margin contributors returned."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f666818d-2191-4aad-9354-59fd238e4808",
+              "name": "Account balance information",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-balances-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "top_margin_contributors_limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"account_id\": 19816,\n    \"buying_power\": \"45000.00\",\n    \"currency\": \"USD\",\n    \"daily_change\": \"0.00\",\n    \"daily_pnl\": \"1250.00\",\n    \"daily_realized_pnl\": \"700.00\",\n    \"daily_total_pnl\": \"1250.00\",\n    \"daily_unrealized_pnl\": \"550.00\",\n    \"equity\": \"100000.00\",\n    \"long_market_value\": \"30000.00\",\n    \"margin_type\": \"NONE\",\n    \"open_order_adjustment\": \"-5000.00\",\n    \"settled_cash\": \"60000.00\",\n    \"sod\": {\n      \"asof\": \"2023-09-27\",\n      \"buying_power\": \"45000.00\",\n      \"equity\": \"100000.00\",\n      \"long_market_value\": \"30000.00\",\n      \"short_market_value\": \"0.00\"\n    },\n    \"trade_cash\": \"60000.00\",\n    \"unrealized_pnl\": \"1500.00\",\n    \"unsettled_credits\": \"20000.00\",\n    \"unsettled_debits\": \"10000.00\",\n    \"withdrawable_cash\": \"55000.00\"\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"b7e2d3f4-a1b2-4c3d-8e4f-5a6b7c8d9e0f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6c49f412-0153-40a8-8bc0-f5e4c8e1c906",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-balances-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "top_margin_contributors_limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f7c0279c-79b1-4df5-a93f-2bf82209afa2",
+              "name": "Account not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-balances-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "top_margin_contributors_limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Some requested entity was not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"67e95eb4-93b9-4010-8c9b-7ada7c2be93f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed31df60-9b82-4071-b678-2d0227312579",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-balances-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "top_margin_contributors_limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8741.202593893888,\n      \"key_1\": 4158.1157928290495\n    },\n    {\n      \"key_0\": 2779,\n      \"key_1\": true,\n      \"key_2\": 6465\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d20fcf9b-0767-4368-8fba-00cba3c8cd99",
+          "name": "Get Portfolio History",
+          "request": {
+            "name": "Get Portfolio History",
+            "description": {
+              "content": "Retrieves daily portfolio history for the specified account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "portfolio-history"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-portfolio-history-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>",
+                  "description": "(Required) Start date for the portfolio history range, in YYYY-MM-DD format."
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<date>",
+                  "description": "Defaults to today in America/New_York when omitted."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "25416e8e-4eb8-40ab-9b8f-f7c5dd8f2e75",
+              "name": "Portfolio history",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "portfolio-history"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-portfolio-history-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"segments\": [\n      {\n        \"bought_notional\": \"39800.00\",\n        \"date\": \"2026-04-15\",\n        \"day_pnl\": \"850.25\",\n        \"eod_equity\": \"100850.25\",\n        \"net_pnl\": \"850.25\",\n        \"position_pnl\": \"-350.25\",\n        \"realized_pnl\": \"1200.50\",\n        \"sod_equity\": \"100000.00\",\n        \"sold_notional\": \"42500.00\",\n        \"unrealized_pnl\": \"-350.25\"\n      }\n    ]\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"f076d6f6-10c9-42a0-98c5-18cebc427e80\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e3b14b7-1d15-4a8b-a6e2-6fdf570f70fb",
+              "name": "Partial success: some data is available but the full request could not be completed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "portfolio-history"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-portfolio-history-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Multi-Status (WebDAV) (RFC 4918)",
+              "code": 207,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"segments\": [\n      {\n        \"bought_notional\": null,\n        \"date\": \"2026-05-12\",\n        \"day_pnl\": null,\n        \"eod_equity\": \"100009.00\",\n        \"net_pnl\": null,\n        \"position_pnl\": null,\n        \"realized_pnl\": \"12.00\",\n        \"sod_equity\": \"100000.00\",\n        \"sold_notional\": null,\n        \"unrealized_pnl\": \"-3.00\"\n      }\n    ]\n  },\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"historical data temporarily unavailable\"\n  },\n  \"metadata\": {\n    \"request_id\": \"2f3d7b0a-1111-4a4b-9e1f-8c4e5d3a9f12\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93d0585d-096f-42a0-9f5c-101da9235a4a",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "portfolio-history"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-portfolio-history-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7f078fb-31c7-46b2-831f-75e7acb1a0a1",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "portfolio-history"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-portfolio-history-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8741.202593893888,\n      \"key_1\": 4158.1157928290495\n    },\n    {\n      \"key_0\": 2779,\n      \"key_1\": true,\n      \"key_2\": 6465\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "accounts-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "accounts-account_id-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-account_id-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-account_id-balances-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-account_id-portfolio-history-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "776df016-45c2-49a1-bdad-5d9ffe661cc1",
+    "name": "Clear Street Accounts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged Accounts across 2 of this provider's published API definitions: clear-street-studio-openapi.yml, clear-street-trading-api-openapi.yml. Each path carries the servers of the definition it was published in.",
+      "type": "text/plain"
+    }
+  }
+}

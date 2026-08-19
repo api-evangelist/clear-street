@@ -1,0 +1,2725 @@
+{
+  "item": [
+    {
+      "id": "1e47f98c-ea67-44e6-b0a1-4c78294d9dec",
+      "name": "Positions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c86f05dc-a7fc-40c8-96ef-8ffe56fbe237",
+          "name": "Get position",
+          "request": {
+            "name": "Get position",
+            "description": {
+              "content": "Get current position for a given account for a given symbol.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "positions",
+                ":symbol"
+              ],
+              "host": [
+                "{{accounts-account_id-positions-symbol-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "symbol",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b7633ce5-4980-4cb7-adb2-1c5a87022698",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    ":symbol"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-positions-symbol-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "symbol",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_id\": \"100000\",\n  \"account_number\": \"ACC0001\",\n  \"symbol\": \"AAPL\",\n  \"quantity\": \"100\",\n  \"average_cost\": 8207.245424662233\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c095723-fdb3-4f53-aea4-999363928d26",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    ":symbol"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-positions-symbol-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "symbol",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://fRiqlOnNYdVEQnjHtwmZZoFKniDTwOiJf.vgrexq0jXSQQlOcaL.kwvNiP46bwt0.orKhpcCO8ETIBm7+NTsjdpiS3nQgOrOW3Hy\",\n  \"title\": \"string\",\n  \"status\": 473.0044563926467,\n  \"detail\": \"string\",\n  \"instance\": \"https://oeAWAE.thU3YgQhHyd\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "862fdeeb-686d-43e0-abd5-f0217ed173f7",
+          "name": "List positions",
+          "request": {
+            "name": "List positions",
+            "description": {
+              "content": "List current positions for a given account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "positions"
+              ],
+              "host": [
+                "{{accounts-account_id-positions-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "25"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c8dc6ba1-f1e4-4b69-b2a3-fc4f50824d5a",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-positions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "25"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": \"100000\",\n      \"account_number\": \"ACC0001\",\n      \"symbol\": \"AAPL\",\n      \"quantity\": \"100\",\n      \"average_cost\": 9281.362227699909\n    },\n    {\n      \"account_id\": \"100000\",\n      \"account_number\": \"ACC0001\",\n      \"symbol\": \"AAPL\",\n      \"quantity\": \"100\",\n      \"average_cost\": 8463.294131033772\n    }\n  ],\n  \"next_page_token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d3ad4d7-fbe9-43ad-8750-a874e0165bd4",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-positions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "25"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://fRiqlOnNYdVEQnjHtwmZZoFKniDTwOiJf.vgrexq0jXSQQlOcaL.kwvNiP46bwt0.orKhpcCO8ETIBm7+NTsjdpiS3nQgOrOW3Hy\",\n  \"title\": \"string\",\n  \"status\": 473.0044563926467,\n  \"detail\": \"string\",\n  \"instance\": \"https://oeAWAE.thU3YgQhHyd\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0a8d4a39-0657-41c1-b78a-952484ab4e51",
+          "name": "Get Positions",
+          "request": {
+            "name": "Get Positions",
+            "description": {
+              "content": "Retrieves all positions for the specified trading account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "positions"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-positions-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "1000",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "instrument_ids",
+                  "value": "<uuid>,<uuid>",
+                  "description": "Comma-separated instrument identifiers"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort_by",
+                  "value": "<string>",
+                  "description": "Field to sort by"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort_direction",
+                  "value": "<string>",
+                  "description": "Sort direction"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7d36dbb8-87b0-439d-a55c-ed8027ed73e3",
+              "name": "List of positions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<uuid>,<uuid>"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_direction",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 19816,\n      \"available_quantity\": \"100\",\n      \"avg_price\": \"145.00\",\n      \"closing_price\": \"150.50\",\n      \"closing_price_date\": \"2025-10-31\",\n      \"cost_basis\": \"14500.00\",\n      \"daily_realized_pnl\": \"700.00\",\n      \"instrument_id\": \"a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8\",\n      \"instrument_price\": \"151.00\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"market_value\": \"15050.00\",\n      \"position_type\": \"LONG\",\n      \"quantity\": \"100\",\n      \"symbol\": \"AAPL\",\n      \"unrealized_pnl\": \"550.00\"\n    },\n    {\n      \"account_id\": 19816,\n      \"available_quantity\": \"100\",\n      \"avg_price\": \"180.00\",\n      \"closing_price\": \"180.00\",\n      \"closing_price_date\": \"2025-10-30\",\n      \"cost_basis\": \"-9000.00\",\n      \"daily_realized_pnl\": \"25.00\",\n      \"instrument_id\": \"d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab\",\n      \"instrument_price\": \"178.50\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"market_value\": \"-9000.00\",\n      \"position_type\": \"SHORT\",\n      \"quantity\": \"-50\",\n      \"symbol\": \"TSLA\",\n      \"unrealized_pnl\": \"75.00\"\n    },\n    {\n      \"account_id\": 19816,\n      \"available_quantity\": \"100\",\n      \"avg_price\": \"2.50\",\n      \"closing_price\": \"2.70\",\n      \"closing_price_date\": \"2025-10-30\",\n      \"cost_basis\": \"2500.00\",\n      \"daily_realized_pnl\": \"10.00\",\n      \"instrument_id\": \"e5e6e7e8-f5f6-a5a6-b5b6-b7b8b9babcbe\",\n      \"instrument_price\": \"2.72\",\n      \"instrument_type\": \"OPTION\",\n      \"market_value\": \"2700.00\",\n      \"position_type\": \"LONG\",\n      \"quantity\": \"10\",\n      \"symbol\": \"AAPL250117C00190000\",\n      \"underlying_instrument_id\": \"a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8\",\n      \"unrealized_pnl\": \"200.00\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"next_page_token\": \"cGFnZT0yJmxhc3Rfc3ltYm9sPVRTM0E=\",\n    \"page_number\": 1,\n    \"request_id\": \"3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c\",\n    \"total_items\": 25,\n    \"total_pages\": 3\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d71b882-8bbb-4327-9e60-f2807d46e52a",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<uuid>,<uuid>"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_direction",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "112522a3-e43d-4ef3-a8b4-d5df530d8b16",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<uuid>,<uuid>"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_direction",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 4393,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "18cf8f0c-c3fc-4a75-a577-8194ada560b9",
+          "name": "Close Positions",
+          "request": {
+            "name": "Close Positions",
+            "description": {
+              "content": "Delete all positions within an account.\n\nCloses all positions for the specified trading account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "positions"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-positions-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "<null>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6712a65a-d610-4aaa-95fd-5a8d0d9e37b7",
+              "name": "List of orders generated to close all positions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<null>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 19816,\n      \"average_fill_price\": null,\n      \"client_order_id\": \"close-positions-20251003-001\",\n      \"created_at\": \"2025-10-03 14:01:15+00:00\",\n      \"filled_quantity\": \"0\",\n      \"id\": \"019c0b57-0850-7b0b-8a2c-5ee3fb5a5876\",\n      \"instrument_id\": \"c3c4c5c6-d3d4-e3e4-f3f4-f5f6f7f8f9fa\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"leaves_quantity\": \"25\",\n      \"limit_price\": null,\n      \"order_type\": \"MARKET\",\n      \"quantity\": \"25\",\n      \"side\": \"SELL\",\n      \"status\": \"PENDING_NEW\",\n      \"stop_price\": null,\n      \"symbol\": \"GOOG\",\n      \"time_in_force\": \"DAY\",\n      \"updated_at\": \"2025-10-03 14:01:15+00:00\",\n      \"venue\": \"XNMS\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "af6160c4-3d37-4ff0-8816-78bc3f836c00",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<null>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to parse the request body as JSON: expected `:` at line 2 column 19\"\n  },\n  \"metadata\": {\n    \"request_id\": \"93a7c482-b246-4e15-9618-bcbe0906b815\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e53b794d-d430-4c39-9464-f61e82467d53",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<null>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4d54ac27-5e04-4264-817b-8cb818a3882b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<null>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "78dcb403-2a39-4be4-9b1c-c2fd532c9cd9",
+          "name": "Get Position Instructions",
+          "request": {
+            "name": "Get Position Instructions",
+            "description": {
+              "content": "Returns the current lifecycle state of the account's position\ninstructions. Optionally filter by a specific contract.\n\nNote: instructions that fail pre-acceptance validation on `POST` —\nduplicates, `DO_NOT_EXERCISE` / `CONTRARY_EXERCISE` on a non-expiry day,\ninsufficient position, or an unresolvable instrument — are rejected\n(with `status = REJECTED` and a `rejection_reason`) without being\npersisted, so they surface only in the `POST` response and never appear\nin this list.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "positions",
+                "instructions"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-positions-instructions-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "instrument_id",
+                  "value": "<string>",
+                  "description": "Limit results to a single contract. Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5894a97e-cff4-43d2-9107-6bd179279fdf",
+              "name": "Position instructions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"a64d947d-0fea-2518-bb91-e56539ee103c\",\n      \"instruction_id\": \"string\",\n      \"account_id\": \"<long>\",\n      \"instruction_type\": \"EXERCISE\",\n      \"instrument_id\": \"8284291e-94b5-d612-b6d6-18c36232d63e\",\n      \"symbol\": \"string\",\n      \"quantity\": \"1\",\n      \"status\": \"UNKNOWN\",\n      \"accepted_quantity\": \"string\",\n      \"created_at\": \"1992-10-10T08:30:39.711Z\",\n      \"rejection_reason\": \"string\",\n      \"updated_at\": \"2016-05-05T13:59:17.250Z\"\n    },\n    {\n      \"id\": \"a5c4a054-821d-cdf5-1ed9-3f9b4aacc434\",\n      \"instruction_id\": \"string\",\n      \"account_id\": \"<long>\",\n      \"instruction_type\": \"DO_NOT_EXERCISE\",\n      \"instrument_id\": \"2fa8fa7f-166d-26f5-3898-97cd861825b5\",\n      \"symbol\": \"string\",\n      \"quantity\": \"1\",\n      \"status\": \"UNKNOWN\",\n      \"accepted_quantity\": \"string\",\n      \"created_at\": \"1997-10-16T15:47:53.049Z\",\n      \"rejection_reason\": null,\n      \"updated_at\": null\n    }\n  ],\n  \"metadata\": {\n    \"request_id\": \"string\",\n    \"next_page_token\": null,\n    \"page_number\": null,\n    \"previous_page_token\": null,\n    \"total_items\": null,\n    \"total_pages\": null\n  },\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62e5e954-468e-4dc1-b4da-d602398fe24a",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "292c071e-4875-4c5d-b3c6-09922f149000",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "339fcb42-e42f-4afe-84bf-b948d2054ff2",
+              "name": "Account or instrument not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "68040a06-d26f-41d6-87d5-f2fa194cd3eb",
+              "name": "Service temporarily unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f0b56cc9-2533-45f0-ab9c-4e40a27352df",
+          "name": "Submit Position Instructions",
+          "request": {
+            "name": "Submit Position Instructions",
+            "description": {
+              "content": "Submit one or more position instructions (Exercise, Do-Not-Exercise,\nContrary Exercise Advice) against the account.\n\nBatch semantics:\n- **All rows accepted** → `200 OK`. Every row is in `data` with\n  `status = SENT`.\n- **Partial success** → `207 Multi-Status`. `data` contains every\n  row; rejected rows carry `status = REJECTED` and\n  `rejection_reason`. The top-level `error` summarizes the batch\n  failure.\n- **All rows rejected** → `4xx`/`5xx`. The HTTP status reflects\n  the aggregate cause: `409` when every row was a duplicate, `400`\n  for validation failures like DNE/CEA on a non-expiry day, `503`\n  if the clearing service is unavailable. `data` still contains\n  every row carrying `status = REJECTED` and `rejection_reason`\n  so callers can attribute failures by `instruction_id`; the\n  top-level `error` summarizes the batch.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "positions",
+                "instructions"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-positions-instructions-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"instruction_type\": \"<string>\",\n    \"instrument_id\": \"<uuid>\",\n    \"quantity\": \"<string>\",\n    \"instruction_id\": \"<string,null>\"\n  },\n  {\n    \"instruction_type\": \"<string>\",\n    \"instrument_id\": \"<uuid>\",\n    \"quantity\": \"<string>\",\n    \"instruction_id\": \"<string,null>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8270b98d-231b-4abf-8452-2b4789448342",
+              "name": "All instructions accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  },\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 122503,\n      \"id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n      \"instruction_id\": \"ui-20260424-001\",\n      \"instruction_type\": \"EXERCISE\",\n      \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e01\",\n      \"quantity\": \"1\",\n      \"status\": \"SENT\",\n      \"symbol\": \"AAPL  280121C00195000\"\n    }\n  ],\n  \"metadata\": {\n    \"request_id\": \"0a5c9ebf-a9a7-4f2d-9c7e-f2b5f0b1bd01\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "002d8660-341f-4d6c-bf70-3377c0aad8bd",
+              "name": "Partial success — some rows accepted, others rejected",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  },\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Multi-Status (WebDAV) (RFC 4918)",
+              "code": 207,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 122503,\n      \"id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n      \"instruction_id\": \"ui-20260424-001\",\n      \"instruction_type\": \"EXERCISE\",\n      \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e01\",\n      \"quantity\": \"1\",\n      \"status\": \"SENT\",\n      \"symbol\": \"AAPL  280121C00195000\"\n    },\n    {\n      \"account_id\": 122503,\n      \"id\": \"00000000-0000-0000-0000-000000000000\",\n      \"instruction_id\": \"ui-20260424-001\",\n      \"instruction_type\": \"EXERCISE\",\n      \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e01\",\n      \"quantity\": \"1\",\n      \"rejection_reason\": \"Duplicate exercise instruction\",\n      \"status\": \"REJECTED\",\n      \"symbol\": \"AAPL  280121C00195000\"\n    }\n  ],\n  \"error\": {\n    \"code\": 409,\n    \"message\": \"Duplicate exercise instruction\"\n  },\n  \"metadata\": {\n    \"request_id\": \"0a5c9ebf-a9a7-4f2d-9c7e-f2b5f0b1bd02\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd5bc7aa-7746-4cc3-93d5-23879c3662f9",
+              "name": "Invalid request or all rows rejected by validation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  },\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 122503,\n      \"id\": \"00000000-0000-0000-0000-000000000000\",\n      \"instruction_id\": \"ui-20260424-001\",\n      \"instruction_type\": \"DO_NOT_EXERCISE\",\n      \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e01\",\n      \"quantity\": \"1\",\n      \"rejection_reason\": \"DO_NOT_EXERCISE must be submitted on the contract's expiration date\",\n      \"status\": \"REJECTED\",\n      \"symbol\": \"AAPL  280121C00195000\"\n    }\n  ],\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"DO_NOT_EXERCISE must be submitted on the contract's expiration date\"\n  },\n  \"metadata\": {\n    \"request_id\": \"0a5c9ebf-a9a7-4f2d-9c7e-f2b5f0b1bd03\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bf125d65-5db0-4f5e-9527-d274f198e4ca",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  },\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "902c96ac-b9f3-4f37-986e-55cb222a5257",
+              "name": "Account or instrument not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  },\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "695e364d-6dc3-4c9a-b82d-b367bd6346db",
+              "name": "All rows rejected as duplicates",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  },\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 122503,\n      \"id\": \"00000000-0000-0000-0000-000000000000\",\n      \"instruction_id\": \"ui-20260424-001\",\n      \"instruction_type\": \"EXERCISE\",\n      \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e01\",\n      \"quantity\": \"1\",\n      \"rejection_reason\": \"Duplicate exercise instruction; existing_id=019e7415-de03-70c3-8ca1-9fdb72dfdbbc\",\n      \"status\": \"REJECTED\",\n      \"symbol\": \"AAPL  280121C00195000\"\n    }\n  ],\n  \"error\": {\n    \"code\": 409,\n    \"message\": \"Duplicate exercise instruction\"\n  },\n  \"metadata\": {\n    \"request_id\": \"0a5c9ebf-a9a7-4f2d-9c7e-f2b5f0b1bd04\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "56f73f2e-4318-4655-be4e-fb9cd4b9e6ef",
+              "name": "All rows rejected by an internal server fault",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  },\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 122503,\n      \"id\": \"00000000-0000-0000-0000-000000000000\",\n      \"instruction_id\": \"ui-20260424-001\",\n      \"instruction_type\": \"EXERCISE\",\n      \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e01\",\n      \"quantity\": \"1\",\n      \"rejection_reason\": \"Could not process the instruction\",\n      \"status\": \"REJECTED\",\n      \"symbol\": \"AAPL  280121C00195000\"\n    }\n  ],\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Could not process the instruction\"\n  },\n  \"metadata\": {\n    \"request_id\": \"0a5c9ebf-a9a7-4f2d-9c7e-f2b5f0b1bd05\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58beb85c-3b71-4c62-8f8d-2e2b139cd2a1",
+              "name": "All rows rejected because the clearing service was unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  },\n  {\n    \"instruction_id\": \"ui-20260424-001\",\n    \"instruction_type\": \"EXERCISE\",\n    \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02\",\n    \"quantity\": \"1\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 122503,\n      \"id\": \"00000000-0000-0000-0000-000000000000\",\n      \"instruction_id\": \"ui-20260424-001\",\n      \"instruction_type\": \"EXERCISE\",\n      \"instrument_id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e01\",\n      \"quantity\": \"1\",\n      \"rejection_reason\": \"Clearing service unavailable\",\n      \"status\": \"REJECTED\",\n      \"symbol\": \"AAPL  280121C00195000\"\n    }\n  ],\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"Clearing service unavailable\"\n  },\n  \"metadata\": {\n    \"request_id\": \"0a5c9ebf-a9a7-4f2d-9c7e-f2b5f0b1bd06\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "de0c5635-61d3-46ef-bf7d-7d987cda2ae9",
+          "name": "Cancel Position Instruction",
+          "request": {
+            "name": "Cancel Position Instruction",
+            "description": {
+              "content": "Cancel an outstanding position instruction by its server-assigned `id`.\nReturns the updated instruction with status `CANCEL_REQUESTED`. The\nterminal `CANCELLED` or `CANCEL_FAILED` state arrives asynchronously and\nis observable via subsequent GETs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "positions",
+                "instructions",
+                ":instruction_id"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-positions-instructions-instruction_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "instruction_id",
+                  "description": "(Required) Server-assigned instruction id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b69f1ad6-e254-4dd9-8242-b47cb8dbd18e",
+              "name": "Cancel accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions",
+                    ":instruction_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-instruction_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) Server-assigned instruction id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"8ffd8b0b-b74d-8347-9c22-e76f7e262dda\",\n    \"instruction_id\": \"string\",\n    \"account_id\": \"<long>\",\n    \"instruction_type\": \"<string>\",\n    \"instrument_id\": \"9a2bac49-c6f4-6363-335e-90f955947803\",\n    \"symbol\": \"string\",\n    \"quantity\": \"1\",\n    \"status\": \"CANCEL_FAILED\",\n    \"accepted_quantity\": \"string\",\n    \"created_at\": null,\n    \"rejection_reason\": null,\n    \"updated_at\": \"2015-11-02T02:59:49.165Z\"\n  },\n  \"metadata\": {\n    \"request_id\": \"string\",\n    \"next_page_token\": null,\n    \"page_number\": 235,\n    \"previous_page_token\": null,\n    \"total_items\": 9987,\n    \"total_pages\": 4950\n  },\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63044401-5e53-41a1-bfa8-ac116bdb56b6",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions",
+                    ":instruction_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-instruction_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) Server-assigned instruction id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fcdbed28-970e-480d-a77a-c074927cafc0",
+              "name": "Instruction not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions",
+                    ":instruction_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-instruction_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) Server-assigned instruction id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "33966c75-12ee-476f-bc15-c55f336fa0c2",
+              "name": "Instruction is in a terminal state",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions",
+                    ":instruction_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-instruction_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) Server-assigned instruction id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "525fa0e4-5d4a-40b1-b66d-ac4772f67a3d",
+              "name": "Service temporarily unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    "instructions",
+                    ":instruction_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instructions-instruction_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "instruction_id",
+                      "description": "(Required) Server-assigned instruction id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "19b0d5a5-79d1-4540-9038-54ff501bfc52",
+          "name": "Close Position",
+          "request": {
+            "name": "Close Position",
+            "description": {
+              "content": "Delete a position within an account for an instrument.\n\nRetrieves orders generated to close the position.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "positions",
+                ":instrument_id"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-positions-instrument_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "instrument_id",
+                  "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "<null>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "790efe4b-58ad-46d9-8375-be3718360cb8",
+              "name": "List of orders generated to close the position.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    ":instrument_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instrument_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<null>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 19816,\n      \"average_fill_price\": null,\n      \"client_order_id\": \"close-position-20251003-001\",\n      \"created_at\": \"2025-10-03 14:01:15+00:00\",\n      \"filled_quantity\": \"0\",\n      \"id\": \"019c0b56-2119-7482-a80f-5a2a316524d9\",\n      \"instrument_id\": \"c3c4c5c6-d3d4-e3e4-f3f4-f5f6f7f8f9fa\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"leaves_quantity\": \"25\",\n      \"limit_price\": null,\n      \"order_type\": \"MARKET\",\n      \"quantity\": \"25\",\n      \"side\": \"SELL\",\n      \"status\": \"PENDING_NEW\",\n      \"stop_price\": null,\n      \"symbol\": \"GOOG\",\n      \"time_in_force\": \"DAY\",\n      \"updated_at\": \"2025-10-03 14:01:15+00:00\",\n      \"venue\": \"XNMS\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"3f4a5b6c-7d8e-9f0a-1b2c-3d4e5f6a7b8c\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0cb7861c-3591-44ee-b3bd-9221b957ab98",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    ":instrument_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instrument_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<null>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to parse the request body as JSON: expected `:` at line 2 column 19\"\n  },\n  \"metadata\": {\n    \"request_id\": \"93a7c482-b246-4e15-9618-bcbe0906b815\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "edcbc62b-d393-499b-93df-c10662324831",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    ":instrument_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instrument_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<null>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e221073d-b2d5-4551-bebe-1cfc32b06acd",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "positions",
+                    ":instrument_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-positions-instrument_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<null>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 5207.027503220925,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 8333.637406312406\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "accounts-account_id-positions-symbol-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "accounts-account_id-positions-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-account_id-positions-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-account_id-positions-instructions-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-account_id-positions-instructions-instruction_id-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-account_id-positions-instrument_id-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "c3c6dbc7-be69-4f77-9c81-48a1776d7625",
+    "name": "Clear Street Positions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged Positions across 2 of this provider's published API definitions: clear-street-studio-openapi.yml, clear-street-trading-api-openapi.yml. Each path carries the servers of the definition it was published in.",
+      "type": "text/plain"
+    }
+  }
+}

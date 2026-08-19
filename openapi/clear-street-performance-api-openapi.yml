@@ -1,0 +1,264 @@
+openapi: 3.2.0
+info:
+  title: Common API Models Performance API
+  description: Common API models for all of Studio's APIs
+  version: 2.0.0
+servers:
+- url: https://api.clearstreet.io/studio/v2
+  description: Production environment
+- url: https://sandbox-api.clearstreet.io/studio/v2
+  description: Sandbox environment
+tags:
+- name: Performance
+  x-displayName: Performance
+paths:
+  /accounts/{account_id}/pnl-sums:
+    get:
+      operationId: listPNLSums
+      summary: List PNL Sums
+      description: List historical PNL summations for a given account over a given date range, filtered on the given query parameters.
+      tags:
+      - Performance
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to list PNL sums for.
+      - in: query
+        name: starting_date
+        required: true
+        schema:
+          $ref: '#/components/schemas/Date'
+          description: The starting date to accumulate PNL data for.
+      - in: query
+        name: ending_date
+        required: true
+        schema:
+          $ref: '#/components/schemas/Date'
+          description: The ending date to accumulate PNL data for, inclusive.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  starting_date:
+                    $ref: '#/components/schemas/Date'
+                    description: Echoed back from the provided query param.
+                  ending_date:
+                    $ref: '#/components/schemas/Date'
+                    description: Echoed back from the provided query param.
+                  entity_id:
+                    $ref: '#/components/schemas/EntityId'
+                  account_id:
+                    $ref: '#/components/schemas/AccountId'
+                  account_number:
+                    $ref: '#/components/schemas/AccountNumber'
+                  starting_equity:
+                    type: number
+                    format: double
+                    description: The equity at the start of the date range. Start of day equity of the starting date in the date range.
+                  ending_equity:
+                    type: number
+                    format: double
+                    description: The equity at the end of the date range. End of day equity of the ending date in the date range.
+                  day_pnl:
+                    type: number
+                    format: double
+                    description: Sum of profit and loss from intraday trading activities for the given date range across all symbols.
+                  position_pnl:
+                    type: number
+                    format: double
+                    description: Sum of profit and loss from previous trading date across all symbols.
+                  unrealized_pnl:
+                    type: number
+                    format: double
+                    description: Sum of profit and loss from market changes across all symbols.
+                  realized_pnl:
+                    type: number
+                    format: double
+                    description: Sum of profit and loss realized from position closing trading activity across all symbols.
+                  total_pnl:
+                    type: number
+                    format: double
+                    description: '`realized_pnl + unrealized_pnl`
+
+                      '
+                  net_pnl:
+                    type: number
+                    format: double
+                    description: '`P&L after netting all realized and unrealized P&L, adjustments, dividends, change in accruals, income and expenses`
+
+                      '
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PnlSum'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
+    EntityId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Entity ID for the legal entity.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    Date:
+      type: integer
+      format: int32
+      minimum: 20150101
+      maximum: 29999999
+      example: 20240101
+      description: Integer in YYYYMMDD representing a date.
+    AssetClass:
+      type: string
+      enum:
+      - other
+      - currency
+      - equity
+      - option
+      - debt
+      - fund
+      description: The asset class of the symbol.
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    PnlSum:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        day_pnl:
+          type: number
+          format: double
+          description: Sum of profit and loss from intraday trading activities for the given date range
+        position_pnl:
+          type: number
+          format: double
+          description: Sum of profit and loss from previous trading date.
+        unrealized_pnl:
+          type: number
+          format: double
+          description: Sum of profit and loss from market changes.
+        realized_pnl:
+          type: number
+          format: double
+          description: Sum of profit and loss realized from position closing trading activity.
+        total_pnl:
+          type: number
+          format: double
+          description: '`realized_pnl + unrealized_pnl`
+
+            '
+        net_pnl:
+          type: number
+          format: double
+          description: '`P&L after netting all realized and unrealized P&L, adjustments, dividends, change in accruals, income and expenses`
+
+            '
+        sold_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: Sum of quantity sold.
+        sold_notional:
+          type: number
+          format: double
+          description: Sum of the notional sold.
+        bought_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: Sum of quantity bought.
+        bought_notional:
+          type: number
+          format: double
+          description: Sum of the notional bought.
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+externalDocs:
+  url: https://docs.clearstreet.io/
+x-tagGroups:
+- name: Custodial API
+  tags:
+  - Performance
+  - Holdings
+- name: Execution API
+  tags:
+  - Orders
+  - Trades
+  - Positions
+- name: Lending API
+  tags:
+  - Locates
+  - Rates
+  - Inventories
+- name: Reference API
+  tags:
+  - Entities
+  - Accounts
+  - Instruments
+- name: Risk & Margin API
+  tags:
+  - PNL
+  - Margin
+  - Margin Simulations

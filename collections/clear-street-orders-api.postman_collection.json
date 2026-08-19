@@ -1,0 +1,3987 @@
+{
+  "item": [
+    {
+      "id": "8159c192-0bb9-4154-8568-c685ac22600a",
+      "name": "Orders",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dcacb03f-64e2-4814-854e-257d665c1438",
+          "name": "Create bulk orders",
+          "request": {
+            "name": "Create bulk orders",
+            "description": {
+              "content": "Creates multiple orders in a single request, up to 1000. Note that a successful call to this endpoint does not necessarily mean your orders have been accepted, e.g. a downstream venue might reject your order. You should therefore utilize our WebSocket APIs to listen for changes in order lifecycle events.\n\nThe response will contain an array of objects, indicating whether your order was submitted. If the order was submitted, the `order_id` field will be populated with the order ID assigned to this order. If the order was rejected, the `reason` field will be populated with the reason for rejection. The data array returned in the response object is guaranteed to be ordered in the same order as the orders you provided in the request. Again, note that even if your order was submitted, that doesn't mean it was _accepted_, and may still be rejected by downstream venues.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "bulk-orders"
+              ],
+              "host": [
+                "{{accounts-account_id-bulk-orders-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orders\": [\n    {\n      \"order_type\": \"<string>\",\n      \"side\": \"<string>\",\n      \"quantity\": \"<string>\",\n      \"time_in_force\": \"<string>\",\n      \"symbol\": \"<string>\",\n      \"reference_id\": \"<string>\",\n      \"price\": \"<string>\",\n      \"stop_price\": \"<string>\",\n      \"locate_broker\": \"<string>\",\n      \"symbol_format\": \"<string>\",\n      \"strategy\": {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"start_at\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"end_at\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"urgency\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"open_close_indicator\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "88ebbb5e-564e-43ee-bf34-112654fb96d3",
+              "name": "Orders received. Indicates the orders were received and are pending further processing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "bulk-orders"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-bulk-orders-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orders\": [\n    {\n      \"order_type\": \"<string>\",\n      \"side\": \"<string>\",\n      \"quantity\": \"100\",\n      \"time_in_force\": \"<string>\",\n      \"symbol\": \"AAPL\",\n      \"reference_id\": \"my-order-id-123\",\n      \"price\": \"123.99\",\n      \"stop_price\": \"123.99\",\n      \"locate_broker\": \"<string>\",\n      \"symbol_format\": \"<string>\",\n      \"strategy\": {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"start_at\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"end_at\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"urgency\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"open_close_indicator\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"submitted\": 6908,\n  \"rejected\": 8938,\n  \"data\": [\n    {\n      \"submitted\": true,\n      \"order_id\": \"12390213\",\n      \"reason\": \"string\"\n    },\n    {\n      \"submitted\": false,\n      \"order_id\": \"12390213\",\n      \"reason\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a94fa1c-fd6e-4863-9473-0d25c985d228",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "bulk-orders"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-bulk-orders-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orders\": [\n    {\n      \"order_type\": \"<string>\",\n      \"side\": \"<string>\",\n      \"quantity\": \"100\",\n      \"time_in_force\": \"<string>\",\n      \"symbol\": \"AAPL\",\n      \"reference_id\": \"my-order-id-123\",\n      \"price\": \"123.99\",\n      \"stop_price\": \"123.99\",\n      \"locate_broker\": \"<string>\",\n      \"symbol_format\": \"<string>\",\n      \"strategy\": {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"start_at\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"end_at\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"urgency\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"open_close_indicator\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://ttHaza.egtt9UQbrS\",\n  \"title\": \"string\",\n  \"status\": 535.2633413416988,\n  \"detail\": \"string\",\n  \"instance\": \"https://SxQhIqxSvbspzoyQvxGC.zajJ4dDmm1dOpBflkIMrkyctOw-l9aOayg6DZJi5exfzpBz7AKjn4A9E3Z01fpdqUmhP0n74hwCJY5z,LDMnf9qM40.J\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1775359c-a719-483b-9967-69b206a92dab",
+          "name": "Create order",
+          "request": {
+            "name": "Create order",
+            "description": {
+              "content": "Creates a new order and sends to our internal systems for execution. Note that a successful call to this endpoint does not necessarily mean your order has been accepted, e.g. a downstream venue might reject your order. You should therefore utilize our WebSocket APIs to listen for changes in order lifecycle events.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "orders"
+              ],
+              "host": [
+                "{{accounts-account_id-orders-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_type\": \"<string>\",\n  \"side\": \"<string>\",\n  \"quantity\": \"<string>\",\n  \"time_in_force\": \"<string>\",\n  \"symbol\": \"<string>\",\n  \"reference_id\": \"<string>\",\n  \"price\": \"<string>\",\n  \"stop_price\": \"<string>\",\n  \"locate_broker\": \"<string>\",\n  \"symbol_format\": \"<string>\",\n  \"strategy\": {\n    \"type\": \"sor\",\n    \"start_at\": \"<long>\",\n    \"end_at\": \"<long>\",\n    \"urgency\": \"moderate\"\n  },\n  \"open_close_indicator\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "68f193b0-3561-41d5-bb31-def10e0ff465",
+              "name": "Order received. Indicates the the order was received and is pending further processing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order_type\": \"<string>\",\n  \"side\": \"<string>\",\n  \"quantity\": \"100\",\n  \"time_in_force\": \"<string>\",\n  \"symbol\": \"AAPL\",\n  \"reference_id\": \"my-order-id-123\",\n  \"price\": \"123.99\",\n  \"stop_price\": \"123.99\",\n  \"locate_broker\": \"<string>\",\n  \"symbol_format\": \"<string>\",\n  \"strategy\": {\n    \"type\": \"sor\",\n    \"start_at\": \"<long>\",\n    \"end_at\": \"<long>\",\n    \"urgency\": \"moderate\"\n  },\n  \"open_close_indicator\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"order_id\": \"234usdfa3\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f0e3e3d-d851-43cf-a497-a2be7b1d9f7d",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order_type\": \"<string>\",\n  \"side\": \"<string>\",\n  \"quantity\": \"100\",\n  \"time_in_force\": \"<string>\",\n  \"symbol\": \"AAPL\",\n  \"reference_id\": \"my-order-id-123\",\n  \"price\": \"123.99\",\n  \"stop_price\": \"123.99\",\n  \"locate_broker\": \"<string>\",\n  \"symbol_format\": \"<string>\",\n  \"strategy\": {\n    \"type\": \"sor\",\n    \"start_at\": \"<long>\",\n    \"end_at\": \"<long>\",\n    \"urgency\": \"moderate\"\n  },\n  \"open_close_indicator\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://ttHaza.egtt9UQbrS\",\n  \"title\": \"string\",\n  \"status\": 535.2633413416988,\n  \"detail\": \"string\",\n  \"instance\": \"https://SxQhIqxSvbspzoyQvxGC.zajJ4dDmm1dOpBflkIMrkyctOw-l9aOayg6DZJi5exfzpBz7AKjn4A9E3Z01fpdqUmhP0n74hwCJY5z,LDMnf9qM40.J\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "803bd77b-383a-4a7d-b81c-0139de5cf7b2",
+          "name": "List orders",
+          "request": {
+            "name": "List orders",
+            "description": {
+              "content": "List orders for a given account for the current trading day, filtered on the given query parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "orders"
+              ],
+              "host": [
+                "{{accounts-account_id-orders-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<long>"
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<long>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "25"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7d44f522-39bb-465c-a689-323189d8a8a9",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "25"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"<long>\",\n      \"updated_at\": \"<long>\",\n      \"order_id\": \"12390213\",\n      \"version\": 1,\n      \"account_id\": \"100000\",\n      \"account_number\": \"ACC0001\",\n      \"state\": \"open\",\n      \"status\": \"pending-cancel\",\n      \"symbol\": \"AAPL\",\n      \"order_type\": \"<string>\",\n      \"side\": \"<string>\",\n      \"quantity\": \"100\",\n      \"time_in_force\": \"<string>\",\n      \"filled_quantity\": \"100\",\n      \"running_position\": \"100\",\n      \"reference_id\": \"my-order-id-123\",\n      \"price\": \"123.99\",\n      \"stop_price\": \"123.99\",\n      \"average_price\": 8733.60567647082,\n      \"order_update_reason\": \"reject\",\n      \"text\": \"string\",\n      \"strategy\": {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"start_at\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"end_at\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"urgency\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"open_close_indicator\": \"<string>\"\n    },\n    {\n      \"created_at\": \"<long>\",\n      \"updated_at\": \"<long>\",\n      \"order_id\": \"12390213\",\n      \"version\": 1,\n      \"account_id\": \"100000\",\n      \"account_number\": \"ACC0001\",\n      \"state\": \"open\",\n      \"status\": \"accepted-for-bidding\",\n      \"symbol\": \"AAPL\",\n      \"order_type\": \"<string>\",\n      \"side\": \"<string>\",\n      \"quantity\": \"100\",\n      \"time_in_force\": \"<string>\",\n      \"filled_quantity\": \"100\",\n      \"running_position\": \"100\",\n      \"reference_id\": \"my-order-id-123\",\n      \"price\": \"123.99\",\n      \"stop_price\": \"123.99\",\n      \"average_price\": 292.29728903970243,\n      \"order_update_reason\": \"cancel-reject\",\n      \"text\": \"string\",\n      \"strategy\": {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"start_at\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"end_at\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"urgency\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"open_close_indicator\": \"<string>\"\n    }\n  ],\n  \"next_page_token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "20e33cd5-fb6b-425d-9be2-fec436c99400",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "25"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://ttHaza.egtt9UQbrS\",\n  \"title\": \"string\",\n  \"status\": 535.2633413416988,\n  \"detail\": \"string\",\n  \"instance\": \"https://SxQhIqxSvbspzoyQvxGC.zajJ4dDmm1dOpBflkIMrkyctOw-l9aOayg6DZJi5exfzpBz7AKjn4A9E3Z01fpdqUmhP0n74hwCJY5z,LDMnf9qM40.J\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "55948d9d-455f-4be2-82bb-29e1a117b256",
+          "name": "Delete all orders",
+          "request": {
+            "name": "Delete all orders",
+            "description": {
+              "content": "Attempts to cancel all open orders for a given account. Cancelling an order cannot be guaranteed as there might be in-flight executions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "orders"
+              ],
+              "host": [
+                "{{accounts-account_id-orders-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "symbol_format",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ebf783f4-15ef-4694-a61a-2f928501b2bf",
+              "name": "Successfully attempted to cancel all open orders.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "symbol",
+                      "value": "AAPL"
+                    },
+                    {
+                      "key": "symbol_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    \"12390213\",\n    \"12390213\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "beaed70c-52ed-481e-bdae-cf1a9dafb637",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "symbol",
+                      "value": "AAPL"
+                    },
+                    {
+                      "key": "symbol_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://ttHaza.egtt9UQbrS\",\n  \"title\": \"string\",\n  \"status\": 535.2633413416988,\n  \"detail\": \"string\",\n  \"instance\": \"https://SxQhIqxSvbspzoyQvxGC.zajJ4dDmm1dOpBflkIMrkyctOw-l9aOayg6DZJi5exfzpBz7AKjn4A9E3Z01fpdqUmhP0n74hwCJY5z,LDMnf9qM40.J\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e5c83cb6-88e5-4ac3-bfbe-3a16bd7ee8cc",
+          "name": "Get order",
+          "request": {
+            "name": "Get order",
+            "description": {
+              "content": "Get an order that was previously created.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "orders",
+                ":order_id"
+              ],
+              "host": [
+                "{{accounts-account_id-orders-order_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "order_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b86dbda5-a257-40fd-812b-617682ec5685",
+              "name": "The order associated with the given `order_id`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"order\": {\n    \"created_at\": \"<long>\",\n    \"updated_at\": \"<long>\",\n    \"order_id\": \"12390213\",\n    \"version\": 1,\n    \"account_id\": \"100000\",\n    \"account_number\": \"ACC0001\",\n    \"state\": \"rejected\",\n    \"status\": \"new\",\n    \"symbol\": \"AAPL\",\n    \"order_type\": \"<string>\",\n    \"side\": \"<string>\",\n    \"quantity\": \"100\",\n    \"time_in_force\": \"<string>\",\n    \"filled_quantity\": \"100\",\n    \"running_position\": \"100\",\n    \"reference_id\": \"my-order-id-123\",\n    \"price\": \"123.99\",\n    \"stop_price\": \"123.99\",\n    \"average_price\": 2114.681306133551,\n    \"order_update_reason\": \"reject\",\n    \"text\": \"string\",\n    \"strategy\": {\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"start_at\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"end_at\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"urgency\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    },\n    \"open_close_indicator\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "63a7a749-8a6a-488f-83bd-ce0c093da427",
+          "name": "Delete order",
+          "request": {
+            "name": "Delete order",
+            "description": {
+              "content": "Attempts to cancel an existing order. Cancelling an order cannot be guaranteed as there might be in-flight executions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "orders",
+                ":order_id"
+              ],
+              "host": [
+                "{{accounts-account_id-orders-order_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "order_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4e4e8980-2175-40c6-b7eb-c4c83a9d993a",
+              "name": "Order cancel successfully attempted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6e3be1d5-91fd-41ac-a357-0c63937f9c4b",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://ttHaza.egtt9UQbrS\",\n  \"title\": \"string\",\n  \"status\": 535.2633413416988,\n  \"detail\": \"string\",\n  \"instance\": \"https://SxQhIqxSvbspzoyQvxGC.zajJ4dDmm1dOpBflkIMrkyctOw-l9aOayg6DZJi5exfzpBz7AKjn4A9E3Z01fpdqUmhP0n74hwCJY5z,LDMnf9qM40.J\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b31da735-d168-49fd-b4c2-869f2f44fd69",
+          "name": "Update order",
+          "request": {
+            "name": "Update order",
+            "description": {
+              "content": "Attempts to update an existing order. This can be used to update a subset of an order's attributes, for example price and quantity.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "orders",
+                ":order_id"
+              ],
+              "host": [
+                "{{accounts-account_id-orders-order_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "order_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": \"<string>\",\n  \"price\": \"<string>\",\n  \"stop_price\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9aa0a38b-f8ac-42e7-8434-fd34747b6d25",
+              "name": "Order update successfully attempted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quantity\": \"100\",\n  \"price\": \"123.99\",\n  \"stop_price\": \"123.99\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1b40526f-3bee-4732-8636-0c485a592bcb",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quantity\": \"100\",\n  \"price\": \"123.99\",\n  \"stop_price\": \"123.99\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://ttHaza.egtt9UQbrS\",\n  \"title\": \"string\",\n  \"status\": 535.2633413416988,\n  \"detail\": \"string\",\n  \"instance\": \"https://SxQhIqxSvbspzoyQvxGC.zajJ4dDmm1dOpBflkIMrkyctOw-l9aOayg6DZJi5exfzpBz7AKjn4A9E3Z01fpdqUmhP0n74hwCJY5z,LDMnf9qM40.J\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cf3ab38b-b299-4750-bf07-9d3d4f62eb1b",
+          "name": "Get Executions",
+          "request": {
+            "name": "Get Executions",
+            "description": {
+              "content": "Retrieves filled and partially-filled execution reports for the specified\ntrading account, ordered by transaction time (nanosecond precision) descending.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "executions"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-executions-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "instrument_ids",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated instrument identifiers (UUIDs) or symbols (e.g. `AAPL`) to filter by. When provided, only executions for any of the listed instruments are returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "1000",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<dateTime>",
+                  "description": "The start date and time for the query range, inclusive (ISO 8601 format)"
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<dateTime>",
+                  "description": "The end date and time for the query range, inclusive (ISO 8601 format)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d08ebf76-4907-4464-bf77-53d26e5b75fa",
+              "name": "List of executions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "executions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-executions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from",
+                      "value": "2025-04-24 14:30:00+00:00"
+                    },
+                    {
+                      "key": "to",
+                      "value": "2025-04-24 18:30:00+00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"019d216d-9857-7e23-ae01-edc07126c9e4\",\n      \"order_id\": \"01928b4d-c000-7000-8000-000000000001\",\n      \"side\": \"BUY\",\n      \"quantity\": \"100\",\n      \"transaction_time\": \"2026-03-24 19:58:43.798000+00:00\",\n      \"instrument_id\": \"528ec5c3-cdbf-447c-b995-ec6c83cfbc02\",\n      \"price\": \"150.25\",\n      \"symbol\": \"AAPL\"\n    },\n    {\n      \"id\": \"019d216d-9857-7e23-ae01-edc07126c9e4\",\n      \"order_id\": \"01928b4d-c000-7000-8000-000000000001\",\n      \"side\": \"SELL\",\n      \"quantity\": \"100\",\n      \"transaction_time\": \"2026-03-24 19:58:43.798000+00:00\",\n      \"instrument_id\": \"528ec5c3-cdbf-447c-b995-ec6c83cfbc02\",\n      \"price\": \"150.25\",\n      \"symbol\": \"AAPL\"\n    }\n  ],\n  \"metadata\": {\n    \"request_id\": \"string\",\n    \"next_page_token\": null,\n    \"page_number\": null,\n    \"previous_page_token\": null,\n    \"total_items\": 7699,\n    \"total_pages\": null\n  },\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "504b91e0-0909-4789-9f04-1e95bef672b2",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "executions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-executions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from",
+                      "value": "2025-04-24 14:30:00+00:00"
+                    },
+                    {
+                      "key": "to",
+                      "value": "2025-04-24 18:30:00+00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    {\n      \"key_0\": 7024\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58718cb9-5b4d-4456-ab7f-51a7b455ac06",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "executions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-executions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from",
+                      "value": "2025-04-24 14:30:00+00:00"
+                    },
+                    {
+                      "key": "to",
+                      "value": "2025-04-24 18:30:00+00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 3912,\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b6465c1-91df-482f-b9d3-d49560919872",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "executions"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-executions-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from",
+                      "value": "2025-04-24 14:30:00+00:00"
+                    },
+                    {
+                      "key": "to",
+                      "value": "2025-04-24 18:30:00+00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 3912,\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd614b39-bf01-4b31-a51a-acd0edf69f77",
+          "name": "Get Orders",
+          "request": {
+            "name": "Get Orders",
+            "description": {
+              "content": "List orders for an account with optional filtering",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "orders"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-orders-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "1000",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "order_ids",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated order IDs to filter by. When provided, only orders whose order ID is in this set are returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated order statuses to filter by"
+                },
+                {
+                  "disabled": false,
+                  "key": "symbol",
+                  "value": "<string>",
+                  "description": "Filter by symbol"
+                },
+                {
+                  "disabled": false,
+                  "key": "instrument_ids",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols)."
+                },
+                {
+                  "disabled": false,
+                  "key": "instrument_type",
+                  "value": "<string>",
+                  "description": "Instrument type filter (e.g., COMMON_STOCK, OPTION)"
+                },
+                {
+                  "disabled": false,
+                  "key": "underlying_instrument_ids",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols). Matches options orders whose resolved underlier is any of the given instruments."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<dateTime>",
+                  "description": "The start date and time for the query range, inclusive (ISO 8601 format)"
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<dateTime>",
+                  "description": "The end date and time for the query range, inclusive (ISO 8601 format)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ac7509a1-3b4d-41c9-aeac-b4d6cc5c8981",
+              "name": "List of orders",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "order_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "underlying_instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "2025-04-24 14:30:00+00:00"
+                    },
+                    {
+                      "key": "to",
+                      "value": "2025-04-24 18:30:00+00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 19816,\n      \"average_fill_price\": \"47.95\",\n      \"client_order_id\": \"my-ref-id-20251001-001\",\n      \"created_at\": \"2025-10-31 13:30:00+00:00\",\n      \"filled_quantity\": \"5\",\n      \"id\": \"0195f6c7-4f64-7e3c-8b0a-1d8e4f5e6a7b\",\n      \"instrument_id\": \"d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"leaves_quantity\": \"5\",\n      \"limit_price\": \"48.00\",\n      \"order_type\": \"LIMIT\",\n      \"quantity\": \"10\",\n      \"side\": \"BUY\",\n      \"status\": \"PARTIALLY_FILLED\",\n      \"stop_price\": null,\n      \"symbol\": \"TSLA\",\n      \"time_in_force\": \"DAY\",\n      \"updated_at\": \"2025-10-31 13:35:10+00:00\",\n      \"venue\": \"XNAS\"\n    },\n    {\n      \"account_id\": 19816,\n      \"average_fill_price\": \"50.03\",\n      \"client_order_id\": \"my-ref-id-20251001-002\",\n      \"created_at\": \"2025-10-31 14:00:00+00:00\",\n      \"filled_quantity\": \"10\",\n      \"id\": \"0195f6c8-1a2b-7c3d-8e4f-5a6b7c8d9e0f\",\n      \"instrument_id\": \"d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"leaves_quantity\": \"0\",\n      \"limit_price\": null,\n      \"order_type\": \"MARKET\",\n      \"quantity\": \"10\",\n      \"side\": \"SELL\",\n      \"status\": \"FILLED\",\n      \"stop_price\": null,\n      \"symbol\": \"TSLA\",\n      \"time_in_force\": \"DAY\",\n      \"updated_at\": \"2025-10-31 14:00:05+00:00\",\n      \"venue\": \"XNAS\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"next_page_token\": \"cGFnZT0yJmxhc3RfaWQ9b3JkXzRjRDVlNkY3ZzhIOWkwSjE=\",\n    \"page_number\": 1,\n    \"request_id\": \"d9a4f5b6-c3d4-6e5f-0a1b-7c8d9e0f1a2b\",\n    \"total_items\": 25,\n    \"total_pages\": 3\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02b03063-9b44-43c9-85df-7da36af8dabf",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "order_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "underlying_instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "2025-04-24 14:30:00+00:00"
+                    },
+                    {
+                      "key": "to",
+                      "value": "2025-04-24 18:30:00+00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f0e196c-dcb9-4d04-9c33-72aebf24cd9c",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "order_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "underlying_instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "2025-04-24 14:30:00+00:00"
+                    },
+                    {
+                      "key": "to",
+                      "value": "2025-04-24 18:30:00+00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 3912,\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "be1be8e5-bbf2-423b-ae4c-8c4ace77c1ee",
+          "name": "Submit Orders",
+          "request": {
+            "name": "Submit Orders",
+            "description": {
+              "content": "Submit new orders",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "orders"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-orders-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"side\": \"<string>\",\n    \"quantity\": \"<string>\",\n    \"order_type\": \"<string>\",\n    \"time_in_force\": \"<string>\",\n    \"expires_at\": \"<string,null-date-time>\",\n    \"extended_hours\": \"<boolean,null>\",\n    \"id\": \"<string,null>\",\n    \"instrument_id\": \"<null>\",\n    \"limit_offset\": \"<string,null>\",\n    \"limit_price\": \"<string,null>\",\n    \"stop_price\": \"<string,null>\",\n    \"symbol\": \"<string,null>\",\n    \"trailing_offset\": \"<string,null>\",\n    \"trailing_offset_type\": \"<null>\"\n  },\n  {\n    \"side\": \"<string>\",\n    \"quantity\": \"<string>\",\n    \"order_type\": \"<string>\",\n    \"time_in_force\": \"<string>\",\n    \"expires_at\": \"<string,null-date-time>\",\n    \"extended_hours\": \"<boolean,null>\",\n    \"id\": \"<string,null>\",\n    \"instrument_id\": \"<null>\",\n    \"limit_offset\": \"<string,null>\",\n    \"limit_price\": \"<string,null>\",\n    \"stop_price\": \"<string,null>\",\n    \"symbol\": \"<string,null>\",\n    \"trailing_offset\": \"<string,null>\",\n    \"trailing_offset_type\": \"<null>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "579ef178-529e-43f8-848f-2c05607930e4",
+              "name": "Orders submitted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"limit_price\": \"48.00\",\n    \"order_type\": \"LIMIT\",\n    \"quantity\": \"1\",\n    \"side\": \"BUY\",\n    \"symbol\": \"TSLA\",\n    \"time_in_force\": \"DAY\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 19816,\n      \"client_order_id\": \"my-ref-id-20251003-001\",\n      \"created_at\": \"2025-10-03 14:01:15+00:00\",\n      \"filled_quantity\": \"0\",\n      \"id\": \"0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e01\",\n      \"instrument_id\": \"d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"leaves_quantity\": \"1\",\n      \"order_type\": \"MARKET\",\n      \"quantity\": \"1\",\n      \"side\": \"BUY\",\n      \"status\": \"PENDING_NEW\",\n      \"symbol\": \"TSLA\",\n      \"time_in_force\": \"DAY\",\n      \"updated_at\": \"2025-10-03 14:01:15+00:00\",\n      \"venue\": \"XNAS\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"ea0b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4d\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bf931dfe-27ae-46bf-93d1-46e654e017b2",
+              "name": "Invalid order request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"limit_price\": \"48.00\",\n    \"order_type\": \"LIMIT\",\n    \"quantity\": \"1\",\n    \"side\": \"BUY\",\n    \"symbol\": \"TSLA\",\n    \"time_in_force\": \"DAY\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to parse the request body as JSON: [0].?: expected `,` or `}` at line 11 column 3\"\n  },\n  \"metadata\": {\n    \"request_id\": \"8cb2657f-828e-4af5-b7d0-5cc6b7354bc2\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6442ccb6-3087-436b-ad40-5441993d5e05",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"limit_price\": \"48.00\",\n    \"order_type\": \"LIMIT\",\n    \"quantity\": \"1\",\n    \"side\": \"BUY\",\n    \"symbol\": \"TSLA\",\n    \"time_in_force\": \"DAY\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0bcca528-508c-4ee0-a8ed-7c07555c2f18",
+              "name": "Malformed order request payload",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"limit_price\": \"48.00\",\n    \"order_type\": \"LIMIT\",\n    \"quantity\": \"1\",\n    \"side\": \"BUY\",\n    \"symbol\": \"TSLA\",\n    \"time_in_force\": \"DAY\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 422,\n    \"message\": \"Failed to deserialize the JSON body into the target type: [0]: missing field `order_type` at line 26 column 1\"\n  },\n  \"metadata\": {\n    \"request_id\": \"1b2c02c3-92a1-4432-8638-e71038c105c3\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5eee537a-31a3-46bf-99af-3c4dbec14b89",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"limit_price\": \"48.00\",\n    \"order_type\": \"LIMIT\",\n    \"quantity\": \"1\",\n    \"side\": \"BUY\",\n    \"symbol\": \"TSLA\",\n    \"time_in_force\": \"DAY\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 3912,\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c67a264f-b66d-48b1-a30c-2154bb15612c",
+          "name": "Cancel All Open Orders",
+          "request": {
+            "name": "Cancel All Open Orders",
+            "description": {
+              "content": "Cancel all orders for an account",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "orders"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-orders-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "side",
+                  "value": "<string>",
+                  "description": "Filter by order side (BUY or SELL)"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter by order type (e.g., MARKET, LIMIT)"
+                },
+                {
+                  "disabled": false,
+                  "key": "instrument_type",
+                  "value": "<string>",
+                  "description": "Filter by instrument type (e.g., COMMON_STOCK, OPTION)"
+                },
+                {
+                  "disabled": false,
+                  "key": "instrument_ids",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5d330997-125f-4f38-ac76-0d35637b16ee",
+              "name": "Orders cancelled",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "side",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"account_id\": 19816,\n      \"average_fill_price\": \"47.95\",\n      \"client_order_id\": \"my-ref-id-20251031-001\",\n      \"created_at\": \"2025-10-31 13:30:00+00:00\",\n      \"filled_quantity\": \"5\",\n      \"id\": \"019c0b48-b8fb-700d-8c5e-931d54555f54\",\n      \"instrument_id\": \"d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"leaves_quantity\": \"5\",\n      \"limit_price\": \"48.00\",\n      \"order_type\": \"LIMIT\",\n      \"quantity\": \"10\",\n      \"side\": \"BUY\",\n      \"status\": \"PENDING_CANCEL\",\n      \"stop_price\": null,\n      \"symbol\": \"TSLA\",\n      \"time_in_force\": \"DAY\",\n      \"updated_at\": \"2025-10-31 14:15:00+00:00\",\n      \"venue\": \"XNAS\"\n    },\n    {\n      \"account_id\": 19816,\n      \"client_order_id\": \"my-ref-id-20251031-002\",\n      \"created_at\": \"2025-10-31 14:00:00+00:00\",\n      \"filled_quantity\": \"0\",\n      \"id\": \"019c0b49-03af-70d1-8eeb-d69836c9840b\",\n      \"instrument_id\": \"d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"leaves_quantity\": \"5\",\n      \"order_type\": \"STOP\",\n      \"quantity\": \"5\",\n      \"side\": \"SELL\",\n      \"status\": \"PENDING_CANCEL\",\n      \"stop_price\": \"47.00\",\n      \"symbol\": \"TSLA\",\n      \"time_in_force\": \"DAY\",\n      \"updated_at\": \"2025-10-31 14:15:00+00:00\",\n      \"venue\": \"XNAS\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"fb1c2d3e-4f5a-6b7c-8d9e-0f1a2b3c4d5e\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e3a82e1-af6e-4681-bf86-d910a15d4a9a",
+              "name": "Invalid filter parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "side",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 3912,\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "46810132-22a5-488b-ad29-097550a8d1ab",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "side",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5050c2e8-8836-4570-85e0-6c603806c8df",
+              "name": "No orders match the specified filters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "side",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"No orders match the specified filters\"\n  },\n  \"metadata\": {\n    \"request_id\": \"2f035fbb-68ba-42e9-8743-d3b21110b4c7\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cca5630f-6379-4fd4-acbb-aa55ae90ad8d",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "side",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 3912,\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "93bce709-9e03-42a0-9a00-6fccbfc5d14a",
+          "name": "Get Order By ID",
+          "request": {
+            "name": "Get Order By ID",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "orders",
+                ":order_id"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-orders-order_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "order_id",
+                  "description": "(Required) Order identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b2fdf69b-5a3a-4190-a482-ea73acf2b8ac",
+              "name": "Order details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"account_id\": 19816,\n    \"average_fill_price\": \"47.95\",\n    \"client_order_id\": \"my-ref-id-20251001-001\",\n    \"created_at\": \"2025-10-31 13:30:00+00:00\",\n    \"filled_quantity\": \"5\",\n    \"id\": \"0195f6c7-4f64-7e3c-8b0a-1d8e4f5e6a7b\",\n    \"instrument_id\": \"d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab\",\n    \"instrument_type\": \"COMMON_STOCK\",\n    \"leaves_quantity\": \"5\",\n    \"limit_price\": \"48.00\",\n    \"order_type\": \"LIMIT\",\n    \"quantity\": \"10\",\n    \"side\": \"BUY\",\n    \"status\": \"PARTIALLY_FILLED\",\n    \"stop_price\": null,\n    \"symbol\": \"TSLA\",\n    \"time_in_force\": \"DAY\",\n    \"updated_at\": \"2025-10-31 13:35:10+00:00\",\n    \"venue\": \"XNAS\"\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4379209b-6f5a-417c-a1e7-c9980421a9be",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc340315-2014-4614-8afb-f8e6ac6d9743",
+              "name": "Order not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Order 97dfdcfe503f425c8367ca10928e2499 not found for account 100001\"\n  },\n  \"metadata\": {\n    \"request_id\": \"efbd46f4-4bfc-455b-bae0-ee13f84360ba\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4d266f2-2bac-40f0-afdd-59957af28d6b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 3912,\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a3c0490c-0d1a-4828-8fc4-cce6dc6eb14e",
+          "name": "Cancel Open Order",
+          "request": {
+            "name": "Cancel Open Order",
+            "description": {
+              "content": "Cancel a specific order",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "orders",
+                ":order_id"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-orders-order_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "order_id",
+                  "description": "(Required) Order identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7e1874e5-fc67-483a-b70e-8eb34b5a69ce",
+              "name": "Order cancelled successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"account_id\": 19816,\n    \"average_fill_price\": \"47.95\",\n    \"client_order_id\": \"my-ref-id-20251001-001\",\n    \"created_at\": \"2025-10-31 13:30:00+00:00\",\n    \"filled_quantity\": \"5\",\n    \"id\": \"d40a92e6-381f-4803-b292-56d350d9d54a\",\n    \"instrument_id\": \"d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab\",\n    \"instrument_type\": \"COMMON_STOCK\",\n    \"leaves_quantity\": \"5\",\n    \"limit_price\": \"48.00\",\n    \"order_type\": \"LIMIT\",\n    \"quantity\": \"10\",\n    \"side\": \"BUY\",\n    \"status\": \"PENDING_CANCEL\",\n    \"stop_price\": null,\n    \"symbol\": \"TSLA\",\n    \"time_in_force\": \"DAY\",\n    \"updated_at\": \"2025-10-31 14:15:00+00:00\",\n    \"venue\": \"XNAS\"\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"2e3f4a5b-6c7d-8e9f-0a1b-2c3d4e5f6a7b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7fa60f13-3b97-4842-9224-0bbc8be26d94",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "896a6e42-a810-489f-96b2-e25c8f69090f",
+              "name": "Order not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Order d40a92e6-381f-4803-b292-56d350d9d54a not found for account 100001\"\n  },\n  \"metadata\": {\n    \"request_id\": \"70151ee4-5209-4c75-9372-dffc0a6ebade\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "551c2d7f-82fd-47c5-8ad9-1dd5f10cc1c8",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 3912,\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "99943e60-5a37-4d23-a148-33aebcf58ea1",
+          "name": "Replace Order",
+          "request": {
+            "name": "Replace Order",
+            "description": {
+              "content": "Replace an order with new parameters",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "orders",
+                ":order_id"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-orders-order_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "account_id",
+                  "description": "(Required) Account identifier"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "order_id",
+                  "description": "(Required) Order identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"limit_price\": \"<string,null>\",\n  \"quantity\": \"<string,null>\",\n  \"stop_price\": \"<string,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0d49e396-8937-4acd-9d2c-be041404e434",
+              "name": "Order replaced successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"limit_price\": \"49.00\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"account_id\": 19816,\n    \"client_order_id\": \"my-ref-id-20251001-001\",\n    \"created_at\": \"2025-10-31 13:30:00+00:00\",\n    \"filled_quantity\": \"0\",\n    \"id\": \"0195f6c7-4f64-7e3c-8b0a-1d8e4f5e6a7b\",\n    \"instrument_id\": \"d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab\",\n    \"instrument_type\": \"COMMON_STOCK\",\n    \"leaves_quantity\": \"10\",\n    \"limit_price\": \"49.00\",\n    \"order_type\": \"LIMIT\",\n    \"quantity\": \"10\",\n    \"side\": \"BUY\",\n    \"status\": \"PENDING_REPLACE\",\n    \"stop_price\": null,\n    \"symbol\": \"TSLA\",\n    \"time_in_force\": \"DAY\",\n    \"updated_at\": \"2025-10-31 14:10:00+00:00\",\n    \"venue\": \"XNAS\"\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"1d2e3f4a-5b6c-7d8e-9f0a-1b2c3d4e5f6a\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d30bd4cb-0214-4493-afe1-bf86df231304",
+              "name": "Invalid replacement request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"limit_price\": \"49.00\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to parse the request body as JSON: expected `:` at line 2 column 14\"\n  },\n  \"metadata\": {\n    \"request_id\": \"633c15ef-d2e7-4f27-b905-2819455248bb\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "55e79adf-b787-4df9-9439-c51762fafcac",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"limit_price\": \"49.00\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5518f0c6-58ff-4b4a-81a5-701556d41206\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "473b9501-cf7d-43df-a023-e3710722e1b3",
+              "name": "Order not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"limit_price\": \"49.00\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Order 019c7b89-feea-7600-9e56-f15ef0557835 not found for account 100001\"\n  },\n  \"metadata\": {\n    \"request_id\": \"9e290ec2-378f-4d08-a729-0a9ab155acbf\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e17aa524-85a2-4230-9491-1d59ecffdec5",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "orders",
+                    ":order_id"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-orders-order_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "account_id",
+                      "description": "(Required) Account identifier"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "order_id",
+                      "description": "(Required) Order identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"limit_price\": \"49.00\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 3912,\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "accounts-account_id-bulk-orders-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "accounts-account_id-orders-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "accounts-account_id-orders-order_id-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-account_id-executions-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-account_id-orders-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-accounts-account_id-orders-order_id-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "9c174100-5575-4e39-92eb-8f588a3394fe",
+    "name": "Clear Street Orders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged Orders across 2 of this provider's published API definitions: clear-street-studio-openapi.yml, clear-street-trading-api-openapi.yml. Each path carries the servers of the definition it was published in.",
+      "type": "text/plain"
+    }
+  }
+}

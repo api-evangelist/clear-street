@@ -1,0 +1,350 @@
+{
+  "item": [
+    {
+      "id": "0bdd4502-7426-40e5-9dff-a10c6944cbd8",
+      "name": "Margin",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b5d38976-2632-4cba-a2a2-2576cf6918f2",
+          "name": "Get Reg-T margin",
+          "request": {
+            "name": "Get Reg-T margin",
+            "description": {
+              "content": "Get the latest Reg-T margin calculation for the given entity",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "entities",
+                ":entity_id",
+                "regt-margin"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "entity_id",
+                  "description": "(Required) Entity ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "df10f7c5-d9a6-47a9-9630-198dab3c5656",
+              "name": "Reg-T margin",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id",
+                    "regt-margin"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) Entity ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": \"string\",\n  \"timestamp\": 2105508032762,\n  \"net_market_value\": 5089.020536447048,\n  \"effective_requirement\": 7471.5521603702255,\n  \"house_requirement\": 9968.935647474138,\n  \"house_excess\": 4253.750022267635,\n  \"exchange_requirement\": 5513.465558913284,\n  \"sma\": 3950.305719006855,\n  \"sod_buying_power\": 9635.443099544258,\n  \"overnight_buying_power\": 5389.067498157537,\n  \"day_trade_buying_power\": 1388.071698771871,\n  \"groups\": [\n    {\n      \"name\": \"string\",\n      \"market_value\": 7182.587077016635,\n      \"market_value_percent\": 1479.6237291066805,\n      \"effective_requirement\": 3002.2636288082617,\n      \"house_requirement\": 7660.024821407279,\n      \"exchange_requirement\": 5182.118798282385,\n      \"margin_percent\": 7981.546314743388,\n      \"margin_percent_contribution\": 8314.830075022874,\n      \"members\": [\n        {\n          \"symbol\": \"AAPL\",\n          \"asset_class\": \"option\",\n          \"quantity\": \"100\",\n          \"market_value\": 2515.0096813788546,\n          \"market_value_percent\": 9313.89849628186\n        },\n        {\n          \"symbol\": \"AAPL\",\n          \"asset_class\": \"currency\",\n          \"quantity\": \"100\",\n          \"market_value\": 8808.885263318603,\n          \"market_value_percent\": 1708.5046937636228\n        }\n      ]\n    },\n    {\n      \"name\": \"string\",\n      \"market_value\": 6592.334378602594,\n      \"market_value_percent\": 1208.7966618304358,\n      \"effective_requirement\": 8852.893601738679,\n      \"house_requirement\": 6088.867772143513,\n      \"exchange_requirement\": 6761.170541251145,\n      \"margin_percent\": 584.0485351318691,\n      \"margin_percent_contribution\": 7610.163837699386,\n      \"members\": [\n        {\n          \"symbol\": \"AAPL\",\n          \"asset_class\": \"fund\",\n          \"quantity\": \"100\",\n          \"market_value\": 1504.409836547499,\n          \"market_value_percent\": 3059.0670965923437\n        },\n        {\n          \"symbol\": \"AAPL\",\n          \"asset_class\": \"currency\",\n          \"quantity\": \"100\",\n          \"market_value\": 4008.93463521251,\n          \"market_value_percent\": 7463.688062374795\n        }\n      ]\n    }\n  ],\n  \"effective_excess\": 694.4889815986177,\n  \"exchange_excess\": 580.0733282934267\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81b64542-ac3b-42cb-9877-cd66c5fff0d3",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id",
+                    "regt-margin"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) Entity ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://dTcZwzbo.wjGEXox2baefxjLK.3aH9,ZWIbuES6aLkx,ghuXqRb\",\n  \"title\": \"string\",\n  \"status\": 465.3479547092498,\n  \"detail\": \"string\",\n  \"instance\": \"http://jLeoCSImOOqiy.mzeiQRgqFx\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7a7ae507-cc53-4b3a-9150-d6341ecc4d8e",
+          "name": "Get portfolio margin",
+          "request": {
+            "name": "Get portfolio margin",
+            "description": {
+              "content": "Get latest portfolio margin calculation for the given entity",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "entities",
+                ":entity_id",
+                "portfolio-margin"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "entity_id",
+                  "description": "(Required) Entity ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "12038cf6-ccb7-4075-8db5-c293083814de",
+              "name": "Portfolio margin",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id",
+                    "portfolio-margin"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) Entity ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": \"string\",\n  \"timestamp\": 1897957942779,\n  \"net_market_value\": 9806.824728260091,\n  \"effective_requirement\": 7338.572954818555,\n  \"effecive_excess\": 2212.060158289566,\n  \"house_requirement\": 1378.9061142059056,\n  \"house_excess\": 787.0423644208091,\n  \"risk_based_requirement\": 8943.516349295081,\n  \"risk_based_requirement_percent\": 3824.0718139635787,\n  \"non_marginable_requirement\": 42.18369939335442,\n  \"non_marginable_requirement_percent\": 1485.4091286753946,\n  \"add_on_requirement\": 1853.6236818950836,\n  \"add_on_requirement_percent\": 2960.525268169467,\n  \"liquidity_add_on\": 224.8646721658365,\n  \"liquidity_add_on_percent\": 5217.640376643277,\n  \"concentration_add_on\": 6390.306918883726,\n  \"concentration_add_on_percent\": 7685.183672845915,\n  \"discretionary_requirement\": 6322.463327854405,\n  \"discretionary_requirement_percent\": 4338.78526957894,\n  \"vega_requirement\": 8633.16666873417,\n  \"groups\": [\n    {\n      \"name\": \"string\",\n      \"market_value\": 271.0796085346767,\n      \"market_value_percent\": 2370.27830664991,\n      \"effective_requirement\": 1874.6819005276582,\n      \"margin_percent\": 9050.08158283797,\n      \"margin_percent_contribution\": 1256.6413530564191,\n      \"members\": [\n        {\n          \"symbol\": \"AAPL\",\n          \"asset_class\": \"currency\",\n          \"quantity\": \"100\",\n          \"market_value\": 2849.54789020029,\n          \"market_value_percent\": 4463.411047886727,\n          \"shocks\": {\n            \"key_0\": 9517.192122822364,\n            \"key_1\": 2569.6234153247456,\n            \"key_2\": 3910.6307258119887\n          }\n        },\n        {\n          \"symbol\": \"AAPL\",\n          \"asset_class\": \"fund\",\n          \"quantity\": \"100\",\n          \"market_value\": 3513.0927370766753,\n          \"market_value_percent\": 6205.733028740734,\n          \"shocks\": {\n            \"key_0\": 4574.684857189416,\n            \"key_1\": 5425.024141647952,\n            \"key_2\": 8678.557050540185\n          }\n        }\n      ],\n      \"risk_based_requirement\": 3203.255667555662,\n      \"non_marginable_requirement\": 8746.819077160548,\n      \"liquidity_requirement\": 404.3380335555302,\n      \"concentration_requirement\": 4070.897653203236,\n      \"discretionary_requirement\": 4581.020354266026,\n      \"regulatory_requirement\": 7712.501437810817,\n      \"var_requirement\": 437.52755542054933,\n      \"shocks\": {\n        \"key_0\": 5982.568857098783,\n        \"key_1\": 2334.93324313757,\n        \"key_2\": 6032.714836427459\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"market_value\": 6864.802625381449,\n      \"market_value_percent\": 8458.103076224337,\n      \"effective_requirement\": 1649.714737821646,\n      \"margin_percent\": 79.28899656447608,\n      \"margin_percent_contribution\": 1295.7759843414074,\n      \"members\": [\n        {\n          \"symbol\": \"AAPL\",\n          \"asset_class\": \"currency\",\n          \"quantity\": \"100\",\n          \"market_value\": 5416.36973505817,\n          \"market_value_percent\": 5061.027641952601,\n          \"shocks\": {\n            \"key_0\": 8190.44102310149\n          }\n        },\n        {\n          \"symbol\": \"AAPL\",\n          \"asset_class\": \"fund\",\n          \"quantity\": \"100\",\n          \"market_value\": 9519.666899271177,\n          \"market_value_percent\": 2401.244475238379,\n          \"shocks\": {\n            \"key_0\": 7030.145005743101,\n            \"key_1\": 1795.276629732353\n          }\n        }\n      ],\n      \"risk_based_requirement\": 8079.3814070768385,\n      \"non_marginable_requirement\": 8524.58459602872,\n      \"liquidity_requirement\": 6364.302065408293,\n      \"concentration_requirement\": 9181.702914377316,\n      \"discretionary_requirement\": 323.4009802563753,\n      \"regulatory_requirement\": 6243.1100474603245,\n      \"var_requirement\": 362.1260730951303,\n      \"shocks\": {\n        \"key_0\": 1588.748033116051,\n        \"key_1\": 7033.470455383869,\n        \"key_2\": 2955.318279400214\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4a68b27a-5352-4d54-9dce-c7cca081fa92",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id",
+                    "portfolio-margin"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) Entity ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://dTcZwzbo.wjGEXox2baefxjLK.3aH9,ZWIbuES6aLkx,ghuXqRb\",\n  \"title\": \"string\",\n  \"status\": 465.3479547092498,\n  \"detail\": \"string\",\n  \"instance\": \"http://jLeoCSImOOqiy.mzeiQRgqFx\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "040b2d74-fc48-4404-b8ed-47c027c8a743",
+    "name": "Common API Models Margin API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Common API models for all of Studio's APIs",
+      "type": "text/plain"
+    }
+  }
+}

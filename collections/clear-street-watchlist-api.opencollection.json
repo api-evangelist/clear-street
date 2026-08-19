@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Trading Watchlist API",
+    "version": "2025-10-31"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Watchlist",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Watchlists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/watchlists",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              }
+            ]
+          },
+          "docs": "List watchlists for the authenticated user"
+        },
+        {
+          "info": {
+            "name": "Create Watchlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.com/v1/watchlists",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Watchlist"
+        },
+        {
+          "info": {
+            "name": "Get Watchlist By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/watchlists/:watchlist_id",
+            "params": [
+              {
+                "name": "watchlist_id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Watchlist ID"
+              }
+            ]
+          },
+          "docs": "Get a watchlist by ID with all its items"
+        },
+        {
+          "info": {
+            "name": "Delete Watchlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.com/v1/watchlists/:watchlist_id",
+            "params": [
+              {
+                "name": "watchlist_id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Watchlist ID"
+              }
+            ]
+          },
+          "docs": "Delete a watchlist and all its items"
+        },
+        {
+          "info": {
+            "name": "Add Watchlist Item",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.com/v1/watchlists/:watchlist_id/items",
+            "params": [
+              {
+                "name": "watchlist_id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Watchlist ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add an instrument to a watchlist"
+        },
+        {
+          "info": {
+            "name": "Delete Watchlist Item",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.com/v1/watchlists/:watchlist_id/items/:item_id",
+            "params": [
+              {
+                "name": "watchlist_id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Watchlist ID"
+              },
+              {
+                "name": "item_id",
+                "value": "660e8400-e29b-41d4-a716-446655440001",
+                "type": "path",
+                "description": "Item ID"
+              }
+            ]
+          },
+          "docs": "Delete an instrument from a watchlist"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Common API Models Margin API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Margin",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Reg-T margin",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/entities/:entity_id/regt-margin",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path",
+                "description": "Entity ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get the latest Reg-T margin calculation for the given entity"
+        },
+        {
+          "info": {
+            "name": "Get portfolio margin",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/entities/:entity_id/portfolio-margin",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path",
+                "description": "Entity ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get latest portfolio margin calculation for the given entity"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

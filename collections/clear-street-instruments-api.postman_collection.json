@@ -1,0 +1,1587 @@
+{
+  "item": [
+    {
+      "id": "1e5f9851-433a-4d6e-b4e6-d69e4b82c297",
+      "name": "Instruments",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3cc0543b-f673-4593-83cd-5fbdb471e496",
+          "name": "List instruments",
+          "request": {
+            "name": "List instruments",
+            "description": {
+              "content": "List all available instruments.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "instruments"
+              ],
+              "host": [
+                "{{instruments-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "517357a5-02c7-4f1a-bf0a-8c65b681e194",
+              "name": "Successful response containing the list of instruments.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instruments"
+                  ],
+                  "host": [
+                    "{{instruments-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"symbols\": [\n        {\n          \"symbol\": \"AAPL\",\n          \"symbol_format\": \"cms\"\n        },\n        {\n          \"symbol\": \"AAPL\",\n          \"symbol_format\": \"osi\"\n        }\n      ],\n      \"asset_class\": \"equity\",\n      \"primary_exchange\": \"NASDAQ\",\n      \"description\": \"Apple Inc.\"\n    },\n    {\n      \"symbols\": [\n        {\n          \"symbol\": \"AAPL\",\n          \"symbol_format\": \"osi\"\n        },\n        {\n          \"symbol\": \"AAPL\",\n          \"symbol_format\": \"cms\"\n        }\n      ],\n      \"asset_class\": \"fund\",\n      \"primary_exchange\": \"NASDAQ\",\n      \"description\": \"Apple Inc.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c6edf86b-68e0-40d4-945d-beb6f31f09e9",
+          "name": "Get instrument",
+          "request": {
+            "name": "Get instrument",
+            "description": {
+              "content": "Get an instrument by the given symbol",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "instruments",
+                ":symbol"
+              ],
+              "host": [
+                "{{instruments-symbol-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "symbol_format",
+                  "value": "<string>",
+                  "description": "The format of the provided symbol."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "symbol",
+                  "description": "(Required) The symbol for the instrument."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "50279437-42e3-40f7-a5f4-8d83463a54d2",
+              "name": "Successful response containing the associated instrument.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instruments",
+                    ":symbol"
+                  ],
+                  "host": [
+                    "{{instruments-symbol-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "symbol_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "symbol",
+                      "description": "(Required) The symbol for the instrument."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"symbols\": [\n    {\n      \"symbol\": \"AAPL\",\n      \"symbol_format\": \"<string>\"\n    },\n    {\n      \"symbol\": \"AAPL\",\n      \"symbol_format\": \"<string>\"\n    }\n  ],\n  \"asset_class\": \"equity\",\n  \"primary_exchange\": \"NASDAQ\",\n  \"description\": \"Apple Inc.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8976be7d-4940-4065-a9b4-49603d5d0447",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "instruments",
+                    ":symbol"
+                  ],
+                  "host": [
+                    "{{instruments-symbol-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "symbol_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "symbol",
+                      "description": "(Required) The symbol for the instrument."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://QhxcdDsYxSfgcyq.pfmdgaSkryJ2baevh6lj\",\n  \"title\": \"string\",\n  \"status\": 383.41066682345866,\n  \"detail\": \"string\",\n  \"instance\": \"http://PZPAsXajtunHWKEnkg.btvbztX4GnbVhce7v+vUzJgJY3dSdgqf+\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "979ac46b-c669-4ddb-a189-fd6412ac80dd",
+          "name": "Get Instruments",
+          "request": {
+            "name": "Get Instruments",
+            "description": {
+              "content": "Retrieves a list of tradeable instruments.\n\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments"
+              ],
+              "host": [
+                "{{v1-instruments-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "instrument_type",
+                  "value": "<string>",
+                  "description": "Filter by instrument type (e.g. COMMON_STOCK, OPTION)"
+                },
+                {
+                  "disabled": false,
+                  "key": "instrument_ids",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated instrument identifiers: unique identifiers or symbols (symbol for equities, OSI for options)"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_marginable",
+                  "value": "<boolean>",
+                  "description": "Filter by marginable status"
+                },
+                {
+                  "disabled": false,
+                  "key": "easy_to_borrow",
+                  "value": "<boolean>",
+                  "description": "Filter by easy to borrow status"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_short_prohibited",
+                  "value": "<boolean>",
+                  "description": "Filter by short prohibited status"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_threshold_security",
+                  "value": "<boolean>",
+                  "description": "Filter by threshold security status"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_liquidation_only",
+                  "value": "<boolean>",
+                  "description": "Filter by liquidation only status"
+                },
+                {
+                  "disabled": false,
+                  "key": "is_ptp",
+                  "value": "<boolean>",
+                  "description": "Filter by publicly traded partnership (PTP) status"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "1000",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bc274f76-2a91-4289-85a5-f89bb57686a8",
+              "name": "List of instruments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments"
+                  ],
+                  "host": [
+                    "{{v1-instruments-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "is_marginable",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "easy_to_borrow",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_short_prohibited",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_threshold_security",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_liquidation_only",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_ptp",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"country_of_issue\": \"US\",\n      \"currency\": \"USD\",\n      \"easy_to_borrow\": true,\n      \"id\": \"0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"is_fractionable\": false,\n      \"is_liquidation_only\": false,\n      \"is_marginable\": true,\n      \"is_ptp\": false,\n      \"is_short_prohibited\": false,\n      \"is_threshold_security\": false,\n      \"is_tradable\": true,\n      \"name\": \"Apple Inc.\",\n      \"symbol\": \"AAPL\",\n      \"venue\": \"XNMS\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"next_page_token\": \"cGFnZT0yJmxhc3Rfc3ltYm9sPUdNRQ==\",\n    \"page_number\": 1,\n    \"request_id\": \"4a5b6c7d-8e9f-0a1b-2c3d-4e5f6a7b8c9d\",\n    \"total_items\": 10,\n    \"total_pages\": 5\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fa928e40-192f-45fc-86b6-8fe11afc16dc",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments"
+                  ],
+                  "host": [
+                    "{{v1-instruments-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "is_marginable",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "easy_to_borrow",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_short_prohibited",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_threshold_security",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_liquidation_only",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_ptp",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "25a5440a-7b70-4809-9f40-e45c2576d579",
+          "name": "Get Option Contracts",
+          "request": {
+            "name": "Get Option Contracts",
+            "description": {
+              "content": "List options contracts.\n\nReturns options contracts for a given underlier with options-specific metadata.\nExactly one underlier identifier must be provided.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments",
+                "options",
+                "contracts"
+              ],
+              "host": [
+                "{{v1-instruments-options-contracts-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "underlier",
+                  "value": "<string>",
+                  "description": "Underlier symbol (e.g., AAPL, SPX)"
+                },
+                {
+                  "disabled": false,
+                  "key": "underlying_instrument_id",
+                  "value": "<string>",
+                  "description": "Instrument identifier or symbol of the underlying equity/index"
+                },
+                {
+                  "disabled": false,
+                  "key": "expiry",
+                  "value": "<date>",
+                  "description": "Filter to contracts expiring on this date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "contract_type",
+                  "value": "<string>",
+                  "description": "Filter by contract type: CALL or PUT"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "1000",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "acf794ac-36ac-4f73-bd45-745f9f4b1a95",
+              "name": "List of options contracts",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "options",
+                    "contracts"
+                  ],
+                  "host": [
+                    "{{v1-instruments-options-contracts-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "underlier",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "underlying_instrument_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expiry",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "contract_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"contract_type\": \"CALL\",\n      \"currency\": \"USD\",\n      \"exchange\": \"BATO\",\n      \"exercise_style\": \"AMERICAN\",\n      \"expiry\": \"2026-03-20\",\n      \"id\": \"b6f4b5e2-94a8-4fe4-9a85-2b4a81d30cc5\",\n      \"is_liquidation_only\": false,\n      \"is_marginable\": true,\n      \"is_tradable\": true,\n      \"listing_type\": \"STANDARD\",\n      \"multiplier\": \"100\",\n      \"strike_price\": \"180\",\n      \"symbol\": \"AAPL  260320C00180000\",\n      \"underlying_instrument_id\": \"a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8\"\n    },\n    {\n      \"contract_type\": \"PUT\",\n      \"currency\": \"USD\",\n      \"exchange\": \"BATO\",\n      \"exercise_style\": \"AMERICAN\",\n      \"expiry\": \"2026-03-20\",\n      \"id\": \"c7e5c6f3-a5b9-5gf5-0b96-3c5b92e41dd6\",\n      \"is_liquidation_only\": false,\n      \"is_marginable\": true,\n      \"is_tradable\": true,\n      \"listing_type\": \"STANDARD\",\n      \"multiplier\": \"100\",\n      \"strike_price\": \"180\",\n      \"symbol\": \"AAPL  260320P00180000\",\n      \"underlying_instrument_id\": \"a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8\"\n    }\n  ],\n  \"metadata\": {\n    \"page_number\": 1,\n    \"request_id\": \"c2d0429d-c629-4ee1-b719-df007157f3bb\",\n    \"total_items\": 2,\n    \"total_pages\": 1\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0b4d0ce-0c4b-441d-81ea-7e2347eea76d",
+              "name": "Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "options",
+                    "contracts"
+                  ],
+                  "host": [
+                    "{{v1-instruments-options-contracts-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "underlier",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "underlying_instrument_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expiry",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "contract_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Exactly one underlier identifier must be provided: underlier or underlying_instrument_id\"\n  },\n  \"metadata\": {\n    \"request_id\": \"4bb6025f-0415-4689-9c2f-307e9a1a47c8\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "970cb079-0c58-4021-9e51-30f782d4261d",
+              "name": "Underlier not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "options",
+                    "contracts"
+                  ],
+                  "host": [
+                    "{{v1-instruments-options-contracts-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "underlier",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "underlying_instrument_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expiry",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "contract_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Instrument not found: 528ec5c3-cdbf-447c-b995-ec6c83cfbc03\"\n  },\n  \"metadata\": {\n    \"request_id\": \"58a3f5e9-74b0-48b7-a17d-16b44e123174\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5eb3f12-30f6-4b01-ada5-5977445246f0",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "options",
+                    "contracts"
+                  ],
+                  "host": [
+                    "{{v1-instruments-options-contracts-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "underlier",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "underlying_instrument_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "expiry",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "contract_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 7450.046421032872,\n      \"key_1\": \"string\",\n      \"key_2\": 2585\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "85eb8504-9419-4265-839c-7bcead5150fb",
+          "name": "Search Instruments",
+          "request": {
+            "name": "Search Instruments",
+            "description": {
+              "content": "Search instruments by symbol, alternate identifier, or company name.\n\nThe `q` parameter is case-insensitive and supports ticker symbols,\nalternate identifiers such as CUSIP, ISIN, and OPRA root,\nand company names for non-option instruments. Results are ranked by match\nquality plus instrument quality signals and relevance. Defaults to the `EQUITY` asset class (common\nstocks, preferred shares, ADRs, ETFs, and exchange-traded mutual funds).\nPass `asset_class=OPTION` to search option contracts: by full OSI symbol, by\nan OSI prefix (root + `YYMMDD` expiry, e.g. `AAPL  261217`), or by a\nroot-scoped phrase such as `AAPL Dec 250 call`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments",
+                "search"
+              ],
+              "host": [
+                "{{v1-instruments-search-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "(Required) Search term applied case-insensitively to ticker symbols, alternate identifiers (CUSIP, ISIN, OPRA root), and company names for non-option instruments. Option searches match symbols and alternate identifiers."
+                },
+                {
+                  "disabled": false,
+                  "key": "asset_class",
+                  "value": "<string>",
+                  "description": "Comma-separated asset classes (EQUITY|OPTION|WARRANT|BOND|FX|OTHER). Defaults to EQUITY."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_inactive",
+                  "value": "<boolean>",
+                  "description": "Include inactive instruments. Default false."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_ptp",
+                  "value": "<boolean>",
+                  "description": "Include publicly traded partnership (PTP) instruments. Default true (penalized in ranking)."
+                },
+                {
+                  "disabled": false,
+                  "key": "currency",
+                  "value": "<string>",
+                  "description": "Optional ISO currency filter (e.g., USD)."
+                },
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "Optional listing-country filter (e.g., US)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "100",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ce670e34-9639-4dba-a453-1eb4d93db8b7",
+              "name": "Ranked list of matching instruments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{v1-instruments-search-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "asset_class",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_inactive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "include_ptp",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"country_of_issue\": \"US\",\n      \"currency\": \"USD\",\n      \"easy_to_borrow\": true,\n      \"id\": \"0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b\",\n      \"instrument_type\": \"COMMON_STOCK\",\n      \"is_fractionable\": false,\n      \"is_liquidation_only\": false,\n      \"is_marginable\": true,\n      \"is_ptp\": false,\n      \"is_short_prohibited\": false,\n      \"is_threshold_security\": false,\n      \"is_tradable\": true,\n      \"name\": \"Apple Inc.\",\n      \"symbol\": \"AAPL\",\n      \"venue\": \"XNMS\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"6c7d8e9f-0a1b-2c3d-4e5f-6a7b8c9d0e1f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0970d1e8-756c-46b2-8861-1e72619017cd",
+              "name": "Missing or invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{v1-instruments-search-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "asset_class",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_inactive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "include_ptp",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 7450.046421032872,\n      \"key_1\": \"string\",\n      \"key_2\": 2585\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "82b2b0ae-6907-4a1b-89bc-eb6bc0ea5f87",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{v1-instruments-search-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "asset_class",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_inactive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "include_ptp",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 7450.046421032872,\n      \"key_1\": \"string\",\n      \"key_2\": 2585\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "adfac125-1460-4b30-bbd0-745c0d3564e3",
+              "name": "Instrument data is not ready yet",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{v1-instruments-search-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "asset_class",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_inactive",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "include_ptp",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 7450.046421032872,\n      \"key_1\": \"string\",\n      \"key_2\": 2585\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9ad10a81-f30a-479f-b7c0-c7a1dffbde00",
+          "name": "Get Instrument By ID",
+          "request": {
+            "name": "Get Instrument By ID",
+            "description": {
+              "content": "Retrieves detailed information for a specific instrument.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments",
+                ":instrument_id"
+              ],
+              "host": [
+                "{{v1-instruments-instrument_id-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include_options_expiry_dates",
+                  "value": "<boolean,null>",
+                  "description": "When true, include unique options expiry dates for this instrument"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "instrument_id",
+                  "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "12b928b5-23ae-4d22-9a13-2837cc46ff2b",
+              "name": "Instrument details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id"
+                  ],
+                  "host": [
+                    "{{v1-instruments-instrument_id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_options_expiry_dates",
+                      "value": "<boolean,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"country_of_issue\": \"US\",\n    \"currency\": \"USD\",\n    \"easy_to_borrow\": true,\n    \"id\": \"0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b\",\n    \"instrument_type\": \"COMMON_STOCK\",\n    \"is_fractionable\": false,\n    \"is_liquidation_only\": false,\n    \"is_marginable\": true,\n    \"is_ptp\": false,\n    \"is_short_prohibited\": false,\n    \"is_threshold_security\": false,\n    \"is_tradable\": true,\n    \"long_margin_rate\": \"0.25\",\n    \"name\": \"Apple Inc.\",\n    \"short_margin_rate\": \"0.25\",\n    \"symbol\": \"AAPL\",\n    \"venue\": \"XNMS\"\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "55825756-7b35-4aed-9944-da907022c7dc",
+              "name": "Instrument not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id"
+                  ],
+                  "host": [
+                    "{{v1-instruments-instrument_id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_options_expiry_dates",
+                      "value": "<boolean,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Instrument not found: AAP\"\n  },\n  \"metadata\": {\n    \"request_id\": \"fa8cc9b2-fbf0-4f5b-8ce3-b3205b9f85f2\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b177c62-7403-4487-a995-ed9e546920ef",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id"
+                  ],
+                  "host": [
+                    "{{v1-instruments-instrument_id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_options_expiry_dates",
+                      "value": "<boolean,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": true\n    },\n    {\n      \"key_0\": 7450.046421032872,\n      \"key_1\": \"string\",\n      \"key_2\": 2585\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "instruments-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "instruments-symbol-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-instruments-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-instruments-options-contracts-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-instruments-search-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "v1-instruments-instrument_id-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "b44f9376-7953-41ed-beeb-9b2c337d2a4e",
+    "name": "Clear Street Instruments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged Instruments across 2 of this provider's published API definitions: clear-street-studio-openapi.yml, clear-street-trading-api-openapi.yml. Each path carries the servers of the definition it was published in.",
+      "type": "text/plain"
+    }
+  }
+}

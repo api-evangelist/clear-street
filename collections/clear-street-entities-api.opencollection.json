@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Common API Models Entities API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Entities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/entities",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all available entities."
+        },
+        {
+          "info": {
+            "name": "Get entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/entities/:entity_id",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the entity to get."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get an entity by its ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

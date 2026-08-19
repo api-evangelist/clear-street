@@ -1,0 +1,424 @@
+openapi: 3.2.0
+info:
+  title: Common API Models PNL API
+  description: Common API models for all of Studio's APIs
+  version: 2.0.0
+servers:
+- url: https://api.clearstreet.io/studio/v2
+  description: Production environment
+- url: https://sandbox-api.clearstreet.io/studio/v2
+  description: Sandbox environment
+tags:
+- name: PNL
+  x-displayName: PNL
+paths:
+  /entities/{entity_id}/pnl-summary:
+    get:
+      operationId: getEntityPnlSummary
+      summary: Get entity PNL summary
+      description: Get PNL summary for all accounts in an entity.
+      tags:
+      - PNL
+      parameters:
+      - in: path
+        name: entity_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/EntityId'
+      responses:
+        '200':
+          description: Entity PNL summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PnlSummary'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+  /accounts/{account_id}/pnl-summary:
+    get:
+      operationId: getAccountPnlSummary
+      summary: Get account PNL summary
+      description: Get PNL summary for a given account.
+      tags:
+      - PNL
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to get a PNL summary for.
+      responses:
+        '200':
+          description: Account PNL summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PnlSummaryForAccount'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+  /accounts/{account_id}/pnl-details:
+    get:
+      operationId: listPnlDetails
+      summary: List account PNL details
+      description: List PNL details for a given account.
+      tags:
+      - PNL
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to list PNL details for.
+      responses:
+        '200':
+          description: Account PNL details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PnlDetails'
+                required:
+                - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    EntityId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Entity ID for the legal entity.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
+    PnlSummary:
+      type: object
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+        entity_id:
+          $ref: '#/components/schemas/EntityId'
+        sod_equity:
+          type: number
+          format: double
+          description: Net value of instruments held in the portfolio at the start of a trading day.
+        equity:
+          type: number
+          format: double
+          description: Net value of instruments held in the portfolio.
+        sod_gross_market_value:
+          type: number
+          format: double
+          description: Absolute market value at the start of a trading day.
+        gross_market_value:
+          type: number
+          format: double
+          description: Absolute market value of long and short market values.
+        net_market_value:
+          type: number
+          format: double
+          description: Market value net of long and short market values.
+        long_market_value:
+          type: number
+          format: double
+          description: Market value of securities positioned long.
+        short_market_value:
+          type: number
+          format: double
+          description: Market value of securities positioned short.
+        sod_long_market_value:
+          type: number
+          format: double
+          description: Market value of securities positioned long at the start of a trading day.
+        sod_short_market_value:
+          type: number
+          format: double
+          description: Market value of securities positioned short at the start of a trading day.
+        overnight_pnl:
+          type: number
+          format: double
+          description: Profit and loss from previous trading date.
+        day_pnl:
+          type: number
+          format: double
+          description: Profit and loss from intraday trading activities.
+        realized_pnl:
+          type: number
+          format: double
+          description: Profit and loss realized from position closing trading activity
+        unrealized_pnl:
+          type: number
+          format: double
+          description: Profit and loss from market changes.
+        total_pnl:
+          type: number
+          format: double
+          description: '`realized_pnl + unrealized_pnl`
+
+            '
+        net_pnl:
+          type: number
+          format: double
+          description: '`total_pnl + total_fees`
+
+            '
+        total_fees:
+          type: number
+          format: double
+          description: Total fees incurred from trading activities.
+      required:
+      - timestamp
+      - entity_id
+      - sod_equity
+      - equity
+      - sod_gross_market_value
+      - gross_market_value
+      - net_market_value
+      - long_market_value
+      - short_market_value
+      - sod_long_market_value
+      - sod_short_market_value
+      - overnight_pnl
+      - day_pnl
+      - realized_pnl
+      - unrealized_pnl
+      - total_pnl
+      - net_pnl
+      - total_fees
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
+    AssetClass:
+      type: string
+      enum:
+      - other
+      - currency
+      - equity
+      - option
+      - debt
+      - fund
+      description: The asset class of the symbol.
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    PnlDetails:
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+        entity_id:
+          $ref: '#/components/schemas/EntityId'
+          description: Name of the legal entity.
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        symbol_description:
+          type: string
+          description: Description of the symbol.
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        day_pnl:
+          type: number
+          format: double
+          description: Profit and loss from intraday trading activities.
+        unrealized_pnl:
+          type: number
+          format: double
+          description: Profit and loss from market changes.
+        realized_pnl:
+          type: number
+          format: double
+          description: Profit and loss realized from position closing trading activity.
+        total_pnl:
+          type: number
+          format: double
+          description: '`realized_pnl + unrealized_pnl`
+
+            '
+        overnight_pnl:
+          type: number
+          format: double
+          description: Profit and loss from previous trading date.
+        total_fees:
+          type: number
+          format: double
+          description: Total fees incurred from trading activities.
+        net_market_value:
+          type: number
+          format: double
+          description: Market value net of long and short market values.
+        gross_market_value:
+          type: number
+          format: double
+          description: Absolute market value of long and short market values.
+        sod_market_value:
+          type: number
+          format: double
+          description: Market value of a given instrument a the start of a trading day.
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+        sod_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: Quantity of a given instrument at the start of a trading day.
+        bought_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: Quantity of a given instrument bought.
+        sold_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: Quantity of a given instrument sold.
+        buys:
+          type: integer
+          format: int32
+          description: Total buys of a given instrument.
+        sells:
+          type: integer
+          format: int32
+          description: Total sells of a given instrument.
+        price:
+          type: number
+          format: double
+          description: Price used in this pnl calculation.
+        sod_price:
+          type: number
+          format: double
+          description: Price at the start of a trading day.
+        underlier:
+          $ref: '#/components/schemas/Symbol'
+          description: The underlying instrument.
+      required:
+      - timestamp
+      - entity_id
+      - entity_name
+      - account_id
+      - account_number
+      - side
+      - symbol
+      - symbol_description
+      - asset_class
+      - day_pnl
+      - unrealized_pnl
+      - realized_pnl
+      - total_pnl
+      - overnight_pnl
+      - total_fees
+      - net_market_value
+      - gross_market_value
+      - sod_market_value
+      - quantity
+      - sod_quantity
+      - bought_quantity
+      - sold_quantity
+      - buys
+      - sells
+      - price
+      - sod_price
+      - underlier
+    PnlSummaryForAccount:
+      allOf:
+      - $ref: '#/components/schemas/PnlSummary'
+      - properties:
+          account_id:
+            type: string
+          account_number:
+            type: string
+        required:
+        - account_id
+        - account_number
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+externalDocs:
+  url: https://docs.clearstreet.io/
+x-tagGroups:
+- name: Custodial API
+  tags:
+  - Performance
+  - Holdings
+- name: Execution API
+  tags:
+  - Orders
+  - Trades
+  - Positions
+- name: Lending API
+  tags:
+  - Locates
+  - Rates
+  - Inventories
+- name: Reference API
+  tags:
+  - Entities
+  - Accounts
+  - Instruments
+- name: Risk & Margin API
+  tags:
+  - PNL
+  - Margin
+  - Margin Simulations

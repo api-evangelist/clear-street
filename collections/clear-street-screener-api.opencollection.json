@@ -1,0 +1,126 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Trading Screener API",
+    "version": "2025-10-31"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Screener",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Screeners",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/saved-screeners"
+          },
+          "docs": "List saved screener configurations.\n\nReturns all screener configurations for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Create Screener",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.com/v1/saved-screeners",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a saved screener configuration.\n\nPersists a screener configuration for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Get Screener By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/saved-screeners/:screener_id",
+            "params": [
+              {
+                "name": "screener_id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Screener ID"
+              }
+            ]
+          },
+          "docs": "Get a saved screener configuration by ID.\n\nReturns a single screener configuration for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Replace Screener",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.clearstreet.com/v1/saved-screeners/:screener_id",
+            "params": [
+              {
+                "name": "screener_id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Screener ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a saved screener configuration.\n\nReplaces the screener configuration for the authenticated user.\nIf `name` is null, the existing name is preserved."
+        },
+        {
+          "info": {
+            "name": "Delete Screener",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.com/v1/saved-screeners/:screener_id",
+            "params": [
+              {
+                "name": "screener_id",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "path",
+                "description": "Screener ID"
+              }
+            ]
+          },
+          "docs": "Delete a saved screener configuration.\n\nDeletes the screener configuration for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Search Screener",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.com/v1/screener",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search instruments using structured filters.\n\nReturns a columnar response where each row is an array of column objects.\nEach column contains a human-readable name, a field reference, an optional\ntype hint (e.g. `CURR_USD`, `PERCENT`), and the value.\n\nUse `columns` to select which columns appear in each row.\nWhen omitted, the default field set is returned."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,222 @@
+{
+  "item": [
+    {
+      "id": "0f910596-08c6-4c1b-b8a1-e935bcc50b5a",
+      "name": "Performance",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0ef44c67-8978-4f9a-871e-f0c99382e25e",
+          "name": "List PNL Sums",
+          "request": {
+            "name": "List PNL Sums",
+            "description": {
+              "content": "List historical PNL summations for a given account over a given date range, filtered on the given query parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "pnl-sums"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "starting_date",
+                  "value": "<integer>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "ending_date",
+                  "value": "<integer>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "56f6a341-f455-40b1-9ab0-99d230707c79",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "pnl-sums"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "starting_date",
+                      "value": "20240101"
+                    },
+                    {
+                      "key": "ending_date",
+                      "value": "20240101"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"starting_date\": 20240101,\n  \"ending_date\": 20240101,\n  \"entity_id\": \"100000\",\n  \"account_id\": \"100000\",\n  \"account_number\": \"ACC0001\",\n  \"starting_equity\": 5421.973889941165,\n  \"ending_equity\": 1508.880151256785,\n  \"day_pnl\": 80.53808749743484,\n  \"position_pnl\": 5964.869804745336,\n  \"unrealized_pnl\": 5004.967118072314,\n  \"realized_pnl\": 2854.9772504671146,\n  \"total_pnl\": 5122.602508978176,\n  \"net_pnl\": 5270.892953199441,\n  \"data\": [\n    {\n      \"symbol\": \"AAPL\",\n      \"asset_class\": \"fund\",\n      \"day_pnl\": 269.30551036247306,\n      \"position_pnl\": 896.1994703378118,\n      \"unrealized_pnl\": 7329.821470504435,\n      \"realized_pnl\": 808.9203731609429,\n      \"total_pnl\": 5459.115634003976,\n      \"net_pnl\": 2501.0763584871156,\n      \"sold_quantity\": \"100\",\n      \"sold_notional\": 1245.9811519847785,\n      \"bought_quantity\": \"100\",\n      \"bought_notional\": 3699.4126735529376\n    },\n    {\n      \"symbol\": \"AAPL\",\n      \"asset_class\": \"debt\",\n      \"day_pnl\": 8110.658978926217,\n      \"position_pnl\": 9147.464350423144,\n      \"unrealized_pnl\": 5776.202498364145,\n      \"realized_pnl\": 7260.380396617287,\n      \"total_pnl\": 3548.532253580198,\n      \"net_pnl\": 8757.927524868372,\n      \"sold_quantity\": \"100\",\n      \"sold_notional\": 8584.71814509244,\n      \"bought_quantity\": \"100\",\n      \"bought_notional\": 9164.322300327567\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97f0e345-0a87-4452-b273-e25ea46b2776",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "pnl-sums"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "starting_date",
+                      "value": "20240101"
+                    },
+                    {
+                      "key": "ending_date",
+                      "value": "20240101"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://HeSYo.inlo1VYechvPBVecUIJLXIEunLN5MyQ9reaoRf43ZY-UAsGwpV6TxU+\",\n  \"title\": \"string\",\n  \"status\": 423.457092132694,\n  \"detail\": \"string\",\n  \"instance\": \"https://tKzHpQlPeHXRIokbMWhZOZASAnueSWODD.fuH4Cn7NaKButo0hvG3zC.GlKALZbNlukqLO3Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3db87719-d551-4ec9-90ec-1499c4e48c8c",
+    "name": "Common API Models Performance API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Common API models for all of Studio's APIs",
+      "type": "text/plain"
+    }
+  }
+}

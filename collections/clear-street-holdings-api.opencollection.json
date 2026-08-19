@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Common API Models Holdings API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Holdings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List holdings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/holdings",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List holdings for a given account, filtered on the given query parameters. This endpoint will return either historical or real-time holdings directly from our custodial systems. Positions returned here are can be different than positions returned from the Execution API. While the Execution API returns positions based on trading activity within Studio, our custodial system returns all positions regardless of where trades occur."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

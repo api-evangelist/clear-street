@@ -1,0 +1,652 @@
+{
+  "item": [
+    {
+      "id": "d3feb96b-74df-4ac8-b561-17439fe3d668",
+      "name": "Uploads",
+      "description": {
+        "content": "Upload endpoints allow you to upload a `CSV` file that contain trades, in the same format as our <b>[trade-file specification](https://github.com/clear-street/docs/blob/master/trade_file.md)</b>. You may prefer to use a file-upload if you have a extremely large number of trades (> 10000), or if you have dependency on legacy systems that deal with `CSV` files. We recommend using <b><a href=\"#tag/Trades\">trade endpoints</a></b> when possible, especially for real-time trade reporting.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "93609a8d-2737-4f80-bc8e-4c2e5e3c7a0f",
+          "name": "Create Insert Upload",
+          "request": {
+            "name": "Create Insert Upload",
+            "description": {
+              "content": "Upload the provided CSV file for processing asynchronously. Your file will be uploaded to our servers, and then subsequently processed.\n\nThe columns for a CSV file should match the JSON path dot-notation of the fields available in the <b><a href=\"#operation/trades_insert\">insert trades endpoint</a></b>. For example, the column `side.direction` would be the column header to set the direction of a trade, and the column `instrument.ticker` would set the trade's instrument ticker, etc.\n\nOur <b>[trade-file specification](https://github.com/clear-street/docs/blob/master/trade_file.md)</b> has more details. You can also <b><a href=\"examples/trades.csv\">download an example file</a></b>.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "uploads",
+                "insert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "(Required) The file to upload. Must have a *.csv extension."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ab67d62c-f41a-41eb-a3e1-2065e8f19384",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "uploads",
+                    "insert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to upload. Must have a *.csv extension.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created_at\": 6760,\n  \"upload_id\": \"3d4b424aa96e2751228ad4b78f8882073e5e29079047ad524a0ed719b57c42db\",\n  \"org_id\": 1,\n  \"user_id\": 1,\n  \"name\": \"string\",\n  \"s3_key\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "869735fb-66ee-4d3e-8944-1a50e277a459",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "uploads",
+                    "insert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to upload. Must have a *.csv extension.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "82832a39-96d0-48e4-9a78-b80dbe7e006a",
+              "name": "Conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "uploads",
+                    "insert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to upload. Must have a *.csv extension.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59b60f40-e938-4c77-add7-3b80da17e52f",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "uploads",
+                    "insert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to upload. Must have a *.csv extension.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "82529b10-f878-46cd-80aa-0b700e999942",
+          "name": "Create Cancel Upload",
+          "request": {
+            "name": "Create Cancel Upload",
+            "description": {
+              "content": "Upload the provided CSV file for processing cancels asynchronously.\n\nExample column headers with associated example values&#58;\n<table>\n<tr><th>account</th><td>100001</td></tr>\n<tr><th>trade_id</th><td>12343</td></tr>\n<tr><th>by_client_id</th><td>false</td></tr>\n</table>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "uploads",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "(Required) The file to upload. Must have a *.csv extension."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7b847ae2-4198-4579-a047-f17e7fc69687",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "uploads",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to upload. Must have a *.csv extension.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "type": "file"
+                    }
+                  ]
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created_at\": 6760,\n  \"upload_id\": \"3d4b424aa96e2751228ad4b78f8882073e5e29079047ad524a0ed719b57c42db\",\n  \"org_id\": 1,\n  \"user_id\": 1,\n  \"name\": \"string\",\n  \"s3_key\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "26cea318-2b04-49e6-bdaf-018fd024bba7",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "uploads",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to upload. Must have a *.csv extension.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "type": "file"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3912e12f-250f-4127-9cf5-b6491dc091e3",
+              "name": "Conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "uploads",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to upload. Must have a *.csv extension.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "type": "file"
+                    }
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c3d45d7-a318-4e15-acde-53c5ebf56fee",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "uploads",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to upload. Must have a *.csv extension.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "type": "file"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "628e8992-f53c-4c3c-a04f-c119b8a85ef4",
+          "name": "Get Upload By ID",
+          "request": {
+            "name": "Get Upload By ID",
+            "description": {
+              "content": "Get an existing upload. Use this endpoint when you want to the know the status of a previously created upload.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "uploads",
+                ":upload_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "upload_id",
+                  "description": "(Required) upload_id that identifies a previously created upload"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "060a5ea6-c416-4d46-8d92-8849fdc23ea8",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "uploads",
+                    ":upload_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "upload_id",
+                      "description": "(Required) upload_id that identifies a previously created upload"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"completed\": false,\n  \"created_at\": 3039,\n  \"name\": \"string\",\n  \"org_id\": 1,\n  \"s3_key\": \"string\",\n  \"status\": \"string\",\n  \"trades_processed\": 4053,\n  \"trades_skipped\": 3935,\n  \"upload_id\": \"3d4b424aa96e2751228ad4b78f8882073e5e29079047ad524a0ed719b57c42db\",\n  \"user_id\": 1,\n  \"updated_at\": 2030\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba261c2c-8153-4cff-8255-76ab3f9a8a42",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "uploads",
+                    ":upload_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "upload_id",
+                      "description": "(Required) upload_id that identifies a previously created upload"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "//api.clearstreet.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e512dfe0-2f16-464d-a5bd-b2f0915394e0",
+    "name": "Clear Street Uploads API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "<b>This is a beta version of Clear Street's public API. This API is RESTful; it has resource-oriented URLs, returns JSON-encoded responses, and uses standard HTTP codes, authentication, and verbs.</b>\n\n# Environments\nClear Street operates two environments: sandbox and production. Each environment is completely isolated from the other. No data is ever shared. All activity in our sandbox environment has no actual impact; all accounts in our sandbox use canned data. We recommend testing in our sandbox environment first before moving to production.\n\nThe following are the base URLs for each environment. Each endpoint in this API must be prefixed with one of the following base URLs:\n\nSandbox base URL: `https://api.sandbox.clearstreet.io/v1`\n\nProduction base URL: `https://api.clearstreet.io/v1`\n\n# Authentication\nEnd-to-end security is provided through an SSL connection and an API-key that will be provided to users of our API.\n\nThe API-key provided to you will take the form a <a href=\"https://swagger.io/docs/specification/authentication/bearer-authentication\">bearer token</a>. Every request you make, therefore, must contain your API-key in the header of the request in the following form:\n\n<pre>Authorization: Bearer &lt;KEY&gt;</pre>\n\nWhere `<KEY>` is the API-key provided to you.\n\nHere's an example of constructing a request in Python:\n\n```python\nimport requests\n\n# change URL based on environment\nURL = \"https://api.sandbox.clearstreet.io/v1/trades\"\n\n# set provided API-key here\nheaders = {\n    'Content-Type': 'application/json',\n    'Authorization': 'Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYXQiOjE1ODU2MTk2NDYsImV4cCI6MTU4NTYyMzI0NiwidWlkIjoyfQ.B6wdfKRro9JxPrhjn8QchPOfGFSWexfg_2EX0V_tkdA'\n}\n\n# construct your message\npayload = [{\n    \"type\": \"allocation_trade\",\n    \"timestamp\": 1556544618,\n    \"client_trade_id\": \"042919-1a\",\n    \"date\": 20190304,\n    \"account_id\": 100016,\n    \"mic\": \"XNAS\",\n    \"exec_mpid\": \"CSMM\",\n    \"capacity\": \"principal\",\n    \"quantity\": \"100\",\n    \"price\": \"140.00\",\n    \"instrument\": {\n        \"identifier\": \"ATRA\",\n        \"identifier_type\": \"ticker\",\n        \"currency\": \"USD\",\n        \"country\": \"USA\"\n    },\n    \"side\": {\n        \"direction\": \"buy\"\n    },\n    \"target_account_id\": 100021\n}]\n\n# send request\nrequests.post(url=URL, headers=headers, json=payload)\n```\n\n\nContact Support:\n Name: API Support\n Email: eng@clearstreet.io",
+      "type": "text/plain"
+    }
+  }
+}

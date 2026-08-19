@@ -1,0 +1,317 @@
+{
+  "item": [
+    {
+      "id": "bd7a08a2-84c8-4455-9059-8e9382f4495e",
+      "name": "Entities",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8830acac-c400-4ebb-a4be-5343e41ee698",
+          "name": "List entities",
+          "request": {
+            "name": "List entities",
+            "description": {
+              "content": "List all available entities.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "203bdb98-263e-428f-bb18-3fe90bfde928",
+              "name": "A list of entities",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"entity_id\": \"100000\",\n      \"client_code\": \"CLST\",\n      \"legal_name\": \"Clear Street\"\n    },\n    {\n      \"entity_id\": \"100000\",\n      \"client_code\": \"CLST\",\n      \"legal_name\": \"Clear Street\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dcf99fc6-29c4-40e2-a43e-282465fd7a14",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://Sr.amkViy+SYlDXFh4JAXE\",\n  \"title\": \"string\",\n  \"status\": 273.41632759541994,\n  \"detail\": \"string\",\n  \"instance\": \"https://lXjmYQOAWfCfLbVgEHiAeiOTAd.dqR9UpMmCza2xh7CCv2.vO9ItjRSdUNVCZuNOKS+cYT6HnM7pkxZ0fs1tPcScQ\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ee4ae84f-1450-495c-8047-7ea111bf276f",
+          "name": "Get entity",
+          "request": {
+            "name": "Get entity",
+            "description": {
+              "content": "Get an entity by its ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "entities",
+                ":entity_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "entity_id",
+                  "description": "(Required) The ID of the entity to get."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "71c50188-6637-40aa-9031-6cdcf1fd8fdd",
+              "name": "The entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) The ID of the entity to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"entity_id\": \"100000\",\n  \"client_code\": \"CLST\",\n  \"legal_name\": \"Clear Street\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf5720c3-b0f3-4606-8c2c-78c0a5e676b6",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) The ID of the entity to get."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://Sr.amkViy+SYlDXFh4JAXE\",\n  \"title\": \"string\",\n  \"status\": 273.41632759541994,\n  \"detail\": \"string\",\n  \"instance\": \"https://lXjmYQOAWfCfLbVgEHiAeiOTAd.dqR9UpMmCza2xh7CCv2.vO9ItjRSdUNVCZuNOKS+cYT6HnM7pkxZ0fs1tPcScQ\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "7ae89caa-8256-42a9-8bdd-2ed4f7d2d3e0",
+    "name": "Common API Models Entities API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Common API models for all of Studio's APIs",
+      "type": "text/plain"
+    }
+  }
+}

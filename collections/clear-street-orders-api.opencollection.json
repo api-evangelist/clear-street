@@ -1,0 +1,530 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Orders API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create bulk orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/bulk-orders",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates multiple orders in a single request, up to 1000. Note that a successful call to this endpoint does not necessarily mean your orders have been accepted, e.g. a downstream venue might reject your order. You should therefore utilize our WebSocket APIs to listen for changes in order lifecycle events.\n\nThe response will contain an array of objects, indicating whether your order was submitted. If the order was submitted, the `order_id` field will be populated with the order ID assigned to this"
+        },
+        {
+          "info": {
+            "name": "List orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/orders",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List orders for a given account for the current trading day, filtered on the given query parameters."
+        },
+        {
+          "info": {
+            "name": "Create order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/orders",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new order and sends to our internal systems for execution. Note that a successful call to this endpoint does not necessarily mean your order has been accepted, e.g. a downstream venue might reject your order. You should therefore utilize our WebSocket APIs to listen for changes in order lifecycle events."
+        },
+        {
+          "info": {
+            "name": "Delete all orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/orders",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "symbol_format",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Attempts to cancel all open orders for a given account. Cancelling an order cannot be guaranteed as there might be in-flight executions."
+        },
+        {
+          "info": {
+            "name": "Get order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/orders/:order_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get an order that was previously created."
+        },
+        {
+          "info": {
+            "name": "Update order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/orders/:order_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Attempts to update an existing order. This can be used to update a subset of an order's attributes, for example price and quantity."
+        },
+        {
+          "info": {
+            "name": "Delete order",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/orders/:order_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Attempts to cancel an existing order. Cancelling an order cannot be guaranteed as there might be in-flight executions."
+        },
+        {
+          "info": {
+            "name": "Get Executions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/executions",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              },
+              {
+                "name": "instrument_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated instrument identifiers (UUIDs) or symbols (e.g. `AAPL`) to filter by. When provided, only executions for any of the listed instruments are returned."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              },
+              {
+                "name": "from",
+                "value": "2025-04-24 14:30:00+00:00",
+                "type": "query",
+                "description": "The start date and time for the query range, inclusive (ISO 8601 format)"
+              },
+              {
+                "name": "to",
+                "value": "2025-04-24 18:30:00+00:00",
+                "type": "query",
+                "description": "The end date and time for the query range, inclusive (ISO 8601 format)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves filled and partially-filled execution reports for the specified\ntrading account, ordered by transaction time (nanosecond precision) descending."
+        },
+        {
+          "info": {
+            "name": "Get Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/orders",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              },
+              {
+                "name": "order_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated order IDs to filter by. When provided, only orders whose order ID is in this set are returned."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated order statuses to filter by"
+              },
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Filter by symbol"
+              },
+              {
+                "name": "instrument_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols)."
+              },
+              {
+                "name": "instrument_type",
+                "value": "",
+                "type": "query",
+                "description": "Instrument type filter (e.g., COMMON_STOCK, OPTION)"
+              },
+              {
+                "name": "underlying_instrument_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols). Matches options orders whose resolved underlier is any of the given instruments."
+              },
+              {
+                "name": "from",
+                "value": "2025-04-24 14:30:00+00:00",
+                "type": "query",
+                "description": "The start date and time for the query range, inclusive (ISO 8601 format)"
+              },
+              {
+                "name": "to",
+                "value": "2025-04-24 18:30:00+00:00",
+                "type": "query",
+                "description": "The end date and time for the query range, inclusive (ISO 8601 format)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List orders for an account with optional filtering"
+        },
+        {
+          "info": {
+            "name": "Submit Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/orders",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit new orders"
+        },
+        {
+          "info": {
+            "name": "Cancel All Open Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/orders",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              },
+              {
+                "name": "side",
+                "value": "",
+                "type": "query",
+                "description": "Filter by order side (BUY or SELL)"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by order type (e.g., MARKET, LIMIT)"
+              },
+              {
+                "name": "instrument_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by instrument type (e.g., COMMON_STOCK, OPTION)"
+              },
+              {
+                "name": "instrument_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols)."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancel all orders for an account"
+        },
+        {
+          "info": {
+            "name": "Get Order By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/orders/:order_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get Order By ID"
+        },
+        {
+          "info": {
+            "name": "Replace Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/orders/:order_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Replace an order with new parameters"
+        },
+        {
+          "info": {
+            "name": "Cancel Open Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/orders/:order_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancel a specific order"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

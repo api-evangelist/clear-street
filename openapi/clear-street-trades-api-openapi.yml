@@ -1,0 +1,581 @@
+openapi: 3.2.0
+info:
+  title: Clear Street Trades API
+  version: '1.0'
+  description: 'Operations tagged Trades across 2 of this provider''s published API definitions: clear-street-legacy-api-swagger.yml, clear-street-studio-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: //api.clearstreet.io/v1
+  description: Production server
+- url: //api.sandbox.clearstreet.io/v1
+  description: Sandbox server
+- url: https://api.clearstreet.io/studio/v2
+  description: Production environment
+- url: https://sandbox-api.clearstreet.io/studio/v2
+  description: Sandbox environment
+tags:
+- name: Trades
+  description: 'Trade endpoints are used to insert or cancel trades into a our systems.
+
+    '
+paths:
+  /trades:
+    servers:
+    - url: //api.clearstreet.io/v1
+      description: Production server
+    - url: //api.sandbox.clearstreet.io/v1
+      description: Sandbox server
+    post:
+      tags:
+      - Trades
+      summary: Insert Trades
+      description: 'Insert the provided trades atomically. Use this endpoint if you want atomicity and immediate confirmation; this request will either fully process all your trades, or reject them all atomically. Therefore, a successful call to this endpoint guarantees that your trades have been accepted by our systems. This endpoint can accept up to 1000 trades at a time. <ul> <li><b>Exchange Trade</b>  trades done directly on an exchange. An example would be a trading account buying shares on Nasdaq.</li> <li><b>Bilateral Trade</b> trades done bilaterally broker to broker. An example would be Bank of America''s trading account buying shares from Goldman Sachs'' trading account.</li> <li><b>Transfer Trade</b> trades are done to transfer from one account to another within the same legal entity. An example would be to transfer shares from a trading account to an error account.</li> <li><b>Allocation Trade</b> trades are done to allocate to a customer account. An example would be to allocate shares at an average price from an average price account to a customer account. </li> </ul>
+
+        <b>The fields below vary depending upon trade-type. Change the value of the `type` drop-down below to switch between trade-types.</b>
+
+        '
+      operationId: trades_insert
+      responses:
+        '202':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TradeSubmitted'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Trade_2'
+        description: Array of trades to upload
+        required: true
+  /trades/{trade_id}:
+    servers:
+    - url: //api.clearstreet.io/v1
+      description: Production server
+    - url: //api.sandbox.clearstreet.io/v1
+      description: Sandbox server
+    delete:
+      tags:
+      - Trades
+      summary: Cancel Trade By ID
+      description: 'Cancel a trade either by the Clear Street assigned `trade_id`, or `client_trade_id` that was provided in the original trade. If the ID you provide is, in fact, a `client_trade_id`, you must set `is_client_trade_id` to true, and also provide the `account_id` for the original trade.
+
+        '
+      operationId: trades_cancel
+      parameters:
+      - in: path
+        name: trade_id
+        required: true
+        description: Clear Street assigned unique trade_id
+        schema:
+          type: string
+      - in: query
+        name: is_client_trade_id
+        required: false
+        description: True if the given trade_id is a client_trade_id
+        schema:
+          type: boolean
+      - in: query
+        name: account_id
+        required: false
+        description: Provide only if `is_client_trade_id` is true. This is the account_id the trade was booked to
+        schema:
+          type: integer
+      responses:
+        '202':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts/{account_id}/trades/{trade_id}:
+    servers:
+    - url: https://api.clearstreet.io/studio/v2
+      description: Production environment
+    - url: https://sandbox-api.clearstreet.io/studio/v2
+      description: Sandbox environment
+    get:
+      operationId: getTrade
+      summary: Get trade
+      description: Get trade a trade by its unique trade ID.
+      tags:
+      - Trades
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to get the trade for.
+      - in: path
+        name: trade_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/TradeId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trade'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+  /accounts/{account_id}/trades:
+    servers:
+    - url: https://api.clearstreet.io/studio/v2
+      description: Production environment
+    - url: https://sandbox-api.clearstreet.io/studio/v2
+      description: Sandbox environment
+    get:
+      operationId: listTrades
+      summary: List trades
+      description: List trades for a given account for the current trading day.
+      tags:
+      - Trades
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to list trades for.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 2000
+          default: 25
+          description: Number of trades to return per page.
+      - in: query
+        name: page_token
+        schema:
+          type: string
+          description: Cursor for the page to return.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Trade'
+                  next_page_token:
+                    type: string
+                    description: Cursor for the next page of results.
+                required:
+                - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    TradeId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique trade ID assigned by us.
+    ErrorBase:
+      type: object
+      properties:
+        message: null
+        type: string
+        description: Error details, if any
+      example:
+        message: <error-details>
+    Side:
+      type: object
+      description: Trade direction, either buy or sell with qualifiers
+      required:
+      - direction
+      properties:
+        direction:
+          type: string
+          enum:
+          - buy
+          - sell
+          description: Trade direction
+          example: sell
+        qualifier:
+          type:
+          - string
+          - 'null'
+          enum:
+          - short
+          description: Trade qualifier, if any
+          default: null
+        position:
+          type:
+          - string
+          - 'null'
+          enum:
+          - open
+          - close
+          description: Trade position, if any
+          default: null
+    Trade:
+      type: object
+      properties:
+        created_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: When this trade happened in milliseconds since epoch.
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        trade_id:
+          $ref: '#/components/schemas/TradeId'
+        order_id:
+          $ref: '#/components/schemas/OrderId'
+          description: The order ID of the order this trade occurred on.
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol this trade was for.
+        side:
+          $ref: '#/components/schemas/OrderSide'
+          description: The side this trade occurred on.
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The amount that was traded.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The traded price.
+        running_position:
+          $ref: '#/components/schemas/Quantity'
+          description: The position quantity at the time of this trade.
+      required:
+      - created_at
+      - trade_id
+      - order_id
+      - side
+      - quantity
+      - price
+      - running_position
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    OrderId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique order ID assigned by us.
+    Price:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '123.99'
+      description: String representation of a price.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    OrderSide:
+      type: string
+      enum:
+      - buy
+      - sell
+      - sell-short
+      description: Buy, sell, sell-short indicator.
+    Settlement:
+      type: object
+      description: Settlement details. Required typically for special settlement situations.
+      properties:
+        currency:
+          type:
+          - string
+          - 'null'
+          minLength: 3
+          maxLength: 3
+          description: Settlement currency for the trade if different than the issue currency of the security. This should be a 3-letter ISO 4217 code.
+          example: USD
+          default: null
+        date:
+          type:
+          - integer
+          - 'null'
+          minimum: 20190101
+          maximum: 21000101
+          description: Only provide for irregular-way, i.e. you've negotiated a special settlement arrangement for this trade; represents settlement date in YYYYMMDD format
+          default: null
+    TradeSubmitted:
+      type: object
+      description: Submitted trade details
+      properties:
+        client_trade_id:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Unique ID for this trade that you defined.
+          example: T-50264430-bc41
+        trade_id:
+          type: string
+          description: Unique ID for this trade provided by Clear Street.
+          example: 1893
+    Error:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ErrorBase'
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - internal
+          - malformed_trade
+          - too_many_trades
+          - file_exists
+          - empty_file
+          - unsupported_file
+          - upload_not_found
+          - trade_already_canceled
+          - missing_account_id
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    Trade_2:
+      type: object
+      discriminator:
+        propertyName: type
+      description: Base trade details; common amongst all trade types.
+      required:
+      - type
+      - timestamp
+      - client_trade_id
+      - date
+      - account_id
+      - quantity
+      - price
+      - instrument
+      - side
+      properties:
+        type:
+          type: string
+          enum:
+          - transfer_trade
+          - allocation_trade
+          - exchange_trade
+          - bilateral_trade
+          description: Trade type.
+        timestamp:
+          type: integer
+          description: Timestamp of when the trade occurred in milliseconds since unix epoch.
+          example: 1545952392000
+        client_trade_id:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Unique ID for this trade that you define.
+          example: T-50264430-bc41
+        date:
+          type: integer
+          minimum: 20010101
+          maximum: 21000101
+          description: Trade date for the trade in YYYYMMDD format
+          example: 20200101
+        account_id:
+          type: integer
+          minimum: 0
+          description: Clear Street provided account_id that you want this trade booked to.
+          example: 1002
+        quantity:
+          type: string
+          pattern: ^[-]?[0-9]*\.?[0-9]+$
+          description: The quantity of the trade
+          example: '100'
+        price:
+          type: string
+          pattern: ^[-]?[0-9]*\.?[0-9]+$
+          description: The price of the trade
+          example: '10.00'
+        behalf_of_entity_id:
+          type:
+          - integer
+          - 'null'
+          description: DEPRECATED - Prefer behalf_of_account_id instead. EntityID for who this trade is behalf of
+          example: 1002
+        behalf_of_account_id:
+          type:
+          - integer
+          - 'null'
+          description: AccountID for who this trade is behalf of
+          example: 1002
+        solicited:
+          type:
+          - boolean
+          - 'null'
+          description: True if this trade was solicited
+        registered_rep:
+          type:
+          - string
+          - 'null'
+          description: The registered rep for this trade, if any
+        branch_office:
+          type:
+          - string
+          - 'null'
+          description: The branch office submitting this trade, if any
+        instrument:
+          $ref: '#/components/schemas/Instrument'
+        side:
+          $ref: '#/components/schemas/Side'
+        settlement:
+          $ref: '#/components/schemas/Settlement'
+        user_data:
+          type:
+          - object
+          - 'null'
+          description: Free-form JSON to attach to the trade
+        order_id:
+          type:
+          - string
+          - 'null'
+          description: The order id is to link all the executions in the avg price account(exchange and bi-lateral trade types) to the allocation trade type
+          default: null
+        cancel_trade_id:
+          type:
+          - string
+          - 'null'
+          description: The original trade id that is being canceled, if any
+          default: null
+    Instrument:
+      type: object
+      description: Instrument details.
+      required:
+      - identifier
+      - identifier_type
+      - country
+      - currency
+      properties:
+        identifier:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Official identifier. If you use `ticker`, then ensure you use a common ticker (e.g. `AAPL` for Apple Inc. on NASDAQ)
+          example: AAPL
+        identifier_type:
+          type: string
+          enum:
+          - ticker
+          - cusip
+          - isin
+          - sedol
+          description: Identifier type.
+        country:
+          type: string
+          minLength: 1
+          maxLength: 4
+          description: ISO 3166 Alpha-3 Country Code of where the instrument was traded
+          example: USA
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 4
+          description: ISO 4217 Alpha-3 Currency Code of the currency in which the instrument is traded in
+          example: USD
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+externalDocs:
+  url: https://docs.clearstreet.io/
+x-refined-from:
+- clear-street-legacy-api-swagger.yml
+- clear-street-studio-openapi.yml

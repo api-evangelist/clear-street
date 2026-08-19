@@ -1,0 +1,1386 @@
+{
+  "item": [
+    {
+      "id": "9443ae25-f4d0-4350-a6b3-cd2a45307a41",
+      "name": "Screener",
+      "description": {
+        "content": "Search instruments and manage saved screeners.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c6ac42a9-75e5-4728-a77d-db58e091993d",
+          "name": "Get Screeners",
+          "request": {
+            "name": "Get Screeners",
+            "description": {
+              "content": "List saved screener configurations.\n\nReturns all screener configurations for the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "saved-screeners"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d9496959-0aa2-45e3-ad5f-0938b1a4d714",
+              "name": "List of saved screeners",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2026-03-20 14:30:00+00:00\",\n      \"filters\": [\n        {\n          \"left\": {\n            \"name\": \"market_cap\"\n          },\n          \"op\": {\n            \"name\": \"GREATER_OR_EQUAL\"\n          },\n          \"right\": [\n            {\n              \"value\": 1000000000\n            }\n          ]\n        }\n      ],\n      \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n      \"name\": \"Tech Large Caps\",\n      \"sorts\": [\n        {\n          \"direction\": \"DESC\",\n          \"field\": {\n            \"name\": \"market_cap\"\n          }\n        }\n      ],\n      \"updated_at\": \"2026-03-20 14:30:00+00:00\"\n    },\n    {\n      \"columns\": [\n        {\n          \"name\": \"symbol\"\n        },\n        {\n          \"name\": \"price\"\n        },\n        {\n          \"name\": \"volume\"\n        }\n      ],\n      \"created_at\": \"2026-03-21 09:00:00+00:00\",\n      \"filters\": [\n        {\n          \"left\": {\n            \"name\": \"volume\"\n          },\n          \"op\": {\n            \"name\": \"GREATER_OR_EQUAL\"\n          },\n          \"right\": [\n            {\n              \"value\": 10000000\n            }\n          ]\n        }\n      ],\n      \"id\": \"b2c3d4e5-f6a7-8901-bcde-f12345678901\",\n      \"name\": \"High Volume\",\n      \"updated_at\": \"2026-03-21 09:00:00+00:00\"\n    }\n  ],\n  \"metadata\": {\n    \"request_id\": \"1a2b3c4d-5e6f-7890-1234-5a6b7c8d9e0f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "45513105-5869-4060-b6d7-afd750f65094",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": false\n    },\n    {\n      \"key_0\": 8958\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "17cae683-1e20-4066-a7f1-0e5490d2415f",
+          "name": "Create Screener",
+          "request": {
+            "name": "Create Screener",
+            "description": {
+              "content": "Create a saved screener configuration.\n\nPersists a screener configuration for the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "saved-screeners"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"columns\": \"<array,null>\",\n  \"filters\": \"<array,null>\",\n  \"name\": \"<string,null>\",\n  \"sorts\": \"<array,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ee302210-0581-45c2-b9ff-77879fc4359b",
+              "name": "Screener created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": \"<array,null>\",\n  \"filters\": \"<array,null>\",\n  \"name\": \"<string,null>\",\n  \"sorts\": \"<array,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"columns\": [\n      {\n        \"name\": \"symbol\"\n      },\n      {\n        \"name\": \"price\"\n      },\n      {\n        \"name\": \"market_cap\"\n      }\n    ],\n    \"created_at\": \"2026-03-20 14:30:00+00:00\",\n    \"filters\": [\n      {\n        \"left\": {\n          \"name\": \"market_cap\"\n        },\n        \"op\": {\n          \"name\": \"GREATER_OR_EQUAL\"\n        },\n        \"right\": [\n          {\n            \"value\": 1000000000\n          }\n        ]\n      }\n    ],\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"name\": \"Tech Large Caps\",\n    \"sorts\": [\n      {\n        \"direction\": \"DESC\",\n        \"field\": {\n          \"name\": \"market_cap\"\n        }\n      }\n    ],\n    \"updated_at\": \"2026-03-20 14:30:00+00:00\"\n  },\n  \"metadata\": {\n    \"request_id\": \"1a2b3c4d-5e6f-7890-1234-5a6b7c8d9e0f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b3219235-9a4b-45d8-b214-f5b0e1d99551",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": \"<array,null>\",\n  \"filters\": \"<array,null>\",\n  \"name\": \"<string,null>\",\n  \"sorts\": \"<array,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to parse the request body as JSON: trailing comma at line 3 column 1\"\n  },\n  \"metadata\": {\n    \"request_id\": \"a91ced80-b496-44af-a923-b8b8f1fbdc83\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a1320efa-27a3-4de3-851f-eed63c7d4bbf",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": \"<array,null>\",\n  \"filters\": \"<array,null>\",\n  \"name\": \"<string,null>\",\n  \"sorts\": \"<array,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 7964.787559407434,\n      \"key_1\": 5846,\n      \"key_2\": \"string\",\n      \"key_3\": 3081\n    },\n    {\n      \"key_0\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7da99388-e61a-48ed-b208-a98939661941",
+          "name": "Get Screener By ID",
+          "request": {
+            "name": "Get Screener By ID",
+            "description": {
+              "content": "Get a saved screener configuration by ID.\n\nReturns a single screener configuration for the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "saved-screeners",
+                ":screener_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "screener_id",
+                  "description": "(Required) Screener ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a2717851-7f20-4561-a741-9371f405bb47",
+              "name": "Screener details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"columns\": [\n      {\n        \"name\": \"symbol\"\n      },\n      {\n        \"name\": \"price\"\n      },\n      {\n        \"name\": \"market_cap\"\n      }\n    ],\n    \"created_at\": \"2026-03-20 14:30:00+00:00\",\n    \"filters\": [\n      {\n        \"left\": {\n          \"name\": \"market_cap\"\n        },\n        \"op\": {\n          \"name\": \"GREATER_OR_EQUAL\"\n        },\n        \"right\": [\n          {\n            \"value\": 1000000000\n          }\n        ]\n      }\n    ],\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"name\": \"Tech Large Caps\",\n    \"sorts\": [\n      {\n        \"direction\": \"DESC\",\n        \"field\": {\n          \"name\": \"market_cap\"\n        }\n      }\n    ],\n    \"updated_at\": \"2026-03-20 14:30:00+00:00\"\n  },\n  \"metadata\": {\n    \"request_id\": \"1a2b3c4d-5e6f-7890-1234-5a6b7c8d9e0f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63331f53-02cc-4419-a983-b169a74627f6",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Cannot parse `screener_id` with value `123`: UUID parsing failed: invalid length: expected length 32 for simple format, found 3\"\n  },\n  \"metadata\": {\n    \"request_id\": \"1940e272-8ce1-41bf-ad3e-7e2a9fd9c4df\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "56c9a580-30dd-4e12-a666-254060632fb3",
+              "name": "Screener not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Some requested entity was not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"cb63a84c-6b39-4c37-bfdd-588b8256c7ea\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0f00cdc7-b1ec-4520-af6b-cf4d9afd8cb5",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 7964.787559407434,\n      \"key_1\": 5846,\n      \"key_2\": \"string\",\n      \"key_3\": 3081\n    },\n    {\n      \"key_0\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "85b11f6d-fca6-4961-9c8d-939f3fac962b",
+          "name": "Replace Screener",
+          "request": {
+            "name": "Replace Screener",
+            "description": {
+              "content": "Update a saved screener configuration.\n\nReplaces the screener configuration for the authenticated user.\nIf `name` is null, the existing name is preserved.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "saved-screeners",
+                ":screener_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "screener_id",
+                  "description": "(Required) Screener ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"columns\": \"<array,null>\",\n  \"filters\": \"<array,null>\",\n  \"name\": \"<string,null>\",\n  \"sorts\": \"<array,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cd9fb705-dc9c-4c7a-9c54-d24be1687e16",
+              "name": "Screener updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": \"<array,null>\",\n  \"filters\": \"<array,null>\",\n  \"name\": \"<string,null>\",\n  \"sorts\": \"<array,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"columns\": [\n      {\n        \"name\": \"symbol\"\n      },\n      {\n        \"name\": \"price\"\n      },\n      {\n        \"name\": \"market_cap\"\n      }\n    ],\n    \"created_at\": \"2026-04-23 13:37:04.041398+00:00\",\n    \"filters\": [\n      {\n        \"left\": {\n          \"name\": \"market_cap\"\n        },\n        \"op\": {\n          \"name\": \"GREATER_OR_EQUAL\"\n        },\n        \"right\": [\n          {\n            \"value\": 1000000000\n          }\n        ]\n      }\n    ],\n    \"id\": \"69fcb40a-1812-4856-b2d3-97dec805efee\",\n    \"name\": \"Tech Large Caps\",\n    \"sorts\": [\n      {\n        \"direction\": \"ASC\",\n        \"field\": {\n          \"name\": \"market_cap\"\n        }\n      }\n    ],\n    \"updated_at\": \"2026-04-23 13:37:21.860106+00:00\"\n  },\n  \"metadata\": {\n    \"request_id\": \"71ac58a8-9b12-49b9-8301-6239febe4e56\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "24b97bca-3c60-4189-b59e-3b4a3a2ea63e",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": \"<array,null>\",\n  \"filters\": \"<array,null>\",\n  \"name\": \"<string,null>\",\n  \"sorts\": \"<array,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to parse the request body as JSON: trailing comma at line 3 column 1\"\n  },\n  \"metadata\": {\n    \"request_id\": \"b8d191a9-0f76-4867-996e-4845ae01d864\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d08bf9bd-43de-4b5b-9ee2-1e00fbae87e0",
+              "name": "Screener not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": \"<array,null>\",\n  \"filters\": \"<array,null>\",\n  \"name\": \"<string,null>\",\n  \"sorts\": \"<array,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Some requested entity was not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"2cf7b8b2-f4c7-4db5-a617-b45324352fb7\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "594e4074-3624-4cac-a898-bb9397c07ca6",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": \"<array,null>\",\n  \"filters\": \"<array,null>\",\n  \"name\": \"<string,null>\",\n  \"sorts\": \"<array,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 7964.787559407434,\n      \"key_1\": 5846,\n      \"key_2\": \"string\",\n      \"key_3\": 3081\n    },\n    {\n      \"key_0\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "57481c9a-dede-4bac-a919-f2930897bd85",
+          "name": "Delete Screener",
+          "request": {
+            "name": "Delete Screener",
+            "description": {
+              "content": "Delete a saved screener configuration.\n\nDeletes the screener configuration for the authenticated user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "saved-screeners",
+                ":screener_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "screener_id",
+                  "description": "(Required) Screener ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9e922a38-99f8-47fa-85f3-b921331f059a",
+              "name": "Screener deleted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6b0924bc-db9b-4071-9bf5-56fbd6ab2413",
+              "name": "Screener not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Some requested entity was not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"aafc54ec-939e-49a9-ab6e-bbabca005cb2\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08bd8192-f327-4b42-8bc1-520357d66095",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "saved-screeners",
+                    ":screener_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "screener_id",
+                      "description": "(Required) Screener ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 7964.787559407434,\n      \"key_1\": 5846,\n      \"key_2\": \"string\",\n      \"key_3\": 3081\n    },\n    {\n      \"key_0\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b0d0a60b-22f3-4653-851c-a4c1d4cf998b",
+          "name": "Search Screener",
+          "request": {
+            "name": "Search Screener",
+            "description": {
+              "content": "Search instruments using structured filters.\n\nReturns a columnar response where each row is an array of column objects.\nEach column contains a human-readable name, a field reference, an optional\ntype hint (e.g. `CURR_USD`, `PERCENT`), and the value.\n\nUse `columns` to select which columns appear in each row.\nWhen omitted, the default field set is returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "screener"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page_size\": \"<integer,null>\",\n  \"page_token\": \"<null>\",\n  \"columns\": \"<array,null>\",\n  \"filters\": \"<array,null>\",\n  \"sort_case_sensitive\": \"<boolean,null>\",\n  \"sorts\": \"<array,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "53305068-aef4-4401-9434-3b70a5baa3ab",
+              "name": "Screener results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screener"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"name\": \"market_cap\"\n    },\n    {\n      \"name\": \"price\"\n    },\n    {\n      \"name\": \"volume\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"left\": {\n        \"name\": \"market_cap\"\n      },\n      \"op\": {\n        \"name\": \"GREATER_OR_EQUAL\"\n      },\n      \"right\": [\n        {\n          \"value\": 1000000000\n        }\n      ]\n    }\n  ],\n  \"page_size\": 25,\n  \"sorts\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": {\n        \"name\": \"market_cap\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    [\n      {\n        \"field\": {\n          \"name\": \"symbol\"\n        },\n        \"name\": \"Symbol\",\n        \"value\": \"AAPL\"\n      },\n      {\n        \"field\": {\n          \"name\": \"price\"\n        },\n        \"name\": \"Price\",\n        \"type\": \"CURR_USD\",\n        \"value\": 175.05\n      },\n      {\n        \"field\": {\n          \"name\": \"market_cap\"\n        },\n        \"name\": \"Market Cap\",\n        \"type\": \"CURR_USD\",\n        \"value\": 3500000000000\n      },\n      {\n        \"field\": {\n          \"name\": \"beta\"\n        },\n        \"name\": \"Beta\",\n        \"value\": 1.2\n      },\n      {\n        \"field\": {\n          \"lookback\": \"ONE_WEEK\",\n          \"name\": \"change_pct\"\n        },\n        \"name\": \"Change (1W)\",\n        \"type\": \"PERCENT\",\n        \"value\": 2.35\n      },\n      {\n        \"field\": {\n          \"name\": \"consensus_rating\"\n        },\n        \"name\": \"Consensus Rating\",\n        \"value\": \"STRONG_BUY\"\n      },\n      {\n        \"field\": {\n          \"name\": \"earnings_per_share\",\n          \"period\": \"QUARTER\"\n        },\n        \"name\": \"EPS (Q)\",\n        \"type\": \"CURR_USD\",\n        \"value\": 1.55\n      }\n    ],\n    [\n      {\n        \"field\": {\n          \"name\": \"symbol\"\n        },\n        \"name\": \"Symbol\",\n        \"value\": \"F\"\n      },\n      {\n        \"field\": {\n          \"name\": \"price\"\n        },\n        \"name\": \"Price\",\n        \"type\": \"CURR_USD\",\n        \"value\": 12.5\n      },\n      {\n        \"field\": {\n          \"name\": \"market_cap\"\n        },\n        \"name\": \"Market Cap\",\n        \"type\": \"CURR_USD\",\n        \"value\": 45000000000\n      },\n      {\n        \"field\": {\n          \"name\": \"beta\"\n        },\n        \"name\": \"Beta\",\n        \"value\": 1.5\n      },\n      {\n        \"field\": {\n          \"lookback\": \"ONE_WEEK\",\n          \"name\": \"change_pct\"\n        },\n        \"name\": \"Change (1W)\",\n        \"type\": \"PERCENT\",\n        \"value\": -0.85\n      },\n      {\n        \"field\": {\n          \"name\": \"consensus_rating\"\n        },\n        \"name\": \"Consensus Rating\",\n        \"value\": \"HOLD\"\n      },\n      {\n        \"field\": {\n          \"name\": \"earnings_per_share\",\n          \"period\": \"QUARTER\"\n        },\n        \"name\": \"EPS (Q)\",\n        \"type\": \"CURR_USD\",\n        \"value\": 0.23\n      }\n    ]\n  ],\n  \"metadata\": {\n    \"next_page_token\": \"AAAAAAAAAAoAAAAAAAAAAg\",\n    \"request_id\": \"abc-123\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7aae12bb-992f-476b-a5c0-f6ef4956437d",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screener"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"name\": \"market_cap\"\n    },\n    {\n      \"name\": \"price\"\n    },\n    {\n      \"name\": \"volume\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"left\": {\n        \"name\": \"market_cap\"\n      },\n      \"op\": {\n        \"name\": \"GREATER_OR_EQUAL\"\n      },\n      \"right\": [\n        {\n          \"value\": 1000000000\n        }\n      ]\n    }\n  ],\n  \"page_size\": 25,\n  \"sorts\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": {\n        \"name\": \"market_cap\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 7964.787559407434,\n      \"key_1\": 5846,\n      \"key_2\": \"string\",\n      \"key_3\": 3081\n    },\n    {\n      \"key_0\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f36b8bdc-4f83-4a14-84e0-28015d45a140",
+              "name": "Malformed request payload",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screener"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"name\": \"market_cap\"\n    },\n    {\n      \"name\": \"price\"\n    },\n    {\n      \"name\": \"volume\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"left\": {\n        \"name\": \"market_cap\"\n      },\n      \"op\": {\n        \"name\": \"GREATER_OR_EQUAL\"\n      },\n      \"right\": [\n        {\n          \"value\": 1000000000\n        }\n      ]\n    }\n  ],\n  \"page_size\": 25,\n  \"sorts\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": {\n        \"name\": \"market_cap\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 422,\n    \"message\": \"Failed to deserialize the JSON body into the target type: unknown field `sort_by` at line 3 column 18\"\n  },\n  \"metadata\": {\n    \"request_id\": \"69f02ce8-20e3-4bcd-a134-bb006eca5749\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9e2637d-16a8-4aae-9f44-f5948889dd4e",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screener"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"name\": \"market_cap\"\n    },\n    {\n      \"name\": \"price\"\n    },\n    {\n      \"name\": \"volume\"\n    }\n  ],\n  \"filters\": [\n    {\n      \"left\": {\n        \"name\": \"market_cap\"\n      },\n      \"op\": {\n        \"name\": \"GREATER_OR_EQUAL\"\n      },\n      \"right\": [\n        {\n          \"value\": 1000000000\n        }\n      ]\n    }\n  ],\n  \"page_size\": 25,\n  \"sorts\": [\n    {\n      \"direction\": \"DESC\",\n      \"field\": {\n        \"name\": \"market_cap\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 7964.787559407434,\n      \"key_1\": 5846,\n      \"key_2\": \"string\",\n      \"key_3\": 3081\n    },\n    {\n      \"key_0\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9c903130-b60b-4435-b032-791c3cdd5b6e",
+    "name": "Clear Street Trading Screener API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.\nThis specification provides a single source of truth for the API surface, covering order management, trade execution, market data, and account services.\n\n### Authentication\nAll endpoints require authentication via a JWT Bearer token provided in the `Authorization` header.\n\n### Response Structure\nAll responses, both for success and error, adhere to a standard envelope structure:\n- `data`: Contains the response payload on success, or `null` on error.\n- `error`: Contains a structured error object on failure, or `null` on success.\n- `metadata`: Contains the `request_id` and pagination information.\n\n### WebSockets\nReal-time market data is available via WebSocket connections, which are not formally described in this OpenAPI specification. The following operations are available:\n- `market-data-l1-subscribe`: To start receiving L1 market data updates for a set of symbols.\n- `market-data-l1-unsubscribe`: To stop receiving L1 market data updates.\n\nContact Support:\n Name: Clear Street API Support\n Email: concierge@clearstreet.com",
+      "type": "text/plain"
+    }
+  }
+}

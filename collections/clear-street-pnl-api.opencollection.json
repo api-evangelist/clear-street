@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Common API Models PNL API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "PNL",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get entity PNL summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/entities/:entity_id/pnl-summary",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get PNL summary for all accounts in an entity."
+        },
+        {
+          "info": {
+            "name": "Get account PNL summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/pnl-summary",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get PNL summary for a given account."
+        },
+        {
+          "info": {
+            "name": "List account PNL details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/pnl-details",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List PNL details for a given account."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

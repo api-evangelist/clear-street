@@ -1,0 +1,906 @@
+{
+  "item": [
+    {
+      "id": "098a2b0c-bbe4-451e-b16f-00371273048e",
+      "name": "Trades",
+      "description": {
+        "content": "Trade endpoints are used to insert or cancel trades into a our systems.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "659e63c8-6cf2-47de-9758-9eb3c0c2d37d",
+          "name": "Insert Trades",
+          "request": {
+            "name": "Insert Trades",
+            "description": {
+              "content": "Insert the provided trades atomically. Use this endpoint if you want atomicity and immediate confirmation; this request will either fully process all your trades, or reject them all atomically. Therefore, a successful call to this endpoint guarantees that your trades have been accepted by our systems. This endpoint can accept up to 1000 trades at a time. <ul> <li><b>Exchange Trade</b>  trades done directly on an exchange. An example would be a trading account buying shares on Nasdaq.</li> <li><b>Bilateral Trade</b> trades done bilaterally broker to broker. An example would be Bank of America's trading account buying shares from Goldman Sachs' trading account.</li> <li><b>Transfer Trade</b> trades are done to transfer from one account to another within the same legal entity. An example would be to transfer shares from a trading account to an error account.</li> <li><b>Allocation Trade</b> trades are done to allocate to a customer account. An example would be to allocate shares at an average price from an average price account to a customer account. </li> </ul>\n<b>The fields below vary depending upon trade-type. Change the value of the `type` drop-down below to switch between trade-types.</b>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "trades"
+              ],
+              "host": [
+                "{{trades-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"type\": \"<string>\",\n    \"timestamp\": \"<integer>\",\n    \"client_trade_id\": \"<string>\",\n    \"date\": \"<integer>\",\n    \"account_id\": \"<integer>\",\n    \"quantity\": \"<string>\",\n    \"price\": \"<string>\",\n    \"instrument\": {\n      \"identifier\": \"<string>\",\n      \"identifier_type\": \"<string>\",\n      \"country\": \"<string>\",\n      \"currency\": \"<string>\"\n    },\n    \"side\": {\n      \"direction\": \"<string>\",\n      \"qualifier\": null,\n      \"position\": null\n    },\n    \"behalf_of_entity_id\": \"<integer,null>\",\n    \"behalf_of_account_id\": \"<integer,null>\",\n    \"solicited\": \"<boolean,null>\",\n    \"registered_rep\": \"<string,null>\",\n    \"branch_office\": \"<string,null>\",\n    \"settlement\": {\n      \"currency\": null,\n      \"date\": null\n    },\n    \"user_data\": \"<object,null>\",\n    \"order_id\": null,\n    \"cancel_trade_id\": null\n  },\n  {\n    \"type\": \"<string>\",\n    \"timestamp\": \"<integer>\",\n    \"client_trade_id\": \"<string>\",\n    \"date\": \"<integer>\",\n    \"account_id\": \"<integer>\",\n    \"quantity\": \"<string>\",\n    \"price\": \"<string>\",\n    \"instrument\": {\n      \"identifier\": \"<string>\",\n      \"identifier_type\": \"<string>\",\n      \"country\": \"<string>\",\n      \"currency\": \"<string>\"\n    },\n    \"side\": {\n      \"direction\": \"<string>\",\n      \"qualifier\": null,\n      \"position\": null\n    },\n    \"behalf_of_entity_id\": \"<integer,null>\",\n    \"behalf_of_account_id\": \"<integer,null>\",\n    \"solicited\": \"<boolean,null>\",\n    \"registered_rep\": \"<string,null>\",\n    \"branch_office\": \"<string,null>\",\n    \"settlement\": {\n      \"currency\": null,\n      \"date\": null\n    },\n    \"user_data\": \"<object,null>\",\n    \"order_id\": null,\n    \"cancel_trade_id\": null\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bc32ae7b-0a10-44af-8bed-dad0eee89840",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trades"
+                  ],
+                  "host": [
+                    "{{trades-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"<string>\",\n    \"timestamp\": 1545952392000,\n    \"client_trade_id\": \"T-50264430-bc41\",\n    \"date\": 20200101,\n    \"account_id\": 1002,\n    \"quantity\": \"100\",\n    \"price\": \"10.00\",\n    \"instrument\": {\n      \"identifier\": \"AAPL\",\n      \"identifier_type\": \"<string>\",\n      \"country\": \"USA\",\n      \"currency\": \"USD\"\n    },\n    \"side\": {\n      \"direction\": \"sell\",\n      \"qualifier\": null,\n      \"position\": null\n    },\n    \"behalf_of_entity_id\": 1002,\n    \"behalf_of_account_id\": 1002,\n    \"solicited\": \"<boolean,null>\",\n    \"registered_rep\": \"<string,null>\",\n    \"branch_office\": \"<string,null>\",\n    \"settlement\": {\n      \"currency\": \"USD\",\n      \"date\": null\n    },\n    \"user_data\": \"<object,null>\",\n    \"order_id\": null,\n    \"cancel_trade_id\": null\n  },\n  {\n    \"type\": \"<string>\",\n    \"timestamp\": 1545952392000,\n    \"client_trade_id\": \"T-50264430-bc41\",\n    \"date\": 20200101,\n    \"account_id\": 1002,\n    \"quantity\": \"100\",\n    \"price\": \"10.00\",\n    \"instrument\": {\n      \"identifier\": \"AAPL\",\n      \"identifier_type\": \"<string>\",\n      \"country\": \"USA\",\n      \"currency\": \"USD\"\n    },\n    \"side\": {\n      \"direction\": \"sell\",\n      \"qualifier\": null,\n      \"position\": null\n    },\n    \"behalf_of_entity_id\": 1002,\n    \"behalf_of_account_id\": 1002,\n    \"solicited\": \"<boolean,null>\",\n    \"registered_rep\": \"<string,null>\",\n    \"branch_office\": \"<string,null>\",\n    \"settlement\": {\n      \"currency\": \"USD\",\n      \"date\": null\n    },\n    \"user_data\": \"<object,null>\",\n    \"order_id\": null,\n    \"cancel_trade_id\": null\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"client_trade_id\": \"T-50264430-bc41\",\n    \"trade_id\": \"string\"\n  },\n  {\n    \"client_trade_id\": \"T-50264430-bc41\",\n    \"trade_id\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36c5b733-7b6a-4be9-a29f-8e0541c90134",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trades"
+                  ],
+                  "host": [
+                    "{{trades-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"<string>\",\n    \"timestamp\": 1545952392000,\n    \"client_trade_id\": \"T-50264430-bc41\",\n    \"date\": 20200101,\n    \"account_id\": 1002,\n    \"quantity\": \"100\",\n    \"price\": \"10.00\",\n    \"instrument\": {\n      \"identifier\": \"AAPL\",\n      \"identifier_type\": \"<string>\",\n      \"country\": \"USA\",\n      \"currency\": \"USD\"\n    },\n    \"side\": {\n      \"direction\": \"sell\",\n      \"qualifier\": null,\n      \"position\": null\n    },\n    \"behalf_of_entity_id\": 1002,\n    \"behalf_of_account_id\": 1002,\n    \"solicited\": \"<boolean,null>\",\n    \"registered_rep\": \"<string,null>\",\n    \"branch_office\": \"<string,null>\",\n    \"settlement\": {\n      \"currency\": \"USD\",\n      \"date\": null\n    },\n    \"user_data\": \"<object,null>\",\n    \"order_id\": null,\n    \"cancel_trade_id\": null\n  },\n  {\n    \"type\": \"<string>\",\n    \"timestamp\": 1545952392000,\n    \"client_trade_id\": \"T-50264430-bc41\",\n    \"date\": 20200101,\n    \"account_id\": 1002,\n    \"quantity\": \"100\",\n    \"price\": \"10.00\",\n    \"instrument\": {\n      \"identifier\": \"AAPL\",\n      \"identifier_type\": \"<string>\",\n      \"country\": \"USA\",\n      \"currency\": \"USD\"\n    },\n    \"side\": {\n      \"direction\": \"sell\",\n      \"qualifier\": null,\n      \"position\": null\n    },\n    \"behalf_of_entity_id\": 1002,\n    \"behalf_of_account_id\": 1002,\n    \"solicited\": \"<boolean,null>\",\n    \"registered_rep\": \"<string,null>\",\n    \"branch_office\": \"<string,null>\",\n    \"settlement\": {\n      \"currency\": \"USD\",\n      \"date\": null\n    },\n    \"user_data\": \"<object,null>\",\n    \"order_id\": null,\n    \"cancel_trade_id\": null\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d30436e3-e26c-4031-b2ae-fe0b865af817",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trades"
+                  ],
+                  "host": [
+                    "{{trades-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"<string>\",\n    \"timestamp\": 1545952392000,\n    \"client_trade_id\": \"T-50264430-bc41\",\n    \"date\": 20200101,\n    \"account_id\": 1002,\n    \"quantity\": \"100\",\n    \"price\": \"10.00\",\n    \"instrument\": {\n      \"identifier\": \"AAPL\",\n      \"identifier_type\": \"<string>\",\n      \"country\": \"USA\",\n      \"currency\": \"USD\"\n    },\n    \"side\": {\n      \"direction\": \"sell\",\n      \"qualifier\": null,\n      \"position\": null\n    },\n    \"behalf_of_entity_id\": 1002,\n    \"behalf_of_account_id\": 1002,\n    \"solicited\": \"<boolean,null>\",\n    \"registered_rep\": \"<string,null>\",\n    \"branch_office\": \"<string,null>\",\n    \"settlement\": {\n      \"currency\": \"USD\",\n      \"date\": null\n    },\n    \"user_data\": \"<object,null>\",\n    \"order_id\": null,\n    \"cancel_trade_id\": null\n  },\n  {\n    \"type\": \"<string>\",\n    \"timestamp\": 1545952392000,\n    \"client_trade_id\": \"T-50264430-bc41\",\n    \"date\": 20200101,\n    \"account_id\": 1002,\n    \"quantity\": \"100\",\n    \"price\": \"10.00\",\n    \"instrument\": {\n      \"identifier\": \"AAPL\",\n      \"identifier_type\": \"<string>\",\n      \"country\": \"USA\",\n      \"currency\": \"USD\"\n    },\n    \"side\": {\n      \"direction\": \"sell\",\n      \"qualifier\": null,\n      \"position\": null\n    },\n    \"behalf_of_entity_id\": 1002,\n    \"behalf_of_account_id\": 1002,\n    \"solicited\": \"<boolean,null>\",\n    \"registered_rep\": \"<string,null>\",\n    \"branch_office\": \"<string,null>\",\n    \"settlement\": {\n      \"currency\": \"USD\",\n      \"date\": null\n    },\n    \"user_data\": \"<object,null>\",\n    \"order_id\": null,\n    \"cancel_trade_id\": null\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f130ac1-f1ac-4636-9199-4262be402464",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trades"
+                  ],
+                  "host": [
+                    "{{trades-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"<string>\",\n    \"timestamp\": 1545952392000,\n    \"client_trade_id\": \"T-50264430-bc41\",\n    \"date\": 20200101,\n    \"account_id\": 1002,\n    \"quantity\": \"100\",\n    \"price\": \"10.00\",\n    \"instrument\": {\n      \"identifier\": \"AAPL\",\n      \"identifier_type\": \"<string>\",\n      \"country\": \"USA\",\n      \"currency\": \"USD\"\n    },\n    \"side\": {\n      \"direction\": \"sell\",\n      \"qualifier\": null,\n      \"position\": null\n    },\n    \"behalf_of_entity_id\": 1002,\n    \"behalf_of_account_id\": 1002,\n    \"solicited\": \"<boolean,null>\",\n    \"registered_rep\": \"<string,null>\",\n    \"branch_office\": \"<string,null>\",\n    \"settlement\": {\n      \"currency\": \"USD\",\n      \"date\": null\n    },\n    \"user_data\": \"<object,null>\",\n    \"order_id\": null,\n    \"cancel_trade_id\": null\n  },\n  {\n    \"type\": \"<string>\",\n    \"timestamp\": 1545952392000,\n    \"client_trade_id\": \"T-50264430-bc41\",\n    \"date\": 20200101,\n    \"account_id\": 1002,\n    \"quantity\": \"100\",\n    \"price\": \"10.00\",\n    \"instrument\": {\n      \"identifier\": \"AAPL\",\n      \"identifier_type\": \"<string>\",\n      \"country\": \"USA\",\n      \"currency\": \"USD\"\n    },\n    \"side\": {\n      \"direction\": \"sell\",\n      \"qualifier\": null,\n      \"position\": null\n    },\n    \"behalf_of_entity_id\": 1002,\n    \"behalf_of_account_id\": 1002,\n    \"solicited\": \"<boolean,null>\",\n    \"registered_rep\": \"<string,null>\",\n    \"branch_office\": \"<string,null>\",\n    \"settlement\": {\n      \"currency\": \"USD\",\n      \"date\": null\n    },\n    \"user_data\": \"<object,null>\",\n    \"order_id\": null,\n    \"cancel_trade_id\": null\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "195cbeee-c3fa-41fe-b5c5-f32e014a4445",
+          "name": "Cancel Trade By ID",
+          "request": {
+            "name": "Cancel Trade By ID",
+            "description": {
+              "content": "Cancel a trade either by the Clear Street assigned `trade_id`, or `client_trade_id` that was provided in the original trade. If the ID you provide is, in fact, a `client_trade_id`, you must set `is_client_trade_id` to true, and also provide the `account_id` for the original trade.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "trades",
+                ":trade_id"
+              ],
+              "host": [
+                "{{trades-trade_id-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "is_client_trade_id",
+                  "value": "<boolean>",
+                  "description": "True if the given trade_id is a client_trade_id"
+                },
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<integer>",
+                  "description": "Provide only if `is_client_trade_id` is true. This is the account_id the trade was booked to"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "trade_id",
+                  "description": "(Required) Clear Street assigned unique trade_id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2c3e31f4-f307-4c04-b0c0-6798682a5433",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trades",
+                    ":trade_id"
+                  ],
+                  "host": [
+                    "{{trades-trade_id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "is_client_trade_id",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "account_id",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "trade_id",
+                      "description": "(Required) Clear Street assigned unique trade_id"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "22e2b552-61ad-4c41-91e0-1f0bdc3f259e",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trades",
+                    ":trade_id"
+                  ],
+                  "host": [
+                    "{{trades-trade_id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "is_client_trade_id",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "account_id",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "trade_id",
+                      "description": "(Required) Clear Street assigned unique trade_id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fa46da9-b30a-4b14-98cb-6be0a91ea7ea",
+              "name": "Conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trades",
+                    ":trade_id"
+                  ],
+                  "host": [
+                    "{{trades-trade_id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "is_client_trade_id",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "account_id",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "trade_id",
+                      "description": "(Required) Clear Street assigned unique trade_id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "371a394f-39cf-4e6d-8398-94839850f1f4",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "trades",
+                    ":trade_id"
+                  ],
+                  "host": [
+                    "{{trades-trade_id-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "is_client_trade_id",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "account_id",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "trade_id",
+                      "description": "(Required) Clear Street assigned unique trade_id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"value\": \"<Error: Could not resolve allOf schema\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "380c559b-2f40-4a55-9a41-8957824625de",
+          "name": "Get trade",
+          "request": {
+            "name": "Get trade",
+            "description": {
+              "content": "Get trade a trade by its unique trade ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "trades",
+                ":trade_id"
+              ],
+              "host": [
+                "{{accounts-account_id-trades-trade_id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "trade_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "915905f7-aa99-4f61-b893-cf9825b61856",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "trades",
+                    ":trade_id"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-trades-trade_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "trade_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created_at\": 2530888122574,\n  \"trade_id\": \"12390213\",\n  \"order_id\": \"12390213\",\n  \"side\": \"sell-short\",\n  \"quantity\": \"100\",\n  \"price\": \"123.99\",\n  \"running_position\": \"100\",\n  \"account_id\": \"100000\",\n  \"account_number\": \"ACC0001\",\n  \"symbol\": \"AAPL\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4396004d-2adb-487e-8076-77f023e0ecaf",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "trades",
+                    ":trade_id"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-trades-trade_id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "trade_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://EYmHhjRleVCKmqpQIqtlAisxJ.erXjO3Zshnq-VRAEecqcMuEQKvhhf-EJbyW\",\n  \"title\": \"string\",\n  \"status\": 414.13753702603793,\n  \"detail\": \"string\",\n  \"instance\": \"http://iUGgKmyUGDzHLVewpVyIm.gpnOSCQP\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5bd4ddc1-96d3-4971-a69c-8416214e3af7",
+          "name": "List trades",
+          "request": {
+            "name": "List trades",
+            "description": {
+              "content": "List trades for a given account for the current trading day.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "trades"
+              ],
+              "host": [
+                "{{accounts-account_id-trades-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "25"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "66b38085-9540-4845-8a1d-073466956bcd",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "trades"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-trades-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "25"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"created_at\": 2182188443368,\n      \"trade_id\": \"12390213\",\n      \"order_id\": \"12390213\",\n      \"side\": \"sell-short\",\n      \"quantity\": \"100\",\n      \"price\": \"123.99\",\n      \"running_position\": \"100\",\n      \"account_id\": \"100000\",\n      \"account_number\": \"ACC0001\",\n      \"symbol\": \"AAPL\"\n    },\n    {\n      \"created_at\": 2802798833655,\n      \"trade_id\": \"12390213\",\n      \"order_id\": \"12390213\",\n      \"side\": \"buy\",\n      \"quantity\": \"100\",\n      \"price\": \"123.99\",\n      \"running_position\": \"100\",\n      \"account_id\": \"100000\",\n      \"account_number\": \"ACC0001\",\n      \"symbol\": \"AAPL\"\n    }\n  ],\n  \"next_page_token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "286b3a2e-0092-47b1-9392-0c7b9372a0ed",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "trades"
+                  ],
+                  "host": [
+                    "{{accounts-account_id-trades-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "25"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://EYmHhjRleVCKmqpQIqtlAisxJ.erXjO3Zshnq-VRAEecqcMuEQKvhhf-EJbyW\",\n  \"title\": \"string\",\n  \"status\": 414.13753702603793,\n  \"detail\": \"string\",\n  \"instance\": \"http://iUGgKmyUGDzHLVewpVyIm.gpnOSCQP\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "//api.clearstreet.io/v1",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "//api.clearstreet.io/v1",
+      "key": "trades-Url"
+    },
+    {
+      "type": "string",
+      "value": "//api.clearstreet.io/v1",
+      "key": "trades-trade_id-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "accounts-account_id-trades-trade_id-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "accounts-account_id-trades-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "b8fb5b57-192f-4186-b5f2-c27cef1cf9c2",
+    "name": "Clear Street Trades API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged Trades across 2 of this provider's published API definitions: clear-street-legacy-api-swagger.yml, clear-street-studio-openapi.yml. Each path carries the servers of the definition it was published in.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Common API Models Rates API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List easy borrows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/easy-borrows",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all current easy-to-borrow stock symbols. This list changes dynamically daily."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

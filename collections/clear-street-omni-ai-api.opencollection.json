@@ -1,0 +1,341 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Trading Omni AI API",
+    "version": "2025-10-31"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Omni AI",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Entitlement Agreements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/omni-ai/entitlement-agreements"
+          },
+          "docs": "List current signable entitlement agreements for consent UX."
+        },
+        {
+          "info": {
+            "name": "Get Entitlements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/omni-ai/entitlements",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List caller's active entitlement grants."
+        },
+        {
+          "info": {
+            "name": "Create Entitlements",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.com/v1/omni-ai/entitlements",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Record consent and upsert one-or-more active grants."
+        },
+        {
+          "info": {
+            "name": "Delete Entitlement",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.com/v1/omni-ai/entitlements/:entitlement_id",
+            "params": [
+              {
+                "name": "entitlement_id",
+                "value": "",
+                "type": "path",
+                "description": "Entitlement grant id"
+              }
+            ]
+          },
+          "docs": "Revoke one entitlement grant by id."
+        },
+        {
+          "info": {
+            "name": "Get Message By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/omni-ai/messages/:message_id",
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path",
+                "description": "Message identifier"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Account ID for the request"
+              }
+            ]
+          },
+          "docs": "Get a finalized message by ID.\n\nReturns a single finalized message. Returns **404** if the message belongs\nto an in-progress assistant turn (use the response endpoint for live\noutput). Once the turn completes, the message becomes available here."
+        },
+        {
+          "info": {
+            "name": "Submit Feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.com/v1/omni-ai/messages/:message_id/feedback",
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path",
+                "description": "Finalized assistant message to rate"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit feedback on a finalized assistant message.\n\nAttaches a score and optional comment to a finalized assistant message.\nFeedback is only valid for messages with role `ASSISTANT` that have\nreached a terminal outcome."
+        },
+        {
+          "info": {
+            "name": "Get Response By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/omni-ai/responses/:response_id",
+            "params": [
+              {
+                "name": "response_id",
+                "value": "",
+                "type": "path",
+                "description": "Response identifier (returned by create thread/message)"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Account ID for the request"
+              }
+            ]
+          },
+          "docs": "Poll a response for assistant output.\n\nReturns the current snapshot of an in-progress or completed response.\nWhile the status is `queued` or `running`, the content may be partial and\nmay include `thinking` parts. Poll this endpoint periodically until the\nstatus reaches a terminal value (`succeeded`, `failed`, or `canceled`).\n\nOnce terminal, the finalized assistant message is available in thread\nhistory via `GET /omni-ai/threads/{thread_id}/messages`."
+        },
+        {
+          "info": {
+            "name": "Cancel Response",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.com/v1/omni-ai/responses/:response_id",
+            "params": [
+              {
+                "name": "response_id",
+                "value": "",
+                "type": "path",
+                "description": "Response identifier to cancel"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Account ID for the request"
+              }
+            ]
+          },
+          "docs": "Cancel a response.\n\nRequests cancellation of a queued or running response. If the response has\nalready reached a terminal status, this is an idempotent success. A\ncanceled turn still produces a final assistant message with outcome\n`canceled` in the thread history."
+        },
+        {
+          "info": {
+            "name": "Get Threads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/omni-ai/threads",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Account ID for the request"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              }
+            ]
+          },
+          "docs": "List conversation threads.\n\nReturns thread metadata ordered by most recently created first. Use\n`page_size` and `page_token` for pagination. Thread objects contain only\nmetadata (title, timestamps) — use the messages endpoint for conversation\nhistory."
+        },
+        {
+          "info": {
+            "name": "Create Thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.com/v1/omni-ai/threads",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new conversation thread.\n\nAtomically creates a new thread and submits the first user turn. The\nresponse contains a `response_id` that should be polled via\n`GET /omni-ai/responses/{response_id}` for assistant output.\n\nTwo creation modes are supported:\n- **instant** — provide `text` with a natural-language prompt.\n- **deep_insights** — provide a `target` ticker and optional `thesis`\n  for long-form research."
+        },
+        {
+          "info": {
+            "name": "Get Thread By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/omni-ai/threads/:thread_id",
+            "params": [
+              {
+                "name": "thread_id",
+                "value": "",
+                "type": "path",
+                "description": "Thread identifier"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Account ID for the request"
+              }
+            ]
+          },
+          "docs": "Get a specific thread.\n\nReturns metadata (title, timestamps) for a single thread. Does not include\nmessages — use `GET /omni-ai/threads/{thread_id}/messages` for conversation\nhistory."
+        },
+        {
+          "info": {
+            "name": "Get Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/omni-ai/threads/:thread_id/messages",
+            "params": [
+              {
+                "name": "thread_id",
+                "value": "",
+                "type": "path",
+                "description": "Thread to list messages for"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Account ID for the request"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              }
+            ]
+          },
+          "docs": "List finalized messages in a thread.\n\nReturns the latest page of **finalized** messages by default, with messages\nwithin each page ordered chronologically. Messages from in-progress\nassistant turns are excluded — use\n`GET /omni-ai/threads/{thread_id}/response` or\n`GET /omni-ai/responses/{response_id}` for live output.\n\nIf the last finalized message has role `USER`, an active response likely\nexists and should be polled separately."
+        },
+        {
+          "info": {
+            "name": "Create Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.com/v1/omni-ai/threads/:thread_id/messages",
+            "params": [
+              {
+                "name": "thread_id",
+                "value": "",
+                "type": "path",
+                "description": "Thread to continue"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Continue an existing conversation thread.\n\nAppends a new user message to the thread and starts an assistant response.\nOnly one response may be active per thread at a time — if the previous turn\nis still in progress, this endpoint returns **409 Conflict**. Wait for the\nactive response to reach a terminal status before submitting the next turn.\n\nPoll the returned `response_id` via `GET /omni-ai/responses/{response_id}`\nfor assistant output."
+        },
+        {
+          "info": {
+            "name": "Get Thread Response",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/omni-ai/threads/:thread_id/response",
+            "params": [
+              {
+                "name": "thread_id",
+                "value": "",
+                "type": "path",
+                "description": "Thread to check for active response"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Account ID for the request"
+              }
+            ]
+          },
+          "docs": "Get the active response for a thread.\n\nConvenience endpoint to look up the currently active response for a thread\nwithout knowing the `response_id`. Useful when reloading a thread whose\nlast finalized message is a `USER` message — this indicates an assistant\nturn is likely in progress.\n\nReturns **404** if no active response exists (the thread is idle)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

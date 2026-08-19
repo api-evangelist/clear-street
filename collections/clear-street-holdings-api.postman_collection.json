@@ -1,0 +1,207 @@
+{
+  "item": [
+    {
+      "id": "27e405f3-311f-4e65-8d4b-a0c68de60efd",
+      "name": "Holdings",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "32b43396-e097-477c-a596-ac4d121caa98",
+          "name": "List holdings",
+          "request": {
+            "name": "List holdings",
+            "description": {
+              "content": "List holdings for a given account, filtered on the given query parameters. This endpoint will return either historical or real-time holdings directly from our custodial systems. Positions returned here are can be different than positions returned from the Execution API. While the Execution API returns positions based on trading activity within Studio, our custodial system returns all positions regardless of where trades occur.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "holdings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "date",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1251eb12-ea8e-4d84-8ce3-1e5d9f296387",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "holdings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "20240101"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_id\": \"100000\",\n  \"account_number\": \"ACC0001\",\n  \"date\": 20240101,\n  \"sod_equity\": 4433.1633309422195,\n  \"data\": [\n    {\n      \"symbol\": \"AAPL\",\n      \"asset_class\": \"fund\",\n      \"quantity\": \"100\",\n      \"sod_quantity\": \"100\",\n      \"symbol_description\": \"string\"\n    },\n    {\n      \"symbol\": \"AAPL\",\n      \"asset_class\": \"debt\",\n      \"quantity\": \"100\",\n      \"sod_quantity\": \"100\",\n      \"symbol_description\": \"string\"\n    }\n  ],\n  \"eod_equity\": 4910.940330083005,\n  \"timestamp\": 2048624645705\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "878668d5-c2f0-410f-8c90-5ae3987ebfc3",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "holdings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "20240101"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://tfpZqaUFvzwCAigQNRys.ljodY4v\",\n  \"title\": \"string\",\n  \"status\": 544.361630954208,\n  \"detail\": \"string\",\n  \"instance\": \"https://euqBkySeuXlcFz.quryfG5lfMhOKIHjLEhOGByNlZ,k.hYQEK00Bk+oGk4Z3w+T\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d7ff70be-f4ff-4628-bf24-e623b99b648e",
+    "name": "Common API Models Holdings API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Common API models for all of Studio's APIs",
+      "type": "text/plain"
+    }
+  }
+}

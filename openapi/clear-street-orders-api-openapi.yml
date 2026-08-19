@@ -1,0 +1,2654 @@
+openapi: 3.2.0
+info:
+  title: Clear Street Orders API
+  version: '1.0'
+  description: 'Operations tagged Orders across 2 of this provider''s published API definitions: clear-street-studio-openapi.yml, clear-street-trading-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.clearstreet.io/studio/v2
+  description: Production environment
+- url: https://sandbox-api.clearstreet.io/studio/v2
+  description: Sandbox environment
+- url: https://api.clearstreet.com
+  description: Clear Street API
+- url: https://api-dev.clearstreet.com
+  description: Clear Street Development API
+- url: http://localhost:5001
+  description: Clear Street Local API
+tags:
+- name: Orders
+  x-displayName: Orders
+paths:
+  /accounts/{account_id}/bulk-orders:
+    servers:
+    - url: https://api.clearstreet.io/studio/v2
+      description: Production environment
+    - url: https://sandbox-api.clearstreet.io/studio/v2
+      description: Sandbox environment
+    post:
+      operationId: createBulkOrders
+      summary: Create bulk orders
+      description: 'Creates multiple orders in a single request, up to 1000. Note that a successful call to this endpoint does not necessarily mean your orders have been accepted, e.g. a downstream venue might reject your order. You should therefore utilize our WebSocket APIs to listen for changes in order lifecycle events.
+
+
+        The response will contain an array of objects, indicating whether your order was submitted. If the order was submitted, the `order_id` field will be populated with the order ID assigned to this order. If the order was rejected, the `reason` field will be populated with the reason for rejection. The data array returned in the response object is guaranteed to be ordered in the same order as the orders you provided in the request. Again, note that even if your order was submitted, that doesn''t mean it was _accepted_, and may still be rejected by downstream venues.
+
+        '
+      tags:
+      - Orders
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to create orders for.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orders:
+                  type: array
+                  description: An array of orders to create.
+                  items:
+                    $ref: '#/components/schemas/CreateOrder'
+                  minItems: 1
+                  maxItems: 1000
+              required:
+              - orders
+              additionalProperties: false
+      responses:
+        '201':
+          description: Orders received. Indicates the orders were received and are pending further processing.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  submitted:
+                    type: integer
+                    description: Total number of orders submitted
+                  rejected:
+                    type: integer
+                    description: Total number of orders rejected
+                  data:
+                    type: array
+                    description: Array indicating whether each respective order was submitted or not. This array is guaranteed to be sorted in the same order as the orders you provided in your request.
+                    items:
+                      type: object
+                      properties:
+                        submitted:
+                          type: boolean
+                          description: True if the order was submitted successfully, false otherwise.
+                        order_id:
+                          $ref: '#/components/schemas/OrderId'
+                          description: If the order was submitted, the order ID assigned to this order. Empty if the order was rejected.
+                        reason:
+                          type: string
+                          description: If the order rejected, the reason for rejection. Empty if the order was accepted.
+                      required:
+                      - submitted
+                required:
+                - submitted
+                - rejected
+                - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+  /accounts/{account_id}/orders:
+    servers:
+    - url: https://api.clearstreet.io/studio/v2
+      description: Production environment
+    - url: https://sandbox-api.clearstreet.io/studio/v2
+      description: Sandbox environment
+    post:
+      operationId: createOrder
+      summary: Create order
+      description: Creates a new order and sends to our internal systems for execution. Note that a successful call to this endpoint does not necessarily mean your order has been accepted, e.g. a downstream venue might reject your order. You should therefore utilize our WebSocket APIs to listen for changes in order lifecycle events.
+      tags:
+      - Orders
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to create the order for.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrder'
+      responses:
+        '201':
+          description: Order received. Indicates the the order was received and is pending further processing.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: string
+                    example: 234usdfa3
+                    description: An internally generated unique ID for this order.
+                required:
+                - order_id
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+    get:
+      operationId: listOrders
+      summary: List orders
+      description: List orders for a given account for the current trading day, filtered on the given query parameters.
+      tags:
+      - Orders
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to list orders for.
+      - in: query
+        name: from
+        schema:
+          $ref: '#/components/schemas/Timestamp'
+          description: Milliseconds since epoch timestamp. This will constrain the search for orders created after this timestamp, inclusively. Timestamps for orders prior the current trading day will be ignored.
+      - in: query
+        name: to
+        schema:
+          $ref: '#/components/schemas/Timestamp'
+          description: Milliseconds since epoch timestamp. This will constrain the search for orders created before this timestamp, inclusively. Timestamps for orders beyond the current trading day will be ignored.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 2000
+          default: 25
+          description: Number of orders to return per page.
+      - in: query
+        name: page_token
+        schema:
+          type: string
+          description: Cursor for the page to return.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+                  next_page_token:
+                    type: string
+                    description: Cursor for the next page of results.
+                required:
+                - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+    delete:
+      operationId: deleteAllOrders
+      summary: Delete all orders
+      description: Attempts to cancel all open orders for a given account. Cancelling an order cannot be guaranteed as there might be in-flight executions.
+      tags:
+      - Orders
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to cancel orders for.
+      - in: query
+        name: symbol
+        schema:
+          $ref: '#/components/schemas/Symbol'
+          description: Cancel orders only for this specific symbol. If this is omitted, all open orders will be cancelled.
+      - in: query
+        name: symbol_format
+        schema:
+          $ref: '#/components/schemas/SymbolFormat'
+          default: cms
+          description: Format of the provided symbol.
+      responses:
+        '201':
+          description: Successfully attempted to cancel all open orders.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrderId'
+                    description: Array of order IDs that were attempted to be cancelled.
+                required:
+                - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+  /accounts/{account_id}/orders/{order_id}:
+    servers:
+    - url: https://api.clearstreet.io/studio/v2
+      description: Production environment
+    - url: https://sandbox-api.clearstreet.io/studio/v2
+      description: Sandbox environment
+    get:
+      operationId: getOrder
+      summary: Get order
+      description: Get an order that was previously created.
+      tags:
+      - Orders
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to get the order for.
+      - in: path
+        name: order_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/OrderId'
+      responses:
+        '200':
+          description: The order associated with the given `order_id`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order:
+                    $ref: '#/components/schemas/Order'
+                required:
+                - order
+                additionalProperties: false
+      security:
+      - BearerAuth: []
+    delete:
+      operationId: deleteOrder
+      summary: Delete order
+      description: Attempts to cancel an existing order. Cancelling an order cannot be guaranteed as there might be in-flight executions.
+      tags:
+      - Orders
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to attempt to cancel the order for.
+      - in: path
+        name: order_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/OrderId'
+      responses:
+        '201':
+          description: Order cancel successfully attempted.
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+    patch:
+      operationId: updateOrder
+      summary: Update order
+      description: Attempts to update an existing order. This can be used to update a subset of an order's attributes, for example price and quantity.
+      tags:
+      - Orders
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to attempt to update the order for.
+      - in: path
+        name: order_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/OrderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrder'
+      responses:
+        '201':
+          description: Order update successfully attempted.
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+  /v1/accounts/{account_id}/executions:
+    servers:
+    - url: https://api.clearstreet.com
+      description: Clear Street API
+    - url: https://api-dev.clearstreet.com
+      description: Clear Street Development API
+    - url: http://localhost:5001
+      description: Clear Street Local API
+    get:
+      tags:
+      - Orders
+      summary: Get Executions
+      description: 'Retrieves filled and partially-filled execution reports for the specified
+
+        trading account, ordered by transaction time (nanosecond precision) descending.'
+      operationId: get_executions
+      parameters:
+      - name: account_id
+        in: path
+        description: Account identifier
+        required: true
+        schema:
+          $ref: '#/components/schemas/i64'
+      - name: instrument_ids
+        in: query
+        description: Comma-separated instrument identifiers (UUIDs) or symbols (e.g. `AAPL`) to filter by. When provided, only executions for any of the listed instruments are returned.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
+            minLength: 1
+        style: form
+        explode: false
+      - name: page_size
+        in: query
+        description: The number of items to return per page. Only used when page_token is not provided.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 1000
+          maximum: 1000
+          minimum: 1
+      - name: page_token
+        in: query
+        description: Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored.
+        required: false
+        schema:
+          type: string
+          format: byte
+          description: Base64URL-encoded pagination token
+        example: eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=
+      - name: from
+        in: query
+        description: The start date and time for the query range, inclusive (ISO 8601 format)
+        required: false
+        schema:
+          type: string
+          format: date-time
+        example: 2025-04-24 14:30:00+00:00
+      - name: to
+        in: query
+        description: The end date and time for the query range, inclusive (ISO 8601 format)
+        required: false
+        schema:
+          type: string
+          format: date-time
+        example: 2025-04-24 18:30:00+00:00
+      responses:
+        '200':
+          description: List of executions
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/ExecutionList'
+                type: object
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+  /v1/accounts/{account_id}/orders:
+    servers:
+    - url: https://api.clearstreet.com
+      description: Clear Street API
+    - url: https://api-dev.clearstreet.com
+      description: Clear Street Development API
+    - url: http://localhost:5001
+      description: Clear Street Local API
+    get:
+      tags:
+      - Orders
+      summary: Get Orders
+      description: List orders for an account with optional filtering
+      operationId: get_orders
+      parameters:
+      - name: account_id
+        in: path
+        description: Account identifier
+        required: true
+        schema:
+          $ref: '#/components/schemas/i64'
+      - name: page_size
+        in: query
+        description: The number of items to return per page. Only used when page_token is not provided.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 1000
+          maximum: 1000
+          minimum: 1
+      - name: page_token
+        in: query
+        description: Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored.
+        required: false
+        schema:
+          type: string
+          format: byte
+          description: Base64URL-encoded pagination token
+        example: eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=
+      - name: order_ids
+        in: query
+        description: Comma-separated order IDs to filter by. When provided, only orders whose order ID is in this set are returned.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        style: form
+        explode: false
+      - name: status
+        in: query
+        description: Comma-separated order statuses to filter by
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            description: Order status
+            enum:
+            - PENDING_NEW
+            - NEW
+            - PARTIALLY_FILLED
+            - FILLED
+            - CANCELED
+            - REJECTED
+            - EXPIRED
+            - PENDING_CANCEL
+            - PENDING_REPLACE
+            - REPLACED
+            - DONE_FOR_DAY
+            - STOPPED
+            - SUSPENDED
+            - CALCULATED
+            - OTHER
+        style: form
+        explode: false
+      - name: symbol
+        in: query
+        description: Filter by symbol
+        required: false
+        schema:
+          type: string
+      - name: instrument_ids
+        in: query
+        description: Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols).
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstrumentIdOrSymbol'
+        style: form
+        explode: false
+      - name: instrument_type
+        in: query
+        description: Instrument type filter (e.g., COMMON_STOCK, OPTION)
+        required: false
+        schema:
+          type: string
+          description: Security type
+          enum:
+          - COMMON_STOCK
+          - INDEX
+          - OPTION
+          - CASH
+      - name: underlying_instrument_ids
+        in: query
+        description: Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols). Matches options orders whose resolved underlier is any of the given instruments.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstrumentIdOrSymbol'
+        style: form
+        explode: false
+      - name: from
+        in: query
+        description: The start date and time for the query range, inclusive (ISO 8601 format)
+        required: false
+        schema:
+          type: string
+          format: date-time
+        example: 2025-04-24 14:30:00+00:00
+      - name: to
+        in: query
+        description: The end date and time for the query range, inclusive (ISO 8601 format)
+        required: false
+        schema:
+          type: string
+          format: date-time
+        example: 2025-04-24 18:30:00+00:00
+      responses:
+        '200':
+          description: List of orders
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/OrderList'
+                type: object
+              examples:
+                ListOfOrders:
+                  summary: A list of orders with various statuses
+                  value:
+                    data:
+                    - account_id: 19816
+                      average_fill_price: '47.95'
+                      client_order_id: my-ref-id-20251001-001
+                      created_at: 2025-10-31 13:30:00+00:00
+                      filled_quantity: '5'
+                      id: 0195f6c7-4f64-7e3c-8b0a-1d8e4f5e6a7b
+                      instrument_id: d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab
+                      instrument_type: COMMON_STOCK
+                      leaves_quantity: '5'
+                      limit_price: '48.00'
+                      order_type: LIMIT
+                      quantity: '10'
+                      side: BUY
+                      status: PARTIALLY_FILLED
+                      stop_price: null
+                      symbol: TSLA
+                      time_in_force: DAY
+                      updated_at: 2025-10-31 13:35:10+00:00
+                      venue: XNAS
+                    - account_id: 19816
+                      average_fill_price: '50.03'
+                      client_order_id: my-ref-id-20251001-002
+                      created_at: 2025-10-31 14:00:00+00:00
+                      filled_quantity: '10'
+                      id: 0195f6c8-1a2b-7c3d-8e4f-5a6b7c8d9e0f
+                      instrument_id: d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab
+                      instrument_type: COMMON_STOCK
+                      leaves_quantity: '0'
+                      limit_price: null
+                      order_type: MARKET
+                      quantity: '10'
+                      side: SELL
+                      status: FILLED
+                      stop_price: null
+                      symbol: TSLA
+                      time_in_force: DAY
+                      updated_at: 2025-10-31 14:00:05+00:00
+                      venue: XNAS
+                    error: null
+                    metadata:
+                      next_page_token: cGFnZT0yJmxhc3RfaWQ9b3JkXzRjRDVlNkY3ZzhIOWkwSjE=
+                      page_number: 1
+                      request_id: d9a4f5b6-c3d4-6e5f-0a1b-7c8d9e0f1a2b
+                      total_items: 25
+                      total_pages: 3
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: 5518f0c6-58ff-4b4a-81a5-701556d41206
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+    post:
+      tags:
+      - Orders
+      summary: Submit Orders
+      description: Submit new orders
+      operationId: submit_orders
+      parameters:
+      - name: account_id
+        in: path
+        description: Account identifier
+        required: true
+        schema:
+          $ref: '#/components/schemas/i64'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderSubmissionRequest'
+            examples:
+              LimitBuy:
+                summary: Limit buy order
+                value:
+                - limit_price: '48.00'
+                  order_type: LIMIT
+                  quantity: '1'
+                  side: BUY
+                  symbol: TSLA
+                  time_in_force: DAY
+              MarketBuy:
+                summary: Market buy order
+                value:
+                - order_type: MARKET
+                  quantity: '1'
+                  side: BUY
+                  symbol: TSLA
+                  time_in_force: DAY
+              StopBuy:
+                summary: Stop (market) buy order
+                value:
+                - order_type: STOP
+                  quantity: '1'
+                  side: BUY
+                  stop_price: '52.00'
+                  symbol: TSLA
+                  time_in_force: DAY
+              StopLimitBuy:
+                summary: Stop-limit buy order
+                value:
+                - limit_price: '52.50'
+                  order_type: STOP_LIMIT
+                  quantity: '1'
+                  side: BUY
+                  stop_price: '52.00'
+                  symbol: TSLA
+                  time_in_force: DAY
+              TrailingStopBps:
+                summary: Trailing stop order with basis-point offset
+                value:
+                - order_type: TRAILING_STOP
+                  quantity: '1'
+                  side: BUY
+                  symbol: TSLA
+                  time_in_force: DAY
+                  trailing_offset: '115'
+                  trailing_offset_type: BPS
+              TrailingStopLimitWithLimitOffset:
+                summary: Trailing stop-limit order with a limit offset
+                value:
+                - limit_offset: '0.50'
+                  order_type: TRAILING_STOP_LIMIT
+                  quantity: '1'
+                  side: BUY
+                  symbol: TSLA
+                  time_in_force: DAY
+                  trailing_offset: '2.00'
+                  trailing_offset_type: PRICE
+              TrailingStopPrice:
+                summary: Trailing stop order with absolute price offset
+                value:
+                - order_type: TRAILING_STOP
+                  quantity: '1'
+                  side: BUY
+                  symbol: TSLA
+                  time_in_force: DAY
+                  trailing_offset: '2.00'
+                  trailing_offset_type: PRICE
+        required: true
+      responses:
+        '200':
+          description: Orders submitted successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/OrderList'
+                type: object
+              examples:
+                FullSuccess:
+                  summary: Order accepted and pending
+                  value:
+                    data:
+                    - account_id: 19816
+                      client_order_id: my-ref-id-20251003-001
+                      created_at: 2025-10-03 14:01:15+00:00
+                      filled_quantity: '0'
+                      id: 0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e01
+                      instrument_id: d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab
+                      instrument_type: COMMON_STOCK
+                      leaves_quantity: '1'
+                      order_type: MARKET
+                      quantity: '1'
+                      side: BUY
+                      status: PENDING_NEW
+                      symbol: TSLA
+                      time_in_force: DAY
+                      updated_at: 2025-10-03 14:01:15+00:00
+                      venue: XNAS
+                    error: null
+                    metadata:
+                      request_id: ea0b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4d
+        '400':
+          description: Invalid order request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MalformedJsonSyntax:
+                  summary: Malformed JSON in request body
+                  value:
+                    error:
+                      code: 400
+                      message: 'Failed to parse the request body as JSON: [0].?: expected `,` or `}` at line 11 column 3'
+                    metadata:
+                      request_id: 8cb2657f-828e-4af5-b7d0-5cc6b7354bc2
+                NoBuyingPower:
+                  summary: Order rejected due to insufficient buying power
+                  value:
+                    error:
+                      code: 400
+                      details:
+                      - description: 'Buying Power: required > available'
+                        subject: order:019dba52-6611-7b53-9bc9-18c410e5ebb8
+                        type: BUYING_POWER
+                      - domain: com.clearstreet.oems.risk
+                        metadata:
+                          account_id: '100001'
+                          account_type: margin_reg_t
+                          available: '11004.5000'
+                          multiplier: '2'
+                          order_id: 019dba52-6611-7b53-9bc9-18c410e5ebb8
+                          required_equity: '30000'
+                          required_options: '0'
+                          required_total: '30000'
+                          side: Buy
+                          symbol: AAPL
+                        reason: BUYING_POWER
+                      message: Risk check failed
+                    metadata:
+                      request_id: 00bf689a-f53d-47b7-8b73-f0e69d2e89b6
+                RiskCheckSelfMatch:
+                  summary: Order rejected due to self-match risk check
+                  value:
+                    error:
+                      code: 400
+                      details:
+                      - description: 'Self-Match: would cross own orders'
+                        subject: order:019dba51-a906-7133-aacc-ea4fc05058d8
+                        type: SELF_MATCH
+                      - domain: com.clearstreet.oems.risk
+                        metadata:
+                          account_id: '100001'
+                          order_id: 019dba51-a906-7133-aacc-ea4fc05058d8
+                          price: $200
+                          side: Sell
+                          symbol: AAPL
+                        reason: SELF_MATCH
+                      message: Risk check failed
+                    metadata:
+                      request_id: 21b77c52-2386-40a4-8955-8fa1127ff424
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: 5518f0c6-58ff-4b4a-81a5-701556d41206
+        '422':
+          description: Malformed order request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                PayloadMissingRequiredField:
+                  summary: Malformed order payload missing order_type
+                  value:
+                    error:
+                      code: 422
+                      message: 'Failed to deserialize the JSON body into the target type: [0]: missing field `order_type` at line 26 column 1'
+                    metadata:
+                      request_id: 1b2c02c3-92a1-4432-8638-e71038c105c3
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+    delete:
+      tags:
+      - Orders
+      summary: Cancel All Open Orders
+      description: Cancel all orders for an account
+      operationId: cancel_all_open_orders
+      parameters:
+      - name: account_id
+        in: path
+        description: Account identifier
+        required: true
+        schema:
+          $ref: '#/components/schemas/i64'
+      - name: side
+        in: query
+        description: Filter by order side (BUY or SELL)
+        required: false
+        schema:
+          type: string
+          description: Side of an order
+          enum:
+          - BUY
+          - SELL
+          - SELL_SHORT
+          - OTHER
+      - name: type
+        in: query
+        description: Filter by order type (e.g., MARKET, LIMIT)
+        required: false
+        schema:
+          type: string
+          description: Order type
+          enum:
+          - MARKET
+          - LIMIT
+          - STOP
+          - STOP_LIMIT
+          - TRAILING_STOP
+          - TRAILING_STOP_LIMIT
+          - OTHER
+      - name: instrument_type
+        in: query
+        description: Filter by instrument type (e.g., COMMON_STOCK, OPTION)
+        required: false
+        schema:
+          type: string
+          description: Security type
+          enum:
+          - COMMON_STOCK
+          - INDEX
+          - OPTION
+          - CASH
+      - name: instrument_ids
+        in: query
+        description: Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols).
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstrumentIdOrSymbol'
+        style: form
+        explode: false
+      responses:
+        '200':
+          description: Orders cancelled
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/OrderList'
+                type: object
+              examples:
+                BulkCancelAccepted:
+                  summary: Cancellation requests accepted for multiple orders
+                  value:
+                    data:
+                    - account_id: 19816
+                      average_fill_price: '47.95'
+                      client_order_id: my-ref-id-20251031-001
+                      created_at: 2025-10-31 13:30:00+00:00
+                      filled_quantity: '5'
+                      id: 019c0b48-b8fb-700d-8c5e-931d54555f54
+                      instrument_id: d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab
+                      instrument_type: COMMON_STOCK
+                      leaves_quantity: '5'
+                      limit_price: '48.00'
+                      order_type: LIMIT
+                      quantity: '10'
+                      side: BUY
+                      status: PENDING_CANCEL
+                      stop_price: null
+                      symbol: TSLA
+                      time_in_force: DAY
+                      updated_at: 2025-10-31 14:15:00+00:00
+                      venue: XNAS
+                    - account_id: 19816
+                      client_order_id: my-ref-id-20251031-002
+                      created_at: 2025-10-31 14:00:00+00:00
+                      filled_quantity: '0'
+                      id: 019c0b49-03af-70d1-8eeb-d69836c9840b
+                      instrument_id: d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab
+                      instrument_type: COMMON_STOCK
+                      leaves_quantity: '5'
+                      order_type: STOP
+                      quantity: '5'
+                      side: SELL
+                      status: PENDING_CANCEL
+                      stop_price: '47.00'
+                      symbol: TSLA
+                      time_in_force: DAY
+                      updated_at: 2025-10-31 14:15:00+00:00
+                      venue: XNAS
+                    error: null
+                    metadata:
+                      request_id: fb1c2d3e-4f5a-6b7c-8d9e-0f1a2b3c4d5e
+        '400':
+          description: Invalid filter parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: 5518f0c6-58ff-4b4a-81a5-701556d41206
+        '404':
+          description: No orders match the specified filters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                NoOrdersMatchFilters:
+                  summary: No open orders matched the provided filters
+                  value:
+                    error:
+                      code: 404
+                      message: No orders match the specified filters
+                    metadata:
+                      request_id: 2f035fbb-68ba-42e9-8743-d3b21110b4c7
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+  /v1/accounts/{account_id}/orders/{order_id}:
+    servers:
+    - url: https://api.clearstreet.com
+      description: Clear Street API
+    - url: https://api-dev.clearstreet.com
+      description: Clear Street Development API
+    - url: http://localhost:5001
+      description: Clear Street Local API
+    get:
+      tags:
+      - Orders
+      summary: Get Order By ID
+      operationId: get_order_by_id
+      parameters:
+      - name: account_id
+        in: path
+        description: Account identifier
+        required: true
+        schema:
+          $ref: '#/components/schemas/i64'
+      - name: order_id
+        in: path
+        description: Order identifier
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Order details
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Order_2'
+                type: object
+              examples:
+                PartiallyFilledLimitOrder:
+                  summary: A partially filled limit order
+                  value:
+                    data:
+                      account_id: 19816
+                      average_fill_price: '47.95'
+                      client_order_id: my-ref-id-20251001-001
+                      created_at: 2025-10-31 13:30:00+00:00
+                      filled_quantity: '5'
+                      id: 0195f6c7-4f64-7e3c-8b0a-1d8e4f5e6a7b
+                      instrument_id: d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab
+                      instrument_type: COMMON_STOCK
+                      leaves_quantity: '5'
+                      limit_price: '48.00'
+                      order_type: LIMIT
+                      quantity: '10'
+                      side: BUY
+                      status: PARTIALLY_FILLED
+                      stop_price: null
+                      symbol: TSLA
+                      time_in_force: DAY
+                      updated_at: 2025-10-31 13:35:10+00:00
+                      venue: XNAS
+                    error: null
+                    metadata:
+                      request_id: 0c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: 5518f0c6-58ff-4b4a-81a5-701556d41206
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                OrderNotFoundById:
+                  summary: Requested order was not found for the account
+                  value:
+                    error:
+                      code: 404
+                      message: Order 97dfdcfe503f425c8367ca10928e2499 not found for account 100001
+                    metadata:
+                      request_id: efbd46f4-4bfc-455b-bae0-ee13f84360ba
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+    delete:
+      tags:
+      - Orders
+      summary: Cancel Open Order
+      description: Cancel a specific order
+      operationId: cancel_open_order
+      parameters:
+      - name: account_id
+        in: path
+        description: Account identifier
+        required: true
+        schema:
+          $ref: '#/components/schemas/i64'
+      - name: order_id
+        in: path
+        description: Order identifier
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Order cancelled successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Order_2'
+                type: object
+              examples:
+                CancelPending:
+                  summary: Cancellation request acknowledged and pending
+                  value:
+                    data:
+                      account_id: 19816
+                      average_fill_price: '47.95'
+                      client_order_id: my-ref-id-20251001-001
+                      created_at: 2025-10-31 13:30:00+00:00
+                      filled_quantity: '5'
+                      id: d40a92e6-381f-4803-b292-56d350d9d54a
+                      instrument_id: d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab
+                      instrument_type: COMMON_STOCK
+                      leaves_quantity: '5'
+                      limit_price: '48.00'
+                      order_type: LIMIT
+                      quantity: '10'
+                      side: BUY
+                      status: PENDING_CANCEL
+                      stop_price: null
+                      symbol: TSLA
+                      time_in_force: DAY
+                      updated_at: 2025-10-31 14:15:00+00:00
+                      venue: XNAS
+                    error: null
+                    metadata:
+                      request_id: 2e3f4a5b-6c7d-8e9f-0a1b-2c3d4e5f6a7b
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: 5518f0c6-58ff-4b4a-81a5-701556d41206
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                OrderNotFoundForCancel:
+                  summary: Cancel target order was not found for the account
+                  value:
+                    error:
+                      code: 404
+                      message: Order d40a92e6-381f-4803-b292-56d350d9d54a not found for account 100001
+                    metadata:
+                      request_id: 70151ee4-5209-4c75-9372-dffc0a6ebade
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+    patch:
+      tags:
+      - Orders
+      summary: Replace Order
+      description: Replace an order with new parameters
+      operationId: replace_order
+      parameters:
+      - name: account_id
+        in: path
+        description: Account identifier
+        required: true
+        schema:
+          $ref: '#/components/schemas/i64'
+      - name: order_id
+        in: path
+        description: Order identifier
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceOrderRequest'
+        required: true
+      responses:
+        '200':
+          description: Order replaced successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Order_2'
+                type: object
+              examples:
+                ReplacePending:
+                  summary: Replacement order acknowledged and pending
+                  value:
+                    data:
+                      account_id: 19816
+                      client_order_id: my-ref-id-20251001-001
+                      created_at: 2025-10-31 13:30:00+00:00
+                      filled_quantity: '0'
+                      id: 0195f6c7-4f64-7e3c-8b0a-1d8e4f5e6a7b
+                      instrument_id: d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab
+                      instrument_type: COMMON_STOCK
+                      leaves_quantity: '10'
+                      limit_price: '49.00'
+                      order_type: LIMIT
+                      quantity: '10'
+                      side: BUY
+                      status: PENDING_REPLACE
+                      stop_price: null
+                      symbol: TSLA
+                      time_in_force: DAY
+                      updated_at: 2025-10-31 14:10:00+00:00
+                      venue: XNAS
+                    error: null
+                    metadata:
+                      request_id: 1d2e3f4a-5b6c-7d8e-9f0a-1b2c3d4e5f6a
+        '400':
+          description: Invalid replacement request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MalformedJsonSyntax:
+                  summary: Malformed JSON in request body
+                  value:
+                    error:
+                      code: 400
+                      message: 'Failed to parse the request body as JSON: expected `:` at line 2 column 14'
+                    metadata:
+                      request_id: 633c15ef-d2e7-4f27-b905-2819455248bb
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: 5518f0c6-58ff-4b4a-81a5-701556d41206
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                OrderNotFoundForReplacement:
+                  summary: Replacement target order was not found for the account
+                  value:
+                    error:
+                      code: 404
+                      message: Order 019c7b89-feea-7600-9e56-f15ef0557835 not found for account 100001
+                    metadata:
+                      request_id: 9e290ec2-378f-4d08-a729-0a9ab155acbf
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    Destination:
+      type: string
+      enum:
+      - arcx
+      - bats
+      - baty
+      - edga
+      - edgx
+      - eprl
+      - iexg
+      - memx
+      - xase
+      - xbos
+      - xcis
+      - xnms
+      - xnys
+      description: 'Order Destination.
+
+        <table><thead>
+
+        <tr>
+
+        <th>MIC</th>
+
+        <th>Exchange</th>
+
+        </tr></thead>
+
+        <tbody>
+
+        <tr>
+
+        <td>ARCX</td>
+
+        <td>NYSE ARCA</td>
+
+        </tr>
+
+        <tr>
+
+        <td>BATS</td>
+
+        <td>BATS Exchange</td>
+
+        </tr>
+
+        <tr>
+
+        <td>BATY</td>
+
+        <td>BATS Y Exchange</td>
+
+        </tr>
+
+        <tr>
+
+        <td>EDGA</td>
+
+        <td>EDGA Exchange</td>
+
+        </tr>
+
+        <tr>
+
+        <td>EDGX</td>
+
+        <td>EDGX Exchange</td>
+
+        </tr>
+
+        <tr>
+
+        <td>EPRL</td>
+
+        <td>MIAX Pearl Equities</td>
+
+        </tr>
+
+        <tr>
+
+        <td>IEXG</td>
+
+        <td>Investors'' Exchange</td>
+
+        </tr>
+
+        <tr>
+
+        <td>MEMX</td>
+
+        <td>Members'' Exchange</td>
+
+        </tr>
+
+        <tr>
+
+        <td>XASE</td>
+
+        <td>NYSE American</td>
+
+        </tr>
+
+        <tr>
+
+        <td>XBOS</td>
+
+        <td>NASDAQ BX Exchange</td>
+
+        </tr>
+
+        <tr>
+
+        <td>XCIS</td>
+
+        <td>NYSE National</td>
+
+        </tr>
+
+        <tr>
+
+        <td>XNMS</td>
+
+        <td>NASDAQ/NMS (Global Market)</td>
+
+        </tr>
+
+        <tr>
+
+        <td>XNYS</td>
+
+        <td>New York Stock Exchange</td>
+
+        </tr>
+
+        </tbody></table>
+
+        '
+    TrailingOffsetType:
+      type: string
+      description: Trailing offset type for trailing stop orders.
+      enum:
+      - PRICE
+      - BPS
+    ResponseMetadata:
+      type: object
+      description: 'Metadata for the response. This will always contain a request ID which can be used to identify
+
+        the request to Clear Street for tracing, and optionally may include pagination data.'
+      required:
+      - request_id
+      properties:
+        next_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the next page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Pagination. Included if this was a GET (list) response
+          example: '1'
+          minimum: 0
+        previous_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the previous page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        request_id:
+          type: string
+          description: A unique ID for this request, generated upon ingestion of the request.
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of items available (not just in this page).
+          example: '42'
+          minimum: 0
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total number of pages available.
+          example: '5'
+          minimum: 0
+    Order:
+      type: object
+      properties:
+        created_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: When the order was created in milliseconds since epoch.
+        updated_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: When the order was updated in milliseconds since epoch.
+        order_id:
+          $ref: '#/components/schemas/OrderId'
+          description: An internally generated unique ID for this order.
+        reference_id:
+          $ref: '#/components/schemas/ReferenceId'
+          description: The ID you provided when creating this order.
+        version:
+          type: integer
+          example: 1
+          description: A monotonically increasing number indicating the version of this order. A higher number indicates a more recent version of the order.
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        state:
+          $ref: '#/components/schemas/OrderState'
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        order_type:
+          $ref: '#/components/schemas/OrderType'
+        side:
+          $ref: '#/components/schemas/OrderSide'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The requested quantity on this order.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The requested limit price on this order.
+        stop_price:
+          $ref: '#/components/schemas/Price'
+          description: The requested stop price on this order.
+        time_in_force:
+          $ref: '#/components/schemas/TimeInForce'
+        average_price:
+          type: number
+          format: double
+          description: Calculated average price of all fills on this order.
+        filled_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity that has been filled.
+        order_update_reason:
+          $ref: '#/components/schemas/OrderUpdateReason'
+          description: The last reason why this order was updated
+        text:
+          type: string
+          description: Free form text typically contains reasons for a reject.
+        strategy:
+          $ref: '#/components/schemas/Strategy'
+          description: The execution strategy used for this order.
+        running_position:
+          $ref: '#/components/schemas/Quantity'
+          description: The position quantity at the time of this order.
+        open_close_indicator:
+          $ref: '#/components/schemas/OpenCloseIndicator'
+          description: Open/Close indicator for option orders.
+      required:
+      - created_at
+      - updated_at
+      - order_id
+      - version
+      - account_id
+      - account_number
+      - state
+      - status
+      - symbol
+      - order_type
+      - side
+      - quantity
+      - time_in_force
+      - filled_quantity
+      - running_position
+    OrderUpdateReason:
+      type: string
+      enum:
+      - place
+      - modify
+      - cancel
+      - execution-report
+      - cancel-reject
+      - reject
+    Strategy:
+      discriminator:
+        propertyName: type
+        mapping:
+          sor: '#/components/schemas/SorStrategy'
+          vwap: '#/components/schemas/VwapStrategy'
+          twap: '#/components/schemas/TwapStrategy'
+          ap: '#/components/schemas/ApStrategy'
+          pov: '#/components/schemas/PovStrategy'
+          dark: '#/components/schemas/DarkStrategy'
+          dma: '#/components/schemas/DmaStrategy'
+      anyOf:
+      - $ref: '#/components/schemas/SorStrategy'
+      - $ref: '#/components/schemas/VwapStrategy'
+      - $ref: '#/components/schemas/TwapStrategy'
+      - $ref: '#/components/schemas/ApStrategy'
+      - $ref: '#/components/schemas/PovStrategy'
+      - $ref: '#/components/schemas/DarkStrategy'
+      - $ref: '#/components/schemas/DmaStrategy'
+    Order_2:
+      type: object
+      description: 'A trading order with its current state and execution details.
+
+
+        This is the unified API representation of an order across its lifecycle,
+
+        combining data from execution reports, order status queries, and parent/child tracking.'
+      required:
+      - id
+      - client_order_id
+      - account_id
+      - venue
+      - side
+      - quantity
+      - order_type
+      - time_in_force
+      - status
+      - filled_quantity
+      - leaves_quantity
+      - created_at
+      - updated_at
+      properties:
+        account_id:
+          $ref: '#/components/schemas/i64'
+          description: Account placing the order
+        average_fill_price:
+          type:
+          - string
+          - 'null'
+          description: 'Average fill price across all executions
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '47.95'
+        client_order_id:
+          type: string
+          description: Client-provided identifier echoed back.
+          example: my-ref-id-20251001-001
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when order was created (UTC)
+          example: 2025-10-31 13:30:00+00:00
+        details:
+          type: array
+          items:
+            type: string
+          description: Contains execution, rejection or cancellation details, if any
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'Timestamp when the order will expire (UTC). Present when time_in_force is GOOD_TILL_DATE.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: 2025-10-15 16:00:00+00:00
+        extended_hours:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the order is eligible for extended-hours trading.
+          example: true
+        filled_quantity:
+          type: string
+          description: Cumulative filled quantity
+          example: '50'
+        id:
+          type: string
+          description: Engine-assigned unique identifier for this order (UUID).
+          example: 0195f6c7-4f64-7e3c-8b0a-1d8e4f5e6a7b
+        instrument_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'Instrument identifier for the traded instrument. `null` when the order has
+
+            no single resolvable instrument.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        instrument_type:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/SecurityType'
+            description: 'Type of security. `null` when the order has no single resolvable instrument.
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+        leaves_quantity:
+          type: string
+          description: Remaining unfilled quantity
+          example: '50'
+        limit_offset:
+          type:
+          - string
+          - 'null'
+          description: 'Limit offset for trailing stop-limit orders (signed)
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: '0.50'
+        limit_price:
+          type:
+          - string
+          - 'null'
+          description: 'Limit price (for LIMIT and STOP_LIMIT orders)
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: '48.00'
+        order_type:
+          $ref: '#/components/schemas/OrderType_2'
+          description: Type of order (MARKET, LIMIT, etc.)
+        quantity:
+          type: string
+          description: Total order quantity
+          example: '100'
+        queue_state:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/QueueState'
+            description: 'Parent order queue state, present when the order is awaiting release or released.
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+        releases_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'Scheduled release time for orders awaiting release.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: 2025-10-31 14:30:00+00:00
+        side:
+          $ref: '#/components/schemas/Side'
+          description: Side of the order (BUY, SELL, SELL_SHORT)
+        status:
+          $ref: '#/components/schemas/OrderStatus_2'
+          description: Current status of the order
+        stop_price:
+          type:
+          - string
+          - 'null'
+          description: 'Stop price (for STOP and STOP_LIMIT orders)
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: '52.00'
+        symbol:
+          type:
+          - string
+          - 'null'
+          description: 'Trading symbol. `null` when the order has no single resolvable instrument.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: TSLA
+        time_in_force:
+          $ref: '#/components/schemas/TimeInForce_2'
+          description: Time in force instruction
+        trailing_limit_px:
+          type:
+          - string
+          - 'null'
+          description: 'Current trailing limit price computed by the trailing strategy
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: '47.50'
+        trailing_offset:
+          type:
+          - string
+          - 'null'
+          description: 'Trailing offset amount for trailing orders
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: '2.00'
+        trailing_offset_type:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/TrailingOffsetType'
+            description: 'Trailing offset type for trailing orders
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+        trailing_stop_px:
+          type:
+          - string
+          - 'null'
+          description: 'Current trailing stop price computed by the trailing strategy
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: '48.00'
+        trailing_watermark_px:
+          type:
+          - string
+          - 'null'
+          description: 'Trailing watermark price for trailing orders
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: '50.00'
+        trailing_watermark_ts:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'Trailing watermark timestamp for trailing orders
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: 2025-10-31 13:35:10+00:00
+        underlying_instrument_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'Instrument ID of the option''s underlying instrument. Populated only for
+
+            options orders. A `null` means one of two things: the order is not an
+
+            option, so the field does not apply; or the order is an option whose
+
+            underlier has not yet been resolved.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of the most recent update (UTC)
+          example: 2025-10-31 13:35:10+00:00
+        venue:
+          type: string
+          description: MIC code of the venue where the order is routed
+          example: XNAS
+      example:
+        account_id: 19816
+        client_order_id: my-ref-id-20251001-001
+        created_at: 2025-10-31 13:30:00+00:00
+        extended_hours: false
+        filled_quantity: '0'
+        id: 0195f6c7-4f64-7e3c-8b0a-1d8e4f5e6a7b
+        instrument_id: d4d5d6d7-e4e5-f4f5-a4a5-a6a7a8a9aaab
+        instrument_type: COMMON_STOCK
+        leaves_quantity: '1'
+        limit_price: '48.00'
+        order_type: LIMIT
+        quantity: '1'
+        side: BUY
+        status: PENDING_NEW
+        stop_price: null
+        symbol: TSLA
+        time_in_force: DAY
+        updated_at: 2025-10-31 13:30:00+00:00
+        venue: XNAS
+    OrderStatus_2:
+      type: string
+      description: Order status
+      enum:
+      - PENDING_NEW
+      - NEW
+      - PARTIALLY_FILLED
+      - FILLED
+      - CANCELED
+      - REJECTED
+      - EXPIRED
+      - PENDING_CANCEL
+      - PENDING_REPLACE
+      - REPLACED
+      - DONE_FOR_DAY
+      - STOPPED
+      - SUSPENDED
+      - CALCULATED
+      - OTHER
+    Side:
+      type: string
+      description: Side of an order
+      enum:
+      - BUY
+      - SELL
+      - SELL_SHORT
+      - OTHER
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
+    SymbolFormat:
+      type: string
+      enum:
+      - cms
+      - osi
+      description: Denotes the format of the provided `symbol` field.
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    DmaStrategy:
+      properties:
+        type:
+          $ref: '#/components/schemas/StrategyType'
+        destination:
+          $ref: '#/components/schemas/Destination'
+      required:
+      - type
+      - destination
+    Execution:
+      type: object
+      description: Represents a single fill of an order for an account.
+      required:
+      - id
+      - order_id
+      - side
+      - quantity
+      - transaction_time
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for this execution report.
+          example: 019d216d-9857-7e23-ae01-edc07126c9e4
+        instrument_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'Unique instrument identifier. `null` when this fill has no single resolvable
+
+            instrument.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: 528ec5c3-cdbf-447c-b995-ec6c83cfbc02
+        order_id:
+          type: string
+          format: uuid
+          description: Identifier of the order this execution belongs to.
+          example: 01928b4d-c000-7000-8000-000000000001
+        price:
+          type:
+          - string
+          - 'null'
+          description: 'Fill price. `null` for multileg fills, whose price lives only at the leg level.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: '150.25'
+        quantity:
+          type: string
+          description: Filled quantity.
+          example: '100'
+        side:
+          $ref: '#/components/schemas/Side'
+          description: Side of the fill.
+        symbol:
+          type:
+          - string
+          - 'null'
+          description: 'Trading symbol. `null` when this fill has no single resolvable instrument.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: AAPL
+        transaction_time:
+          type: string
+          format: date-time
+          description: Transaction timestamp in nanosecond precision (UTC).
+          example: 2026-03-24 19:58:43.798000+00:00
+      example:
+        id: 019d216d-9857-7e23-ae01-edc07126c9e4
+        instrument_id: 528ec5c3-cdbf-447c-b995-ec6c83cfbc02
+        order_id: 01928b4d-c000-7000-8000-000000000001
+        price: '150.25'
+        quantity: '100'
+        side: BUY
+        symbol: AAPL
+        transaction_time: 2026-03-24 19:58:43.798000+00:00
+    StrategyType:
+      type: string
+      enum:
+      - sor
+      - dark
+      - ap
+      - pov
+      - twap
+      - vwap
+      - dma
+      description: 'Strategy type used for execution, can be one of below.
+
+        - `sor`: Smart order router (default)
+
+        - `dark`: Dark pool
+
+        - `ap`: Arrival price
+
+        - `pov`: Percentage of volume
+
+        - `twap`: Time weighted average price
+
+        - `vwap`: Volume weighted average price
+
+        - `dma`: Direct market access
+
+
+        For more information on these strategies, please refer to our [documentation](https://docs.clearstreet.io/studio/docs/execution-strategies).
+
+        '
+      default: sor
+    NewOrderRequest:
+      type: object
+      description: Request to submit a new order (PlaceOrderRequest from spec)
+      required:
+      - side
+      - quantity
+      - order_type
+      - time_in_force
+      properties:
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The timestamp when the order should expire (UTC). Required when time_in_force is GOOD_TILL_DATE.
+          example: 2025-10-15 16:00:00+00:00
+        extended_hours:
+          type:
+          - boolean
+          - 'null'
+          description: Allow trading outside regular trading hours. Some brokers disallow options outside RTH.
+        id:
+          type:
+          - string
+          - 'null'
+          description: Optional client-provided unique ID (idempotency). Required to be unique per account.
+          example: my-ref-id-20251001-002
+          maxLength: 64
+        instrument_id:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/InstrumentIdOrSymbol'
+            description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol). Either `symbol` or `instrument_id` must be provided.
+        limit_offset:
+          type:
+          - string
+          - 'null'
+          description: Limit offset for trailing stop-limit orders (signed)
+          example: '0.50'
+        limit_price:
+          type:
+          - string
+          - 'null'
+          description: Limit price (required for LIMIT and STOP_LIMIT orders)
+          example: '48.00'
+        order_type:
+          $ref: '#/components/schemas/RequestOrderType'
+          description: Type of order
+        quantity:
+          type: string
+          description: 'Quantity to trade. For COMMON_STOCK: shares (may be fractional if supported).
+
+            For OPTION (single-leg): contracts (must be an integer)'
+          example: '1'
+        side:
+          $ref: '#/components/schemas/Side'
+          description: Side of the order
+        stop_price:
+          type:
+          - string
+          - 'null'
+          description: Stop price (required for STOP and STOP_LIMIT orders)
+          example: '52.00'
+        symbol:
+          type:
+          - string
+          - 'null'
+          description: 'Trading symbol. For equities, use the ticker symbol (e.g., "TSLA").
+
+            For options, use the OSI symbol (e.g., "TSLA  250117C00190000").
+
+            Either `symbol` or `instrument_id` must be provided.'
+          example: TSLA
+        time_in_force:
+          $ref: '#/components/schemas/RequestTimeInForce'
+          description: Time in force
+        trailing_offset:
+          type:
+          - string
+          - 'null'
+          description: Trailing offset amount (required for trailing orders)
+          example: '2.00'
+        trailing_offset_type:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/TrailingOffsetType'
+            description: Trailing offset type (PRICE or PERCENT_BPS)
+      example:
+        order_type: MARKET
+        quantity: '1'
+        side: BUY
+        symbol: TSLA
+        time_in_force: DAY
+    MaxPercent:
+      type: integer
+      minimum: 0
+      maximum: 100
+      example: 50
+      description: The maximum percentage of market volume. Must be an integer between 0 and 100 (inclusive).
+    SecurityType:
+      type: string
+      description: Security type
+      enum:
+      - COMMON_STOCK
+      - INDEX
+      - OPTION
+      - CASH
+    OrderId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique order ID assigned by us.
+    RequestTimeInForce:
+      type: string
+      description: Strict time-in-force enum for order submission requests.
+      enum:
+      - DAY
+      - GOOD_TILL_CANCEL
+      - IMMEDIATE_OR_CANCEL
+      - FILL_OR_KILL
+      - GOOD_TILL_DATE
+      - AT_THE_OPENING
+      - AT_THE_CLOSE
+      - GOOD_TILL_CROSSING
+      - GOOD_THROUGH_CROSSING
+      - AT_CROSSING
+    Price:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '123.99'
+      description: String representation of a price.
+    BaseStrategy:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/StrategyType'
+          description: The type of strategy. This must be set to the respective strategy type.
+        start_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp to start routing.
+        end_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp to stop routing, defaults to market close.
+        urgency:
+          $ref: '#/components/schemas/Urgency'
+      required:
+      - type
+    TimeInForce:
+      type: string
+      enum:
+      - day
+      - ioc
+      - day-plus
+      - at-open
+      - at-close
+      description: 'The lifecycle enforcement of this order.
+
+        - `day`: The order will exist for the duration of the current trading session
+
+        - `ioc`: The order will immediately be executed or cancelled
+
+        - `day-plus`: The order will exist only for the duration the current trading session plus extended hours, if applicable
+
+        - `at-open`: The order will exist only for the opening auction of the next session
+
+        - `at-close`: The order will exist only for the closing auction of the current session
+
+        '
+    ExecutionList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Execution'
+    PovStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+      - type: object
+        properties:
+          target_percent:
+            $ref: '#/components/schemas/TargetPercent'
+        required:
+        - target_percent
+    MinPercent:
+      type: integer
+      minimum: 0
+      maximum: 100
+      example: 1
+      description: The minimum percentage of market volume. Must be an integer between 0 and 100 (inclusive).
+    SorStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+    OrderState:
+      type: string
+      enum:
+      - open
+      - rejected
+      - closed
+      description: 'Simplified order state, which is inferred from `OrderStatus`. Makes it easier to determine whether an order can be executed against.
+
+        - `open`: Order *can* potentially be executed against.
+
+        - `rejected`: Order *cannot* be executed against because it was rejected. This is a terminal state.
+
+        - `closed`: Order *cannot* be executed against. This is a terminal state.
+
+        '
+    ApStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+      - type: object
+        properties:
+          min_percent:
+            $ref: '#/components/schemas/MinPercent'
+          max_percent:
+            $ref: '#/components/schemas/MaxPercent'
+    Urgency:
+      type: string
+      enum:
+      - super-passive
+      - passive
+      - moderate
+      - aggressive
+      - super-aggressive
+      description: The urgency associated with the execution strategy.
+      default: moderate
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
+    TargetPercent:
+      type: integer
+      minimum: 0
+      maximum: 100
+      example: 50
+      description: The target percentage of market volume. Must be an integer between 0 and 100 (inclusive).
+    ApiError:
+      type: object
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
+
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    OrderSubmissionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/NewOrderRequest'
+        description: Single-leg order request
+      description: Request to submit an order.
+    UpdateOrder:
+      type: object
+      properties:
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The maximum quantity to be executed.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The price to execute at-or-better for limit orders.
+        stop_price:
+          $ref: '#/components/schemas/Price'
+          description: The price at which stop orders become marketable.
+      required:
+      - quantity
+      additionalProperties: false
+    OrderList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Order_2'
+    MaxPercentVolume:
+      type: integer
+      minimum: 0
+      maximum: 50
+      example: 35
+      description: The maximum percentage of market volume. Must be an integer between 0 and 50 (inclusive).
+    i64:
+      type: integer
+      format: int64
+    OrderSide:
+      type: string
+      enum:
+      - buy
+      - sell
+      - sell-short
+      description: Buy, sell, sell-short indicator.
+    OpenCloseIndicator:
+      type: string
+      enum:
+      - open
+      - close
+    OrderType:
+      type: string
+      enum:
+      - limit
+      - market
+      - stop
+      - stop-limit
+      description: 'The type of order, can be one of the following:
+
+        - `limit`: A limit order will execute at-or-better than the limit price you specify
+
+        - `market`: An order that will execute at the prevailing market prices
+
+        - `stop`: A stop order will result in a market order when the market price reaches the specified stop price
+
+        - `stop-limit`: A stop limit order will result in a limit order when the market price reaches the specified stop price
+
+        '
+    DarkStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+      - type: object
+        properties:
+          max_percent:
+            $ref: '#/components/schemas/MaxPercent'
+    InstrumentIdOrSymbol:
+      type: string
+      description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
+      minLength: 1
+    BaseResponse:
+      type: object
+      required:
+      - metadata
+      properties:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
+    VwapStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+      - type: object
+        properties:
+          min_percent:
+            $ref: '#/components/schemas/MinPercent'
+          max_percent:
+            $ref: '#/components/schemas/MaxPercentVolume'
+    OrderType_2:
+      type: string
+      description: Order type
+      enum:
+      - MARKET
+      - LIMIT
+      - STOP
+      - STOP_LIMIT
+      - TRAILING_STOP
+      - TRAILING_STOP_LIMIT
+      - OTHER
+    QueueState:
+      type: string
+      description: Parent order queue or hold state.
+      enum:
+      - AWAITING_RELEASE
+      - RELEASED
+    OrderStatus:
+      type: string
+      enum:
+      - new
+      - partially-filled
+      - filled
+      - canceled
+      - replaced
+      - pending-cancel
+      - stopped
+      - rejected
+      - suspended
+      - pending-new
+      - calculated
+      - expired
+      - accepted-for-bidding
+      - pending-replace
+      - done-for-day
+      description: Granular order status using [standard values come FIX tag 39](https://www.fixtrading.org/online-specification/order-state-changes).
+    CreateOrder:
+      type: object
+      properties:
+        reference_id:
+          $ref: '#/components/schemas/ReferenceId'
+        order_type:
+          $ref: '#/components/schemas/OrderType'
+        side:
+          $ref: '#/components/schemas/OrderSide'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The maximum quantity to be executed.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The price to execute at-or-better for limit orders.
+        stop_price:
+          $ref: '#/components/schemas/Price'
+          description: The price at which stop orders become marketable.
+        time_in_force:
+          $ref: '#/components/schemas/TimeInForce'
+        locate_broker:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: If you're short-selling and using an away broker for a locate, provide the broker name here.
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol this order is for. See `symbol_format` for supported symbol formats.
+        symbol_format:
+          $ref: '#/components/schemas/SymbolFormat'
+          default: cms
+        strategy:
+          $ref: '#/components/schemas/Strategy'
+          description: The execution strategy to use for this order. If not provided, our smart order-router will handle execution for your order.
+        open_close_indicator:
+          $ref: '#/components/schemas/OpenCloseIndicator'
+          description: Open/Close indicator for option orders.
+      required:
+      - order_type
+      - side
+      - quantity
+      - time_in_force
+      - symbol
+      additionalProperties: false
+    TwapStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+      - type: object
+        properties:
+          min_percent:
+            $ref: '#/components/schemas/MinPercent'
+          max_percent:
+            $ref: '#/components/schemas/MaxPercentVolume'
+    ReplaceOrderRequest:
+      type: object
+      description: 'Request to replace (modify) an existing order
+
+
+        At least one field must be provided.'
+      properties:
+        limit_price:
+          type:
+          - string
+          - 'null'
+          description: New limit price for the order
+          example: '49.00'
+        quantity:
+          type:
+          - string
+          - 'null'
+          description: New quantity for the order
+          example: '1'
+        stop_price:
+          type:
+          - string
+          - 'null'
+          description: New stop price for the order
+          example: '52.00'
+      example:
+        limit_price: '49.00'
+    RequestOrderType:
+      type: string
+      description: Strict order-type enum for order submission/replacement requests.
+      enum:
+      - MARKET
+      - LIMIT
+      - STOP
+      - STOP_LIMIT
+      - TRAILING_STOP
+      - TRAILING_STOP_LIMIT
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    TimeInForce_2:
+      type: string
+      description: Time in force
+      enum:
+      - DAY
+      - GOOD_TILL_CANCEL
+      - IMMEDIATE_OR_CANCEL
+      - FILL_OR_KILL
+      - GOOD_TILL_DATE
+      - AT_THE_OPENING
+      - AT_THE_CLOSE
+      - GOOD_TILL_CROSSING
+      - GOOD_THROUGH_CROSSING
+      - AT_CROSSING
+      - OTHER
+    ReferenceId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: my-order-id-123
+      description: An ID that you provide.
+    ErrorDetails:
+      type: array
+      items:
+        type: object
+        additionalProperties: true
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+externalDocs:
+  url: https://docs.clearstreet.io/
+x-refined-from:
+- clear-street-studio-openapi.yml
+- clear-street-trading-api-openapi.yml

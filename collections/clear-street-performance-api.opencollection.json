@@ -1,0 +1,50 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Common API Models Performance API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Performance",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List PNL Sums",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/pnl-sums",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "starting_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ending_date",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List historical PNL summations for a given account over a given date range, filtered on the given query parameters."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,275 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Positions API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Positions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get position",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/positions/:symbol",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get current position for a given account for a given symbol."
+        },
+        {
+          "info": {
+            "name": "List positions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/positions",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List current positions for a given account."
+        },
+        {
+          "info": {
+            "name": "Get Positions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/positions",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              },
+              {
+                "name": "instrument_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated instrument identifiers"
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort by"
+              },
+              {
+                "name": "sort_direction",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves all positions for the specified trading account."
+        },
+        {
+          "info": {
+            "name": "Close Positions",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/positions",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete all positions within an account.\n\nCloses all positions for the specified trading account."
+        },
+        {
+          "info": {
+            "name": "Get Position Instructions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/positions/instructions",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              },
+              {
+                "name": "instrument_id",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to a single contract. Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the current lifecycle state of the account's position\ninstructions. Optionally filter by a specific contract.\n\nNote: instructions that fail pre-acceptance validation on `POST` —\nduplicates, `DO_NOT_EXERCISE` / `CONTRARY_EXERCISE` on a non-expiry day,\ninsufficient position, or an unresolvable instrument — are rejected\n(with `status = REJECTED` and a `rejection_reason`) without being\npersisted, so they surface only in the `POST` response and never appear\nin this list."
+        },
+        {
+          "info": {
+            "name": "Submit Position Instructions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/positions/instructions",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit one or more position instructions (Exercise, Do-Not-Exercise,\nContrary Exercise Advice) against the account.\n\nBatch semantics:\n- **All rows accepted** → `200 OK`. Every row is in `data` with\n  `status = SENT`.\n- **Partial success** → `207 Multi-Status`. `data` contains every\n  row; rejected rows carry `status = REJECTED` and\n  `rejection_reason`. The top-level `error` summarizes the batch\n  failure.\n- **All rows rejected** → `4xx`/`5xx`. The HTTP status reflects\n  the aggregate cause: `40"
+        },
+        {
+          "info": {
+            "name": "Cancel Position Instruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/positions/instructions/:instruction_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              },
+              {
+                "name": "instruction_id",
+                "value": "",
+                "type": "path",
+                "description": "Server-assigned instruction id"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancel an outstanding position instruction by its server-assigned `id`.\nReturns the updated instruction with status `CANCEL_REQUESTED`. The\nterminal `CANCELLED` or `CANCEL_FAILED` state arrives asynchronously and\nis observable via subsequent GETs."
+        },
+        {
+          "info": {
+            "name": "Close Position",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.clearstreet.io/studio/v2/v1/accounts/:account_id/positions/:instrument_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "Account identifier"
+              },
+              {
+                "name": "instrument_id",
+                "value": "",
+                "type": "path",
+                "description": "Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a position within an account for an instrument.\n\nRetrieves orders generated to close the position."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

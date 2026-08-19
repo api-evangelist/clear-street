@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Common API Models Inventories API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Inventories",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get inventory",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/inventories/:symbol",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get located inventory for a symbol."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

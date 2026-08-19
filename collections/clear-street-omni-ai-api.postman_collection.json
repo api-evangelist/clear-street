@@ -1,0 +1,4196 @@
+{
+  "item": [
+    {
+      "id": "2f53f30b-530f-427d-93b4-d7f6e27c6038",
+      "name": "Omni AI",
+      "description": {
+        "content": "Thread-centric AI assistant for conversational trading. Create threads to start conversations, poll response objects for in-progress output, and read finalized messages from thread history. Thread/message/response endpoints require an explicit account_id. Entitlement endpoints are caller-scoped and use account_ids.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1cda11cb-94bf-4312-899f-190dd59cb068",
+          "name": "Get Entitlement Agreements",
+          "request": {
+            "name": "Get Entitlement Agreements",
+            "description": {
+              "content": "List current signable entitlement agreements for consent UX.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "entitlement-agreements"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bf3f1ff9-38c4-4136-bc98-eb1e56c894b8",
+              "name": "Current signable entitlement agreements",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlement-agreements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"agreement_id\": \"string\",\n      \"agreement_key\": \"omni_account_data_access\",\n      \"version\": 9120,\n      \"title\": \"string\",\n      \"document_content\": \"string\",\n      \"document_sha256\": \"string\",\n      \"entitlement_codes\": [\n        \"omni.account_data\",\n        \"omni.account_data\"\n      ]\n    },\n    {\n      \"agreement_id\": \"string\",\n      \"agreement_key\": \"omni_account_data_access\",\n      \"version\": 8034,\n      \"title\": \"string\",\n      \"document_content\": \"string\",\n      \"document_sha256\": \"string\",\n      \"entitlement_codes\": [\n        \"omni.account_data\",\n        \"omni.account_data\"\n      ]\n    }\n  ],\n  \"metadata\": {\n    \"request_id\": \"string\",\n    \"next_page_token\": null,\n    \"page_number\": 6126,\n    \"previous_page_token\": null,\n    \"total_items\": 8206,\n    \"total_pages\": null\n  },\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5c6d645-9a7d-45df-aea6-a21192cb225a",
+              "name": "No active signable agreements",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlement-agreements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": \"string\"\n    },\n    {\n      \"key_0\": false,\n      \"key_1\": \"string\",\n      \"key_2\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6086aaf-82e9-41a9-a220-8e320cf51aed",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlement-agreements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "74b09abf-6ef7-44cc-8351-e5ab3a00582a",
+          "name": "Get Entitlements",
+          "request": {
+            "name": "Get Entitlements",
+            "description": {
+              "content": "List caller's active entitlement grants.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "entitlements"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<long>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cc2e49be-f31a-4421-98ad-339339d19a73",
+              "name": "Caller's active entitlement grants",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"entitlement_id\": \"string\",\n      \"account_id\": 7002,\n      \"entitlement_code\": \"omni.account_data\",\n      \"agreement_id\": \"string\",\n      \"granted_at\": \"string\"\n    },\n    {\n      \"entitlement_id\": \"string\",\n      \"account_id\": 4582,\n      \"entitlement_code\": \"omni.account_data\",\n      \"agreement_id\": \"string\",\n      \"granted_at\": \"string\"\n    }\n  ],\n  \"metadata\": {\n    \"request_id\": \"string\",\n    \"next_page_token\": null,\n    \"page_number\": 9474,\n    \"previous_page_token\": null,\n    \"total_items\": null,\n    \"total_pages\": null\n  },\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f67cb1f-dd28-4879-b9ca-1bef24c49109",
+              "name": "Caller lacks access to requested account",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ea82f33-208b-4675-8282-7cbf48ccf2b5",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dcce706c-99d3-4b8e-8ed3-e18fd2818f06",
+          "name": "Create Entitlements",
+          "request": {
+            "name": "Create Entitlements",
+            "description": {
+              "content": "Record consent and upsert one-or-more active grants.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "entitlements"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agreement_id\": \"<string>\",\n  \"entitlement_codes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"account_ids\": [\n    \"<long>\",\n    \"<long>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ab152c2d-f6ce-495a-9842-6cd2211da605",
+              "name": "Resulting active grants for requested scope",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agreement_id\": \"<string>\",\n  \"entitlement_codes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"account_ids\": [\n    \"<long>\",\n    \"<long>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"entitlement_id\": \"string\",\n      \"account_id\": 2930,\n      \"entitlement_code\": \"<string>\",\n      \"agreement_id\": \"string\",\n      \"granted_at\": \"string\"\n    },\n    {\n      \"entitlement_id\": \"string\",\n      \"account_id\": 6664,\n      \"entitlement_code\": \"<string>\",\n      \"agreement_id\": \"string\",\n      \"granted_at\": \"string\"\n    }\n  ],\n  \"metadata\": {\n    \"request_id\": \"string\",\n    \"next_page_token\": null,\n    \"page_number\": 7060,\n    \"previous_page_token\": null,\n    \"total_items\": 143,\n    \"total_pages\": null\n  },\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2593afd4-dadd-4308-b024-5d9a4481a091",
+              "name": "Invalid request payload",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agreement_id\": \"<string>\",\n  \"entitlement_codes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"account_ids\": [\n    \"<long>\",\n    \"<long>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "844d2395-8dab-45e2-ba3e-1032774db5c5",
+              "name": "Caller lacks access to one or more requested accounts",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agreement_id\": \"<string>\",\n  \"entitlement_codes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"account_ids\": [\n    \"<long>\",\n    \"<long>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e4fa5ec-e446-492e-b419-02dd075e5d88",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agreement_id\": \"<string>\",\n  \"entitlement_codes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"account_ids\": [\n    \"<long>\",\n    \"<long>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd461980-42b9-4dfd-aa55-3d5cdd32cf22",
+          "name": "Delete Entitlement",
+          "request": {
+            "name": "Delete Entitlement",
+            "description": {
+              "content": "Revoke one entitlement grant by id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "entitlements",
+                ":entitlement_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "entitlement_id",
+                  "description": "(Required) Entitlement grant id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4956040f-27f1-47ff-a5df-4dee225a2318",
+              "name": "Grant revoked",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements",
+                    ":entitlement_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entitlement_id",
+                      "description": "(Required) Entitlement grant id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"entitlement_id\": \"string\",\n    \"revoked\": false\n  },\n  \"metadata\": {\n    \"request_id\": \"string\",\n    \"next_page_token\": null,\n    \"page_number\": null,\n    \"previous_page_token\": null,\n    \"total_items\": null,\n    \"total_pages\": 36\n  },\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2ebd745-16c3-4a67-96ed-90fab6528f4e",
+              "name": "Grant not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements",
+                    ":entitlement_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entitlement_id",
+                      "description": "(Required) Entitlement grant id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9cf40c2-f525-480c-9cb0-f5e3a5090307",
+              "name": "Grant already inactive",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements",
+                    ":entitlement_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entitlement_id",
+                      "description": "(Required) Entitlement grant id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fac97e0-7dc3-40ff-b334-26b3e1c5bc1b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "entitlements",
+                    ":entitlement_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entitlement_id",
+                      "description": "(Required) Entitlement grant id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4e46d4ec-0f58-4220-b4e2-cff6adef971e",
+          "name": "Get Message By ID",
+          "request": {
+            "name": "Get Message By ID",
+            "description": {
+              "content": "Get a finalized message by ID.\n\nReturns a single finalized message. Returns **404** if the message belongs\nto an in-progress assistant turn (use the response endpoint for live\noutput). Once the turn completes, the message becomes available here.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "messages",
+                ":message_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<long>",
+                  "description": "(Required) Account ID for the request"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "message_id",
+                  "description": "(Required) Message identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a641dff0-71e3-4c34-9618-8ee18ed52cad",
+              "name": "Finalized message with content parts",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "messages",
+                    ":message_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "message_id",
+                      "description": "(Required) Message identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"content\": {\n      \"parts\": [\n        {\n          \"text\": \"**Pre-market as of 7:30 AM ET**\\n\\n ...\",\n          \"type\": \"text\"\n        },\n        {\n          \"payload\": {\n            \"actionButtons\": [\n              {\n                \"buttonId\": \"btn_followup_0\",\n                \"label\": \"Check my positions\",\n                \"prompt\": {\n                  \"prompt\": \"What are my current positions?\"\n                }\n              }\n            ]\n          },\n          \"type\": \"suggested_actions\"\n        }\n      ]\n    },\n    \"created_at\": \"2026-04-16 09:20:17.309212+00:00\",\n    \"id\": \"019d9597-599c-7132-a7de-e5c21eaaab77\",\n    \"outcome\": \"completed\",\n    \"role\": \"ASSISTANT\",\n    \"seq\": 2,\n    \"thread_id\": \"019d9597-597c-7571-a0c9-a49c0e51f6eb\"\n  },\n  \"metadata\": {\n    \"request_id\": \"0f991501-757d-4051-bf00-6d7f452d6fcf\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ecdced0b-0275-4cf1-bd5b-7f4d23c7214c",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "messages",
+                    ":message_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "message_id",
+                      "description": "(Required) Message identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to deserialize query string: missing field `account_id`\"\n  },\n  \"metadata\": {\n    \"request_id\": \"e0c1c9f2-2100-40f0-b5fc-378a35dafa18\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fca6821-d71a-45e2-8d84-2a839e221b3a",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "messages",
+                    ":message_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "message_id",
+                      "description": "(Required) Message identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"d68b5e7a-75f4-4a87-a349-3f7c57952578\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c0ef02c-9ab0-4682-a147-29cbff0f9b67",
+              "name": "Message not found or still in progress",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "messages",
+                    ":message_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "message_id",
+                      "description": "(Required) Message identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Message not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"ec35dacd-36f1-4bf7-b138-00b15a3d09dd\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb711b5d-7a79-450d-a617-90868148a3d1",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "messages",
+                    ":message_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "message_id",
+                      "description": "(Required) Message identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "91b6822d-a37b-4ae8-ace6-12e98ce9c83d",
+          "name": "Submit Feedback",
+          "request": {
+            "name": "Submit Feedback",
+            "description": {
+              "content": "Submit feedback on a finalized assistant message.\n\nAttaches a score and optional comment to a finalized assistant message.\nFeedback is only valid for messages with role `ASSISTANT` that have\nreached a terminal outcome.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "messages",
+                ":message_id",
+                "feedback"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "message_id",
+                  "description": "(Required) Finalized assistant message to rate"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_id\": \"<long>\",\n  \"score\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"metadata\": \"<object,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5df6786f-71f7-47b8-bbcd-9274375f1598",
+              "name": "Feedback recorded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "messages",
+                    ":message_id",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "message_id",
+                      "description": "(Required) Finalized assistant message to rate"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": \"<long>\",\n  \"score\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"metadata\": \"<object,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"created_at\": \"2026-04-23 16:09:51.746912+00:00\",\n    \"feedback_id\": \"019dbb1a-d782-7f42-8dd8-a1a7ca5d48e3\"\n  },\n  \"metadata\": {\n    \"request_id\": \"372a359a-fd4f-4c69-8f11-d80831aa5f23\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5923111-c7b3-4ef6-baa4-595fc4cf4d07",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "messages",
+                    ":message_id",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "message_id",
+                      "description": "(Required) Finalized assistant message to rate"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": \"<long>\",\n  \"score\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"metadata\": \"<object,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to parse the request body as JSON: trailing comma at line 3 column 1\"\n  },\n  \"metadata\": {\n    \"request_id\": \"289d4f75-2220-4cbb-97cd-f0a64a87d470\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72cc0780-6d73-434b-91b8-9684c8d02764",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "messages",
+                    ":message_id",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "message_id",
+                      "description": "(Required) Finalized assistant message to rate"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": \"<long>\",\n  \"score\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"metadata\": \"<object,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"31d1fdeb-3fc6-4ded-b647-429ca7e79ffa\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "30eec492-2162-46ba-8801-dc6130a8acdb",
+              "name": "Malformed request payload",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "messages",
+                    ":message_id",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "message_id",
+                      "description": "(Required) Finalized assistant message to rate"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": \"<long>\",\n  \"score\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"metadata\": \"<object,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 422,\n    \"message\": \"Failed to deserialize the JSON body into the target type: missing field `score` at line 3 column 1\"\n  },\n  \"metadata\": {\n    \"request_id\": \"cbe190c1-b260-4016-99c9-c507e923a2a5\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "604f2702-23a2-4b16-b244-37622a1f445f",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "messages",
+                    ":message_id",
+                    "feedback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "message_id",
+                      "description": "(Required) Finalized assistant message to rate"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": \"<long>\",\n  \"score\": \"<integer>\",\n  \"comment\": \"<string>\",\n  \"metadata\": \"<object,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "65ffa6bc-d221-4af2-a798-a616c3dad453",
+          "name": "Get Response By ID",
+          "request": {
+            "name": "Get Response By ID",
+            "description": {
+              "content": "Poll a response for assistant output.\n\nReturns the current snapshot of an in-progress or completed response.\nWhile the status is `queued` or `running`, the content may be partial and\nmay include `thinking` parts. Poll this endpoint periodically until the\nstatus reaches a terminal value (`succeeded`, `failed`, or `canceled`).\n\nOnce terminal, the finalized assistant message is available in thread\nhistory via `GET /omni-ai/threads/{thread_id}/messages`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "responses",
+                ":response_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<long>",
+                  "description": "(Required) Account ID for the request"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "response_id",
+                  "description": "(Required) Response identifier (returned by create thread/message)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2e9104f3-4dc4-4791-a4a3-ddd243e6d8c3",
+              "name": "Current response snapshot with status and partial content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "responses",
+                    ":response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "response_id",
+                      "description": "(Required) Response identifier (returned by create thread/message)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"content\": {\n      \"parts\": [\n        {\n          \"text\": \"[AAPL](ticker:AAPL) is currently trading at ...\",\n          \"type\": \"text\"\n        },\n        {\n          \"thoughts\": [\n            \"Fetching current market data for AAPL...\"\n          ],\n          \"type\": \"thinking\"\n        }\n      ]\n    },\n    \"id\": \"019dbafd-db54-7523-a412-ec9195cc5d99\",\n    \"output_message_id\": \"019dbafd-db61-73a0-8bd9-d4034d132f81\",\n    \"status\": \"succeeded\",\n    \"thread_id\": \"019dbafd-db54-7523-a412-ec8a292246ad\",\n    \"user_message_id\": \"019dbafd-db56-78a2-8a91-d54a39f44174\"\n  },\n  \"metadata\": {\n    \"request_id\": \"abc16101-2cbc-475a-84ef-98c8c588dcbb\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ee850497-1a0e-40fa-860c-2a47ed2fa774",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "responses",
+                    ":response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "response_id",
+                      "description": "(Required) Response identifier (returned by create thread/message)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to deserialize query string: missing field `account_id`\"\n  },\n  \"metadata\": {\n    \"request_id\": \"f5acc83c-57e7-4966-a699-17a9b552199b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc54f91f-227f-4eb0-bb8b-64cc24605f0e",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "responses",
+                    ":response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "response_id",
+                      "description": "(Required) Response identifier (returned by create thread/message)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"b2d2d764-61f9-41c4-91c8-dd4366fc35c8\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2a248cbd-a133-4a34-9d49-4ba92ddffe41",
+              "name": "Response not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "responses",
+                    ":response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "response_id",
+                      "description": "(Required) Response identifier (returned by create thread/message)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Response not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"e232b453-b4a9-4594-a56f-85c1e62ef40f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f53606ba-de35-492d-8f72-a464eac2e8aa",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "responses",
+                    ":response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "response_id",
+                      "description": "(Required) Response identifier (returned by create thread/message)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "98a0a860-b104-4506-8cdb-6053b0c8ead5",
+          "name": "Cancel Response",
+          "request": {
+            "name": "Cancel Response",
+            "description": {
+              "content": "Cancel a response.\n\nRequests cancellation of a queued or running response. If the response has\nalready reached a terminal status, this is an idempotent success. A\ncanceled turn still produces a final assistant message with outcome\n`canceled` in the thread history.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "responses",
+                ":response_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<long>",
+                  "description": "(Required) Account ID for the request"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "response_id",
+                  "description": "(Required) Response identifier to cancel"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5059b51e-8906-458c-90af-234c7a8e3b2f",
+              "name": "Cancellation accepted (idempotent)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "responses",
+                    ":response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "response_id",
+                      "description": "(Required) Response identifier to cancel"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"canceled\": false\n  },\n  \"metadata\": {\n    \"request_id\": \"fa26a786-f5d3-48b0-80eb-778e17af4964\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7caf78d4-6561-4b23-a84a-8a4bbf57313d",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "responses",
+                    ":response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "response_id",
+                      "description": "(Required) Response identifier to cancel"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to deserialize query string: missing field `account_id`\"\n  },\n  \"metadata\": {\n    \"request_id\": \"10f877f8-130b-4f02-b40a-1b6ab5d8acdf\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2a983b7f-b16d-4800-93a2-e64503cabd94",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "responses",
+                    ":response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "response_id",
+                      "description": "(Required) Response identifier to cancel"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"1c610eec-b873-4092-93aa-f14b6f501e4b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb9e040d-f5b5-469c-959e-7160e5294050",
+              "name": "Response not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "responses",
+                    ":response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "response_id",
+                      "description": "(Required) Response identifier to cancel"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Response not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"a5bc6ea6-1b72-4f31-bb7d-2bd57151decc\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66e6a4a3-be34-4945-8f84-5ab5b713dd8e",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "responses",
+                    ":response_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "response_id",
+                      "description": "(Required) Response identifier to cancel"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2dcd727e-1507-4249-8428-fec7c68b4e82",
+          "name": "Get Threads",
+          "request": {
+            "name": "Get Threads",
+            "description": {
+              "content": "List conversation threads.\n\nReturns thread metadata ordered by most recently created first. Use\n`page_size` and `page_token` for pagination. Thread objects contain only\nmetadata (title, timestamps) — use the messages endpoint for conversation\nhistory.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "threads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<long>",
+                  "description": "(Required) Account ID for the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "100",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "99addc44-6d5b-451e-8631-41914c397999",
+              "name": "Paginated list of thread metadata",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"created_at\": \"2026-04-23 15:15:54.929830+00:00\",\n      \"id\": \"019dbae9-73b3-7fe0-bd14-25fe57e91475\",\n      \"title\": \"What is current price of AAPL?\",\n      \"updated_at\": \"2026-04-23 15:15:54.929830+00:00\"\n    }\n  ],\n  \"metadata\": {\n    \"request_id\": \"eb95e1b8-d245-41b1-bbd0-cc1073e68bfd\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5e26b42-f28e-43a1-82da-a3ff23269768",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to deserialize query string: missing field `account_id`\"\n  },\n  \"metadata\": {\n    \"request_id\": \"3d8aa540-5f00-4efe-bf63-e55ee65ac14b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2a2ba84-c476-4f94-b6cd-afe6c1ca4946",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2627b535-5963-4769-b7ca-71886a100820",
+          "name": "Create Thread",
+          "request": {
+            "name": "Create Thread",
+            "description": {
+              "content": "Create a new conversation thread.\n\nAtomically creates a new thread and submits the first user turn. The\nresponse contains a `response_id` that should be polled via\n`GET /omni-ai/responses/{response_id}` for assistant output.\n\nTwo creation modes are supported:\n- **instant** — provide `text` with a natural-language prompt.\n- **deep_insights** — provide a `target` ticker and optional `thesis`\n  for long-form research.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "threads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_id\": \"<long>\",\n  \"type\": \"<string>\",\n  \"capabilities\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"target\": \"<null>\",\n  \"text\": \"<string,null>\",\n  \"thesis\": \"<string,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c80abc64-507d-43b1-b0d7-a0c15e410985",
+              "name": "Thread created. Poll the returned `response_id` for assistant output.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": 19816,\n  \"text\": \"What changed in NVDA today?\",\n  \"type\": \"instant\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"response_id\": \"019dbae9-73b4-7760-a947-8b4bcab57c49\",\n    \"thread_id\": \"019dbae9-73b3-7fe0-bd14-25fe57e91475\",\n    \"user_message_id\": \"019dbae9-73b8-75b2-9c06-ac348927696d\"\n  },\n  \"metadata\": {\n    \"request_id\": \"f7a9ad4d-753a-403e-aa0e-ca151f991a81\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64c7bc63-91a0-436c-b875-f90c66148cb9",
+              "name": "Invalid request (missing required fields or invalid mode)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": 19816,\n  \"text\": \"What changed in NVDA today?\",\n  \"type\": \"instant\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"text is required for instant mode\"\n  },\n  \"metadata\": {\n    \"request_id\": \"c075d493-8499-40e3-8ce1-411e205f0380\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0c72697-f31e-4b09-a856-e3ee1662f424",
+              "name": "Malformed request payload",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": 19816,\n  \"text\": \"What changed in NVDA today?\",\n  \"type\": \"instant\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 422,\n    \"message\": \"Failed to deserialize the JSON body into the target type: missing field `type` at line 3 column 1\"\n  },\n  \"metadata\": {\n    \"request_id\": \"625523fe-02ba-4a74-8544-81f43f204b59\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "88936472-02ef-4934-81c4-05ec441d5326",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": 19816,\n  \"text\": \"What changed in NVDA today?\",\n  \"type\": \"instant\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1085947a-fa09-446f-ba01-08312cb3f258",
+          "name": "Get Thread By ID",
+          "request": {
+            "name": "Get Thread By ID",
+            "description": {
+              "content": "Get a specific thread.\n\nReturns metadata (title, timestamps) for a single thread. Does not include\nmessages — use `GET /omni-ai/threads/{thread_id}/messages` for conversation\nhistory.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "threads",
+                ":thread_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<long>",
+                  "description": "(Required) Account ID for the request"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "thread_id",
+                  "description": "(Required) Thread identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "53f48dbe-fda5-4182-98ba-7e55687defa7",
+              "name": "Thread metadata",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"created_at\": \"2026-04-23 15:15:54.929830+00:00\",\n    \"id\": \"019dbae9-73b3-7fe0-bd14-25fe57e91475\",\n    \"title\": \"What is current price of AAPL?\",\n    \"updated_at\": \"2026-04-23 15:15:54.929830+00:00\"\n  },\n  \"metadata\": {\n    \"request_id\": \"5683a394-6dd1-4843-8591-f102ced2e636\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9a634619-0b46-4a25-a01d-f82c165d47cd",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to deserialize query string: missing field `account_id`\"\n  },\n  \"metadata\": {\n    \"request_id\": \"e949291a-3817-4e72-8298-90420c86e6be\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4732093-b8cd-46d8-9190-6eace0d33670",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"31d1fdeb-3fc6-4ded-b647-429ca7e79ffa\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ef04707-0541-47b4-a501-460f3b27bad3",
+              "name": "Thread not found or not owned by this user",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Thread not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"f1556e8f-a7aa-43d3-b7d1-2229e266ada7\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f73d2e7f-3537-4f31-82f8-7bd939e74ede",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "11d89ae9-b5ae-4d63-bbd2-16e5c4f9d8a6",
+          "name": "Get Messages",
+          "request": {
+            "name": "Get Messages",
+            "description": {
+              "content": "List finalized messages in a thread.\n\nReturns the latest page of **finalized** messages by default, with messages\nwithin each page ordered chronologically. Messages from in-progress\nassistant turns are excluded — use\n`GET /omni-ai/threads/{thread_id}/response` or\n`GET /omni-ai/responses/{response_id}` for live output.\n\nIf the last finalized message has role `USER`, an active response likely\nexists and should be polled separately.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "threads",
+                ":thread_id",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<long>",
+                  "description": "(Required) Account ID for the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "100",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "thread_id",
+                  "description": "(Required) Thread to list messages for"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b132afe5-6631-44f3-a300-eacc9b0f188c",
+              "name": "Paginated list of finalized messages; latest page by default, chronological within each page",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to list messages for"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"How are the markets doing today?\",\n            \"type\": \"text\"\n          }\n        ]\n      },\n      \"created_at\": \"2026-04-16 09:20:17.274943+00:00\",\n      \"id\": \"019d9597-5983-7691-8281-7ce264127740\",\n      \"outcome\": \"completed\",\n      \"role\": \"USER\",\n      \"seq\": 1,\n      \"thread_id\": \"019d9597-597c-7571-a0c9-a49c0e51f6eb\"\n    },\n    {\n      \"content\": {\n        \"parts\": [\n          {\n            \"text\": \"**Pre-market as of 7:30 AM ET**\\n\\n ...\",\n            \"type\": \"text\"\n          },\n          {\n            \"payload\": {\n              \"actionButtons\": [\n                {\n                  \"buttonId\": \"btn_followup_0\",\n                  \"label\": \"Check my positions\",\n                  \"prompt\": {\n                    \"prompt\": \"What are my current positions?\"\n                  }\n                }\n              ]\n            },\n            \"type\": \"suggested_actions\"\n          }\n        ]\n      },\n      \"created_at\": \"2026-04-16 09:20:17.309212+00:00\",\n      \"id\": \"019d9597-599c-7132-a7de-e5c21eaaab77\",\n      \"outcome\": \"completed\",\n      \"role\": \"ASSISTANT\",\n      \"seq\": 2,\n      \"thread_id\": \"019d9597-597c-7571-a0c9-a49c0e51f6eb\"\n    }\n  ],\n  \"metadata\": {\n    \"request_id\": \"664c0f85-cdab-4fac-afe3-8ecc0148cd4a\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38549e4c-61d5-4288-bfc4-aa1e99028175",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to list messages for"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"e3e4df36-1c33-45b1-b06d-832c80adbbf6\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e91171c6-42ca-40af-81c6-17214a43ca10",
+              "name": "Thread not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to list messages for"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Thread not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"a1c173e9-4fc0-44d0-b89f-4ac67ca45032\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b08a0980-e3a6-45ee-9417-96f671448459",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "100"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to list messages for"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ec98e853-ff8e-4cac-838a-4149d61f87da",
+          "name": "Create Message",
+          "request": {
+            "name": "Create Message",
+            "description": {
+              "content": "Continue an existing conversation thread.\n\nAppends a new user message to the thread and starts an assistant response.\nOnly one response may be active per thread at a time — if the previous turn\nis still in progress, this endpoint returns **409 Conflict**. Wait for the\nactive response to reach a terminal status before submitting the next turn.\n\nPoll the returned `response_id` via `GET /omni-ai/responses/{response_id}`\nfor assistant output.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "threads",
+                ":thread_id",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "thread_id",
+                  "description": "(Required) Thread to continue"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_id\": \"<long>\",\n  \"text\": \"<string>\",\n  \"capabilities\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "61a5356d-4920-4f1e-81be-989861c51a38",
+              "name": "Message accepted. Poll the returned `response_id` for assistant output.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to continue"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": 19816,\n  \"text\": \"Compare that to AMD.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"response_id\": \"019dbaec-8dd3-7fa3-89d0-5303609f125f\",\n    \"thread_id\": \"019dbae9-73b3-7fe0-bd14-25fe57e91475\",\n    \"user_message_id\": \"019dbaec-8dd4-7f91-bce2-3ec8fba79eb7\"\n  },\n  \"metadata\": {\n    \"request_id\": \"48775400-61f4-4c6c-bc6d-8f4996c571c7\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "008b44c2-4464-4c29-a54a-56d36258f2bb",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to continue"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": 19816,\n  \"text\": \"Compare that to AMD.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to parse the request body as JSON: EOF while parsing an object at line 3 column 0\"\n  },\n  \"metadata\": {\n    \"request_id\": \"8cf61bb3-a8c6-4f3e-abe8-5a5327001b55\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f446cd40-10cf-4e34-b525-eedf4458c7ab",
+              "name": "Thread already has an active response — wait for it to complete",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to continue"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": 19816,\n  \"text\": \"Compare that to AMD.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 409,\n    \"message\": \"thread already has an active response\"\n  },\n  \"metadata\": {\n    \"request_id\": \"7b34ad9b-e09a-40d1-aab8-2185a8df5a31\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d5e0cb0-95d5-40d3-b8dd-21a7a2a79b7c",
+              "name": "Malformed request payload",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to continue"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": 19816,\n  \"text\": \"Compare that to AMD.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 422,\n    \"message\": \"Failed to deserialize the JSON body into the target type: missing field `account_id` at line 3 column 3\"\n  },\n  \"metadata\": {\n    \"request_id\": \"9fbd975d-be1e-4710-9004-1f54d0d4dfb6\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c07b3532-a3a5-42e0-a33e-2bca683debe1",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to continue"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_id\": 19816,\n  \"text\": \"Compare that to AMD.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1456ff14-5598-497d-91aa-69ee6040ce38",
+          "name": "Get Thread Response",
+          "request": {
+            "name": "Get Thread Response",
+            "description": {
+              "content": "Get the active response for a thread.\n\nConvenience endpoint to look up the currently active response for a thread\nwithout knowing the `response_id`. Useful when reloading a thread whose\nlast finalized message is a `USER` message — this indicates an assistant\nturn is likely in progress.\n\nReturns **404** if no active response exists (the thread is idle).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "omni-ai",
+                "threads",
+                ":thread_id",
+                "response"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account_id",
+                  "value": "<long>",
+                  "description": "(Required) Account ID for the request"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "thread_id",
+                  "description": "(Required) Thread to check for active response"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "40e39a14-97cb-4c7b-bd63-74d1cbfd8b77",
+              "name": "Current response snapshot or idle thread",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "response"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to check for active response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"content\": {\n      \"parts\": [\n        {\n          \"text\": \"\",\n          \"type\": \"text\"\n        },\n        {\n          \"thoughts\": [\n            \"[1/4] Running parallel analysis on AAPL -- fundamentals, technicals, sentiment, and macro...\"\n          ],\n          \"type\": \"thinking\"\n        }\n      ]\n    },\n    \"id\": \"019dbb03-cf23-74e1-9c31-ef0136ff7fed\",\n    \"output_message_id\": \"019dbb03-cf32-74d1-906b-a148d4be3da9\",\n    \"status\": \"running\",\n    \"thread_id\": \"019dbb03-cf22-7da0-a663-f51c756efa07\",\n    \"user_message_id\": \"019dbb03-cf24-7b03-8286-5bfc2411b052\"\n  },\n  \"metadata\": {\n    \"request_id\": \"927a85a6-b11b-4cc5-a2cd-3f46ae64e85d\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e81020eb-ffb2-4e98-b5a2-73ec5fc7c2af",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "response"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to check for active response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission to execute the specified operation\"\n  },\n  \"metadata\": {\n    \"request_id\": \"ef354353-f9ca-4d0c-a8ef-4566a5072434\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93f6d709-47f5-4b6b-9cec-d3a78b9b957e",
+              "name": "Thread not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "response"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to check for active response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Thread not found\"\n  },\n  \"metadata\": {\n    \"request_id\": \"dadd546f-eb7e-4b78-8d36-7d0a70b8a70d\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b0bef6e-35db-4f62-8f22-07ca44b70bb6",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "omni-ai",
+                    "threads",
+                    ":thread_id",
+                    "response"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account_id",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "thread_id",
+                      "description": "(Required) Thread to check for active response"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 8388,\n      \"key_1\": 3376\n    },\n    {\n      \"key_0\": 2776.000015114569\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ae586cec-4beb-4f0e-bf84-808d15ecfe5e",
+    "name": "Clear Street Trading Omni AI API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.\nThis specification provides a single source of truth for the API surface, covering order management, trade execution, market data, and account services.\n\n### Authentication\nAll endpoints require authentication via a JWT Bearer token provided in the `Authorization` header.\n\n### Response Structure\nAll responses, both for success and error, adhere to a standard envelope structure:\n- `data`: Contains the response payload on success, or `null` on error.\n- `error`: Contains a structured error object on failure, or `null` on success.\n- `metadata`: Contains the `request_id` and pagination information.\n\n### WebSockets\nReal-time market data is available via WebSocket connections, which are not formally described in this OpenAPI specification. The following operations are available:\n- `market-data-l1-subscribe`: To start receiving L1 market data updates for a set of symbols.\n- `market-data-l1-unsubscribe`: To stop receiving L1 market data updates.\n\nContact Support:\n Name: Clear Street API Support\n Email: concierge@clearstreet.com",
+      "type": "text/plain"
+    }
+  }
+}

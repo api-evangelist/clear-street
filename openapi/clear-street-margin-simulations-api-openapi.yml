@@ -1,0 +1,456 @@
+openapi: 3.2.0
+info:
+  title: Common API Models Margin Simulations API
+  description: Common API models for all of Studio's APIs
+  version: 2.0.0
+servers:
+- url: https://api.clearstreet.io/studio/v2
+  description: Production environment
+- url: https://sandbox-api.clearstreet.io/studio/v2
+  description: Sandbox environment
+tags:
+- name: Margin Simulations
+  x-displayName: Margin Simulations
+paths:
+  /entities/{entity_id}/regt-margin-simulations:
+    post:
+      operationId: createRegTMarginSimulation
+      summary: Create Reg-T simulation
+      description: 'Simulate Reg-T margin calculation for a given hypothetical set of prices and/or trades. This is useful for understanding the impact of price fluctuations or trades on margin requirements. Once a simulation is created, it remains available for 48-hours, after which it will automatically be deleted.
+
+
+        Simulations created through the API are visible in the Studio UI under the Risk & Margin section, after enabling the "Risk Simulations" toggle.
+
+        '
+      tags:
+      - Margin Simulations
+      parameters:
+      - in: path
+        name: entity_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/EntityId'
+        description: Entity ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: '#/components/schemas/SimulationName'
+                  description: A name for this simulation for reference.
+                prices:
+                  type: array
+                  description: List of prices to use in the simulation, i.e. fair-market-values you specify for each symbol. If this is not provided, current market prices will be used, if they are available.
+                  items:
+                    $ref: '#/components/schemas/SimulationPrice'
+                trades:
+                  type: array
+                  description: List of hypothetical trades to include in the simulation, if any.
+                  items:
+                    $ref: '#/components/schemas/SimulationTrade'
+                ignore_existing:
+                  type: boolean
+                  default: false
+                  description: If true, the simulation will ignore any existing positions and balances in the account. Set to true if you want to simulate from a clean slate, i.e. an empty account.
+              required:
+              - name
+      responses:
+        '200':
+          description: Reg-T margin simulation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  simulation_id:
+                    $ref: '#/components/schemas/SimulationId'
+                required:
+                - simulation_id
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+  /entities/{entity_id}/regt-margin-simulations/{simulation_id}:
+    get:
+      operationId: getRegTMarginSimulation
+      summary: Get Reg-T simulation
+      description: Get a Reg-T margin simluation that was previously created. Note, simulations are automatically deleted after 48-hours.
+      tags:
+      - Margin Simulations
+      parameters:
+      - in: path
+        name: entity_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/EntityId'
+        description: Entity ID
+      - in: path
+        name: simulation_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/SimulationId'
+        description: Simulation ID
+      responses:
+        '200':
+          description: Reg-T margin simulation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegTMarginSimulation'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    EntityId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Entity ID for the legal entity.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    SimulationTrade:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for the instrument.
+        symbol_format:
+          $ref: '#/components/schemas/SymbolFormat'
+          default: cms
+        side:
+          $ref: '#/components/schemas/BuySell'
+          description: The side of the simulated trade.
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity of the simulated trade.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The price of the simulated trade.
+      required:
+      - symbol
+      - side
+      - quantity
+      - price
+    RegTMarginSimulation:
+      type: object
+      properties:
+        created_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: Timestamp of when this simulation was created.
+        name:
+          $ref: '#/components/schemas/SimulationName'
+          description: Name of this simulation that you provided when creating it.
+        simulation_id:
+          $ref: '#/components/schemas/SimulationId'
+        before:
+          $ref: '#/components/schemas/RegTMargin'
+          description: The margin calculation before applying simulated trades.
+        after:
+          $ref: '#/components/schemas/RegTMargin'
+          description: The margin calculation after applying simulated trades.
+      required:
+      - created_at
+      - name
+      - simulation_id
+      - before
+      - after
+    RegTGroupMember:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for the instrument.
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity held for this instrument.
+        market_value:
+          type: number
+          format: double
+          description: Market value of the instrument.
+        market_value_percent:
+          type: number
+          format: double
+          description: 'The percentage market value of the instrument in terms of the total `net_market_value` of all positions held.
+
+            Formula: `market_value / net_market_value`
+
+            '
+      required:
+      - symbol
+      - asset_class
+      - quantity
+      - market_value
+      - market_value_percent
+    BuySell:
+      type: string
+      enum:
+      - buy
+      - sell
+      description: Either buy or sell side.
+    AssetClass:
+      type: string
+      enum:
+      - other
+      - currency
+      - equity
+      - option
+      - debt
+      - fund
+      description: The asset class of the symbol.
+    RegTGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name of the group, typically the symbol of the underlier.
+        market_value:
+          type: number
+          format: double
+          description: The aggregated market value of all instruments for the symbol group.
+        market_value_percent:
+          type: number
+          format: double
+          description: 'The percentage market value of the symbol group in terms of the total net_market_value of all positions.
+
+            Formula: `(market_value / net_market_value)`
+
+            '
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect for the symbol group.
+        house_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on Clear Street's house margin methodology for the symbol group.
+        exchange_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on regulatory rules for the symbol group.
+        margin_percent:
+          type: number
+          format: double
+          description: 'The percentage effective margin requirement in terms of the symbol group market value.
+
+            Formula: `(effective_requirement / net_market_value)`
+
+            '
+        margin_percent_contribution:
+          type: number
+          format: double
+          description: 'The percentage effective margin requirement in terms of the total effective requirement.
+
+            Formula: `(effective_requirement / sum(effective_requirement))`
+
+            '
+        members:
+          type: array
+          description: A list of securities that comprise this group.
+          items:
+            $ref: '#/components/schemas/RegTGroupMember'
+      required:
+      - name
+      - market_value
+      - market_value_percent
+      - effective_requirement
+      - house_requirement
+      - exchange_requirement
+      - margin_percent
+      - margin_percent_contribution
+      - members
+    SimulationPrice:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for the instrument.
+        symbol_format:
+          $ref: '#/components/schemas/SymbolFormat'
+          default: cms
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The price to use in the simulation.
+      required:
+      - symbol
+      - price
+    SimulationId:
+      type: string
+      format: uuid
+      example: 6460030d-8ed4-19d3-818e-e87b36e90005
+      description: Unique ID for a simulation.
+    RegTMargin:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Unique identifier for this margin calculation.
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+          description: Timestamp of when this margin was calculated.
+        net_market_value:
+          type: number
+          format: double
+          description: Market value net of long and short market values.
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect.
+        effective_excess:
+          type: number
+          format: double
+          description: The maring amount by taking the difference between total equity and the effective requirement. A negative number reflects an effective margin deficit.
+        house_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on Clear Street's house margin methodology.
+        house_excess:
+          type: number
+          format: double
+          description: The margin amount by taking the difference between total equity and the house requirement. A negative number reflects a house margin deficit.
+        exchange_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on regulatory rules.
+        exchange_excess:
+          type: number
+          format: double
+          description: The margin amount by taking the difference between total equity and the exchange requirement. A negative number reflects an regulatory margin deficit.
+        sma:
+          type: number
+          format: double
+          description: Special Memorandum Account (SMA). The regulatory line of credit amount for margin trading based on market value, trading activity, and available cash.
+        sod_buying_power:
+          type: number
+          format: double
+          description: The limit, or "up-to" amount, of securities value that can be day-traded for a given trading day.
+        overnight_buying_power:
+          type: number
+          format: double
+          description: The limit, or "up-to" amount, of securities value that can be purchased and held overnight.
+        day_trade_buying_power:
+          type: number
+          format: double
+          description: The remaining amount of start_of_day_buying_power that captures any day-trading activity.
+        groups:
+          type: array
+          description: Reg-T margin groups
+          items:
+            $ref: '#/components/schemas/RegTGroup'
+      required:
+      - version
+      - timestamp
+      - net_market_value
+      - effective_requirement
+      - effecive_excess
+      - house_requirement
+      - house_excess
+      - exchange_requirement
+      - exchange_deficit
+      - sma
+      - sod_buying_power
+      - overnight_buying_power
+      - day_trade_buying_power
+      - groups
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    Price:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '123.99'
+      description: String representation of a price.
+    SymbolFormat:
+      type: string
+      enum:
+      - cms
+      - osi
+      description: Denotes the format of the provided `symbol` field.
+    SimulationName:
+      type: string
+      minimum: 1
+      maximum: 256
+      description: Name of a simulation.
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+externalDocs:
+  url: https://docs.clearstreet.io/
+x-tagGroups:
+- name: Custodial API
+  tags:
+  - Performance
+  - Holdings
+- name: Execution API
+  tags:
+  - Orders
+  - Trades
+  - Positions
+- name: Lending API
+  tags:
+  - Locates
+  - Rates
+  - Inventories
+- name: Reference API
+  tags:
+  - Entities
+  - Accounts
+  - Instruments
+- name: Risk & Margin API
+  tags:
+  - PNL
+  - Margin
+  - Margin Simulations

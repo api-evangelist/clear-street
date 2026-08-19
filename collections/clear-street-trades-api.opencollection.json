@@ -1,0 +1,123 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Trades API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Trades",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Insert Trades",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//api.clearstreet.io/v1/trades",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Insert the provided trades atomically. Use this endpoint if you want atomicity and immediate confirmation; this request will either fully process all your trades, or reject them all atomically. Therefore, a successful call to this endpoint guarantees that your trades have been accepted by our systems. This endpoint can accept up to 1000 trades at a time. <ul> <li><b>Exchange Trade</b>  trades done directly on an exchange. An example would be a trading account buying shares on Nasdaq.</li> <li><b"
+        },
+        {
+          "info": {
+            "name": "Cancel Trade By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "//api.clearstreet.io/v1/trades/:trade_id",
+            "params": [
+              {
+                "name": "trade_id",
+                "value": "",
+                "type": "path",
+                "description": "Clear Street assigned unique trade_id"
+              },
+              {
+                "name": "is_client_trade_id",
+                "value": "",
+                "type": "query",
+                "description": "True if the given trade_id is a client_trade_id"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Provide only if `is_client_trade_id` is true. This is the account_id the trade was booked to"
+              }
+            ]
+          },
+          "docs": "Cancel a trade either by the Clear Street assigned `trade_id`, or `client_trade_id` that was provided in the original trade. If the ID you provide is, in fact, a `client_trade_id`, you must set `is_client_trade_id` to true, and also provide the `account_id` for the original trade.\n"
+        },
+        {
+          "info": {
+            "name": "Get trade",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "//api.clearstreet.io/v1/accounts/:account_id/trades/:trade_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "trade_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get trade a trade by its unique trade ID."
+        },
+        {
+          "info": {
+            "name": "List trades",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "//api.clearstreet.io/v1/accounts/:account_id/trades",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List trades for a given account for the current trading day."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

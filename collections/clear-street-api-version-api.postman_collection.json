@@ -1,0 +1,165 @@
+{
+  "item": [
+    {
+      "id": "efede5a4-57ff-4d0e-9500-f4f597f2ba89",
+      "name": "API version",
+      "description": {
+        "content": "Endpoints for API service metadata.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "74a4af8a-1ff5-4a42-acf7-03ccbe9ff34d",
+          "name": "Get the API version.",
+          "request": {
+            "name": "Get the API version.",
+            "description": {
+              "content": "Returns the current version string for this API endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "version"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "139bc8d2-cdad-468b-888d-63a690822866",
+              "name": "API version information",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "version"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"version\": \"2025-10-31\"\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"2c3d4e5f-6a7b-8c9d-0e1f-2a3b4c5d6e7f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b063d80-bc4a-4d38-b84f-29d49b6dc6a9",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "version"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 7588\n    },\n    {\n      \"key_0\": false,\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ee4ac12d-0934-4c16-8ddc-1413abe6efd4",
+    "name": "Clear Street Trading API version API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.\nThis specification provides a single source of truth for the API surface, covering order management, trade execution, market data, and account services.\n\n### Authentication\nAll endpoints require authentication via a JWT Bearer token provided in the `Authorization` header.\n\n### Response Structure\nAll responses, both for success and error, adhere to a standard envelope structure:\n- `data`: Contains the response payload on success, or `null` on error.\n- `error`: Contains a structured error object on failure, or `null` on success.\n- `metadata`: Contains the `request_id` and pagination information.\n\n### WebSockets\nReal-time market data is available via WebSocket connections, which are not formally described in this OpenAPI specification. The following operations are available:\n- `market-data-l1-subscribe`: To start receiving L1 market data updates for a set of symbols.\n- `market-data-l1-unsubscribe`: To stop receiving L1 market data updates.\n\nContact Support:\n Name: Clear Street API Support\n Email: concierge@clearstreet.com",
+      "type": "text/plain"
+    }
+  }
+}

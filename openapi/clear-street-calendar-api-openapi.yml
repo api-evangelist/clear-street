@@ -1,0 +1,571 @@
+openapi: 3.2.0
+info:
+  title: Clear Street Trading Calendar API
+  description: 'A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.
+
+    This specification provides a single source of truth for the API surface, covering order management, trade execution, market data, and account services.
+
+
+    ### Authentication
+
+    All endpoints require authentication via a JWT Bearer token provided in the `Authorization` header.
+
+
+    ### Response Structure
+
+    All responses, both for success and error, adhere to a standard envelope structure:
+
+    - `data`: Contains the response payload on success, or `null` on error.
+
+    - `error`: Contains a structured error object on failure, or `null` on success.
+
+    - `metadata`: Contains the `request_id` and pagination information.
+
+
+    ### WebSockets
+
+    Real-time market data is available via WebSocket connections, which are not formally described in this OpenAPI specification. The following operations are available:
+
+    - `market-data-l1-subscribe`: To start receiving L1 market data updates for a set of symbols.
+
+    - `market-data-l1-unsubscribe`: To stop receiving L1 market data updates.'
+  contact:
+    name: Clear Street API Support
+    url: https://clearstreet.io/contact
+    email: concierge@clearstreet.com
+  license:
+    name: Proprietary
+    url: https://clearstreet.io/terms
+  version: 2025-10-31
+servers:
+- url: https://api.clearstreet.com
+  description: Clear Street API
+- url: https://api-dev.clearstreet.com
+  description: Clear Street Development API
+- url: http://localhost:5001
+  description: Clear Street Local API
+security:
+- BearerAuth: []
+tags:
+- name: Calendar
+  description: Access clocks and financial calendars for market sessions and events.
+paths:
+  /v1/calendars/market-hours:
+    get:
+      tags:
+      - Calendar
+      summary: Get Market Hours Calendar.
+      description: 'Retrieves comprehensive trading hours including pre-market, regular, and after-hours sessions.
+
+        Returns market status, session times, and next session schedules.'
+      operationId: get_market_hours_calendar
+      parameters:
+      - name: date
+        in: query
+        description: The date to query market hours for (YYYY-MM-DD). Defaults to today.
+        required: false
+        schema:
+          type: string
+        example: 2025-10-15
+      - name: market
+        in: query
+        description: Market type to query (us_equities, us_options). If omitted, returns all markets.
+        required: false
+        schema:
+          type: string
+          description: Market type for market hours calendar endpoint
+          enum:
+          - us_equities
+          - us_options
+        example: us_equities
+      responses:
+        '200':
+          description: Market hours calendar
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/MarketHoursDetailList'
+                type: object
+              examples:
+                EarlyClose:
+                  summary: Market hours for an early close day (day after Thanksgiving)
+                  value:
+                    data:
+                    - current_time: 2025-11-28 11:00:00-05:00
+                      date: 2025-11-28
+                      market: us_equities
+                      market_name: US Equities
+                      next_sessions:
+                        after_hours:
+                          close: 2025-12-01 20:00:00-05:00
+                          open: 2025-12-01 16:00:00-05:00
+                        pre_market:
+                          close: 2025-12-01 09:30:00-05:00
+                          open: 2025-12-01 04:00:00-05:00
+                        regular:
+                          close: 2025-12-01 16:00:00-05:00
+                          open: 2025-12-01 09:30:00-05:00
+                      status:
+                        current_session: regular
+                        day_type: EARLY_CLOSE
+                        is_open: true
+                      timezone: America/New_York
+                      today_sessions:
+                        pre_market:
+                          close: 2025-11-28 09:30:00-05:00
+                          open: 2025-11-28 04:00:00-05:00
+                        regular:
+                          close: 2025-11-28 13:00:00-05:00
+                          open: 2025-11-28 09:30:00-05:00
+                          time_until_close: PT2H
+                    error: null
+                    metadata:
+                      request_id: 3d4e5f6a-7b8c-9d0e-1f2a-3b4c5d6e7f8a
+                Holiday:
+                  summary: Market hours for a holiday (Christmas)
+                  value:
+                    data:
+                    - current_time: 2025-12-25 10:00:00-05:00
+                      date: 2025-12-25
+                      market: us_equities
+                      market_name: US Equities
+                      next_sessions:
+                        after_hours:
+                          close: 2025-12-26 20:00:00-05:00
+                          open: 2025-12-26 16:00:00-05:00
+                        pre_market:
+                          close: 2025-12-26 09:30:00-05:00
+                          open: 2025-12-26 04:00:00-05:00
+                        regular:
+                          close: 2025-12-26 16:00:00-05:00
+                          open: 2025-12-26 09:30:00-05:00
+                      status:
+                        day_type: HOLIDAY
+                        is_open: false
+                      timezone: America/New_York
+                      today_sessions: {}
+                    error: null
+                    metadata:
+                      request_id: 2c3d4e5f-6a7b-8c9d-0e1f-2a3b4c5d6e7f
+                RegularTradingDay:
+                  summary: Market hours for a regular trading day
+                  value:
+                    data:
+                    - current_time: 2025-10-15 14:30:45-04:00
+                      date: 2025-10-15
+                      market: us_equities
+                      market_name: US Equities
+                      next_sessions:
+                        after_hours:
+                          close: 2025-10-16 20:00:00-04:00
+                          open: 2025-10-16 16:00:00-04:00
+                        pre_market:
+                          close: 2025-10-16 09:30:00-04:00
+                          open: 2025-10-16 04:00:00-04:00
+                        regular:
+                          close: 2025-10-16 16:00:00-04:00
+                          open: 2025-10-16 09:30:00-04:00
+                      status:
+                        current_session: regular
+                        day_type: TRADING_DAY
+                        is_open: true
+                      timezone: America/New_York
+                      today_sessions:
+                        after_hours:
+                          close: 2025-10-15 20:00:00-04:00
+                          open: 2025-10-15 16:00:00-04:00
+                          time_until_open: PT1H29M15S
+                        pre_market:
+                          close: 2025-10-15 09:30:00-04:00
+                          open: 2025-10-15 04:00:00-04:00
+                        regular:
+                          close: 2025-10-15 16:00:00-04:00
+                          open: 2025-10-15 09:30:00-04:00
+                          time_until_close: PT1H29M15S
+                    error: null
+                    metadata:
+                      request_id: 1b2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e
+                Weekend:
+                  summary: Market hours for a weekend day
+                  value:
+                    data:
+                    - current_time: 2025-10-18 12:00:00-04:00
+                      date: 2025-10-18
+                      market: us_equities
+                      market_name: US Equities
+                      next_sessions:
+                        after_hours:
+                          close: 2025-10-20 20:00:00-04:00
+                          open: 2025-10-20 16:00:00-04:00
+                        pre_market:
+                          close: 2025-10-20 09:30:00-04:00
+                          open: 2025-10-20 04:00:00-04:00
+                        regular:
+                          close: 2025-10-20 16:00:00-04:00
+                          open: 2025-10-20 09:30:00-04:00
+                      status:
+                        day_type: WEEKEND
+                        is_open: false
+                      timezone: America/New_York
+                      today_sessions: {}
+                    error: null
+                    metadata:
+                      request_id: 4e5f6a7b-8c9d-0e1f-2a3b-4c5d6e7f8a9b
+  /v1/clock:
+    get:
+      tags:
+      - Calendar
+      summary: Get Clock
+      description: Returns the current server time in UTC.
+      operationId: get_clock
+      responses:
+        '200':
+          description: Current server time
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/ClockDetail'
+                type: object
+              examples:
+                Current time:
+                  summary: Current server time
+                  value:
+                    data:
+                      clock: 2025-03-01 03:35:00+00:00
+                    error: null
+                    metadata:
+                      request_id: 1b2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e
+components:
+  schemas:
+    SessionSchedule:
+      type: object
+      description: Session schedule with open and close timestamps
+      required:
+      - open
+      - close
+      properties:
+        close:
+          type: string
+          format: date-time
+          description: Session close timestamp with timezone offset
+          example: 2025-10-15 16:00:00-04:00
+        open:
+          type: string
+          format: date-time
+          description: Session open timestamp with timezone offset
+          example: 2025-10-15 09:30:00-04:00
+        time_until_close:
+          type:
+          - string
+          - 'null'
+          format: duration
+          description: 'ISO 8601 duration until session closes. Null if session is not currently open.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: PT1H30M
+        time_until_open:
+          type:
+          - string
+          - 'null'
+          format: duration
+          description: 'ISO 8601 duration until session opens. Null if session has already started or closed.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: PT2H30M
+      example:
+        close: 2025-10-15 16:00:00-04:00
+        open: 2025-10-15 09:30:00-04:00
+        time_until_close: PT1H30M
+        time_until_open: null
+    ApiError:
+      type: object
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
+
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
+    ClockDetail:
+      type: object
+      description: Current server time and market clock information
+      required:
+      - clock
+      properties:
+        clock:
+          type: string
+          format: date-time
+          description: Current server time in UTC
+          example: 2025-03-01 03:35:00+00:00
+      example:
+        clock: 2025-03-01 03:35:00+00:00
+    TradingSessions:
+      type: object
+      description: Trading sessions for a market day with full timestamps
+      properties:
+        after_hours:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/SessionSchedule'
+            description: 'After-hours session schedule, null if not available
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+        pre_market:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/SessionSchedule'
+            description: 'Pre-market session schedule, null if not available
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+        regular:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/SessionSchedule'
+            description: 'Regular trading session schedule, null if holiday/weekend
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+      example:
+        after_hours:
+          close: 2025-10-15 20:00:00-04:00
+          open: 2025-10-15 16:00:00-04:00
+        pre_market:
+          close: 2025-10-15 09:30:00-04:00
+          open: 2025-10-15 04:00:00-04:00
+        regular:
+          close: 2025-10-15 16:00:00-04:00
+          open: 2025-10-15 09:30:00-04:00
+    ResponseMetadata:
+      type: object
+      description: 'Metadata for the response. This will always contain a request ID which can be used to identify
+
+        the request to Clear Street for tracing, and optionally may include pagination data.'
+      required:
+      - request_id
+      properties:
+        next_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the next page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Pagination. Included if this was a GET (list) response
+          example: '1'
+          minimum: 0
+        previous_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the previous page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        request_id:
+          type: string
+          description: A unique ID for this request, generated upon ingestion of the request.
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of items available (not just in this page).
+          example: '42'
+          minimum: 0
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total number of pages available.
+          example: '5'
+          minimum: 0
+    DayType:
+      type: string
+      description: Day type for market hours - indicates the type of trading day
+      enum:
+      - TRADING_DAY
+      - EARLY_CLOSE
+      - HOLIDAY
+      - WEEKEND
+    MarketHoursDetailList:
+      type: array
+      items:
+        $ref: '#/components/schemas/MarketHoursDetail'
+    MarketHoursDetail:
+      type: object
+      description: Comprehensive market hours information for a specific market and date
+      required:
+      - market
+      - market_name
+      - date
+      - timezone
+      - current_time
+      - status
+      - today_sessions
+      - next_sessions
+      properties:
+        current_time:
+          type: string
+          format: date-time
+          description: Current time in market timezone with offset
+          example: 2025-10-15 14:30:00-04:00
+        date:
+          type: string
+          format: date
+          description: The date for which market hours are provided
+          example: 2025-10-15
+        market:
+          $ref: '#/components/schemas/MarketType'
+          description: Market type identifier
+        market_name:
+          type: string
+          description: Human-readable market name
+          example: US Equities
+        next_sessions:
+          $ref: '#/components/schemas/TradingSessions'
+          description: Next trading day's session schedules (without time_until fields)
+        status:
+          $ref: '#/components/schemas/MarketStatus'
+          description: Market status information
+        timezone:
+          type: string
+          description: IANA timezone identifier for the market
+          example: America/New_York
+        today_sessions:
+          $ref: '#/components/schemas/TradingSessions'
+          description: Trading session schedules for the requested date with time_until fields
+      example:
+        current_time: 2025-10-15 14:30:00-04:00
+        date: 2025-10-15
+        market: us_equities
+        market_name: US Equities
+        next_sessions:
+          after_hours:
+            close: 2025-10-16 20:00:00-04:00
+            open: 2025-10-16 16:00:00-04:00
+          pre_market:
+            close: 2025-10-16 09:30:00-04:00
+            open: 2025-10-16 04:00:00-04:00
+          regular:
+            close: 2025-10-16 16:00:00-04:00
+            open: 2025-10-16 09:30:00-04:00
+        status:
+          current_session: regular
+          day_type: TRADING_DAY
+          is_open: true
+        timezone: America/New_York
+        today_sessions:
+          after_hours:
+            close: 2025-10-15 20:00:00-04:00
+            open: 2025-10-15 16:00:00-04:00
+            time_until_open: PT1H30M
+          pre_market:
+            close: 2025-10-15 09:30:00-04:00
+            open: 2025-10-15 04:00:00-04:00
+          regular:
+            close: 2025-10-15 16:00:00-04:00
+            open: 2025-10-15 09:30:00-04:00
+            time_until_close: PT1H30M
+    MarketType:
+      type: string
+      description: Market type for market hours calendar endpoint
+      enum:
+      - us_equities
+      - us_options
+    BaseResponse:
+      type: object
+      required:
+      - metadata
+      properties:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
+    MarketSessionType:
+      type: string
+      description: Session type for market hours
+      enum:
+      - pre_market
+      - regular
+      - after_hours
+    MarketStatus:
+      type: object
+      description: Market status information
+      required:
+      - day_type
+      - is_open
+      properties:
+        current_session:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/MarketSessionType'
+            description: 'Current session type if market is open, null if closed
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+        day_type:
+          $ref: '#/components/schemas/DayType'
+          description: The type of trading day
+        is_open:
+          type: boolean
+          description: Whether the market is currently open (real-time)
+          example: true
+      example:
+        current_session: regular
+        day_type: TRADING_DAY
+        is_open: true
+    ErrorDetails:
+      type: array
+      items:
+        type: object
+        additionalProperties: true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

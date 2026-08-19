@@ -1,0 +1,509 @@
+{
+  "item": [
+    {
+      "id": "7bfbdd8b-3da6-4a09-bd19-962e1543be5e",
+      "name": "PNL",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f0e0855d-171b-4494-ac29-5f5ae55f255a",
+          "name": "Get entity PNL summary",
+          "request": {
+            "name": "Get entity PNL summary",
+            "description": {
+              "content": "Get PNL summary for all accounts in an entity.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "entities",
+                ":entity_id",
+                "pnl-summary"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "entity_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7823a097-f005-4268-89ff-0898977cf5d4",
+              "name": "Entity PNL summary",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id",
+                    "pnl-summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": 2677051351530,\n  \"entity_id\": \"100000\",\n  \"sod_equity\": 1606.702075992278,\n  \"equity\": 576.447398301142,\n  \"sod_gross_market_value\": 3192.719428201518,\n  \"gross_market_value\": 9339.452577635147,\n  \"net_market_value\": 2836.066002461988,\n  \"long_market_value\": 9112.85631433033,\n  \"short_market_value\": 2876.73085670212,\n  \"sod_long_market_value\": 9767.540287891436,\n  \"sod_short_market_value\": 8189.523741556426,\n  \"overnight_pnl\": 6022.348877325688,\n  \"day_pnl\": 1767.7774373030309,\n  \"realized_pnl\": 9976.615187958507,\n  \"unrealized_pnl\": 7038.02049957575,\n  \"total_pnl\": 1820.2381149418345,\n  \"net_pnl\": 7922.196298172727,\n  \"total_fees\": 555.8601241533767\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "825133c2-a577-4baa-a259-e0738977198d",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id",
+                    "pnl-summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://Fh.gzrmY76jBVYqitfb5YfnrdO9cH999WOrhpCb4F,yyv7-deB7\",\n  \"title\": \"string\",\n  \"status\": 223.8722376011196,\n  \"detail\": \"string\",\n  \"instance\": \"https://mVzCKXmwVtM.mndpV09SkwvleF5FexoynTTqt-duKSubZX,YIzjCQgA.dUDWI-rTR.K\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "606cac9b-d643-4c00-ba83-f7345d426302",
+          "name": "Get account PNL summary",
+          "request": {
+            "name": "Get account PNL summary",
+            "description": {
+              "content": "Get PNL summary for a given account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "pnl-summary"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "85ec20b8-18b4-4d10-a030-018f30e85dc7",
+              "name": "Account PNL summary",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "pnl-summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_id\": \"string\",\n  \"account_number\": \"string\",\n  \"day_pnl\": 5480.346536945836,\n  \"entity_id\": \"100000\",\n  \"equity\": 2991.53801626607,\n  \"gross_market_value\": 7690.394510708243,\n  \"long_market_value\": 3203.06417325082,\n  \"net_market_value\": 8582.1841331247,\n  \"net_pnl\": 5351.269152042613,\n  \"overnight_pnl\": 9337.826037578961,\n  \"realized_pnl\": 2687.750350269502,\n  \"short_market_value\": 5077.494454961372,\n  \"sod_equity\": 1940.0700724908381,\n  \"sod_gross_market_value\": 3736.0817769950995,\n  \"sod_long_market_value\": 6219.753417065712,\n  \"sod_short_market_value\": 3177.6410593890005,\n  \"timestamp\": 2855188248393,\n  \"total_fees\": 953.4342558246245,\n  \"total_pnl\": 3130.860375833494,\n  \"unrealized_pnl\": 4536.640011019875\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "76775fef-76d0-4180-b0b9-e24175ffc99d",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "pnl-summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://Fh.gzrmY76jBVYqitfb5YfnrdO9cH999WOrhpCb4F,yyv7-deB7\",\n  \"title\": \"string\",\n  \"status\": 223.8722376011196,\n  \"detail\": \"string\",\n  \"instance\": \"https://mVzCKXmwVtM.mndpV09SkwvleF5FexoynTTqt-duKSubZX,YIzjCQgA.dUDWI-rTR.K\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "07d5e1a0-339c-4492-93b6-7458f5f75580",
+          "name": "List account PNL details",
+          "request": {
+            "name": "List account PNL details",
+            "description": {
+              "content": "List PNL details for a given account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "pnl-details"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4f5709e8-88ce-4664-b3eb-f205aa22cd27",
+              "name": "Account PNL details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "pnl-details"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"timestamp\": 2087526404875,\n      \"entity_id\": \"100000\",\n      \"account_id\": \"100000\",\n      \"account_number\": \"ACC0001\",\n      \"symbol\": \"AAPL\",\n      \"symbol_description\": \"string\",\n      \"asset_class\": \"fund\",\n      \"day_pnl\": 7692.47881404958,\n      \"unrealized_pnl\": 1713.0968223021082,\n      \"realized_pnl\": 8445.550446283243,\n      \"total_pnl\": 4200.128298379644,\n      \"overnight_pnl\": 3019.972661819855,\n      \"total_fees\": 3608.351654305747,\n      \"net_market_value\": 948.5200205255861,\n      \"gross_market_value\": 8386.797607944514,\n      \"sod_market_value\": 8304.778931837525,\n      \"quantity\": \"100\",\n      \"sod_quantity\": \"100\",\n      \"bought_quantity\": \"100\",\n      \"sold_quantity\": \"100\",\n      \"buys\": 4934,\n      \"sells\": 4716,\n      \"price\": 761.0776313548162,\n      \"sod_price\": 8706.002338565873,\n      \"underlier\": \"AAPL\",\n      \"entity_name\": 8251.792789438496,\n      \"side\": false\n    },\n    {\n      \"timestamp\": 2573183242121,\n      \"entity_id\": \"100000\",\n      \"account_id\": \"100000\",\n      \"account_number\": \"ACC0001\",\n      \"symbol\": \"AAPL\",\n      \"symbol_description\": \"string\",\n      \"asset_class\": \"option\",\n      \"day_pnl\": 9191.736957977404,\n      \"unrealized_pnl\": 3399.7740941623842,\n      \"realized_pnl\": 8719.274294831783,\n      \"total_pnl\": 7756.6080564390595,\n      \"overnight_pnl\": 7134.814967101136,\n      \"total_fees\": 9470.340578408708,\n      \"net_market_value\": 588.6342528430466,\n      \"gross_market_value\": 9271.679866157969,\n      \"sod_market_value\": 8997.86247117881,\n      \"quantity\": \"100\",\n      \"sod_quantity\": \"100\",\n      \"bought_quantity\": \"100\",\n      \"sold_quantity\": \"100\",\n      \"buys\": 4800,\n      \"sells\": 2423,\n      \"price\": 3043.555619714382,\n      \"sod_price\": 3724.234771262648,\n      \"underlier\": \"AAPL\",\n      \"entity_name\": true,\n      \"side\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "00ce78ef-6b3c-4bc4-bc98-a8adcf357f57",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "pnl-details"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://Fh.gzrmY76jBVYqitfb5YfnrdO9cH999WOrhpCb4F,yyv7-deB7\",\n  \"title\": \"string\",\n  \"status\": 223.8722376011196,\n  \"detail\": \"string\",\n  \"instance\": \"https://mVzCKXmwVtM.mndpV09SkwvleF5FexoynTTqt-duKSubZX,YIzjCQgA.dUDWI-rTR.K\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d6cca40c-eeb6-4350-b201-9e564c8d7461",
+    "name": "Common API Models PNL API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Common API models for all of Studio's APIs",
+      "type": "text/plain"
+    }
+  }
+}

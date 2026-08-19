@@ -1,0 +1,1286 @@
+openapi: 3.2.0
+info:
+  title: Clear Street Instruments API
+  version: '1.0'
+  description: 'Operations tagged Instruments across 2 of this provider''s published API definitions: clear-street-studio-openapi.yml, clear-street-trading-api-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.clearstreet.io/studio/v2
+  description: Production environment
+- url: https://sandbox-api.clearstreet.io/studio/v2
+  description: Sandbox environment
+- url: https://api.clearstreet.com
+  description: Clear Street API
+- url: https://api-dev.clearstreet.com
+  description: Clear Street Development API
+- url: http://localhost:5001
+  description: Clear Street Local API
+tags:
+- name: Instruments
+  x-displayName: Instruments
+paths:
+  /instruments:
+    servers:
+    - url: https://api.clearstreet.io/studio/v2
+      description: Production environment
+    - url: https://sandbox-api.clearstreet.io/studio/v2
+      description: Sandbox environment
+    get:
+      operationId: listInstruments
+      summary: List instruments
+      description: List all available instruments.
+      tags:
+      - Instruments
+      responses:
+        '200':
+          description: Successful response containing the list of instruments.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Instrument'
+      default:
+        $ref: '#/components/responses/error'
+  /instruments/{symbol}:
+    servers:
+    - url: https://api.clearstreet.io/studio/v2
+      description: Production environment
+    - url: https://sandbox-api.clearstreet.io/studio/v2
+      description: Sandbox environment
+    get:
+      operationId: getInstrument
+      summary: Get instrument
+      description: Get an instrument by the given symbol
+      tags:
+      - Instruments
+      parameters:
+      - name: symbol
+        in: path
+        required: true
+        description: The symbol for the instrument.
+        schema:
+          $ref: '#/components/schemas/Symbol'
+      - name: symbol_format
+        in: query
+        description: The format of the provided symbol.
+        schema:
+          $ref: '#/components/schemas/SymbolFormat'
+          default: cms
+      responses:
+        '200':
+          description: Successful response containing the associated instrument.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+  /v1/instruments:
+    servers:
+    - url: https://api.clearstreet.com
+      description: Clear Street API
+    - url: https://api-dev.clearstreet.com
+      description: Clear Street Development API
+    - url: http://localhost:5001
+      description: Clear Street Local API
+    get:
+      tags:
+      - Instruments
+      summary: Get Instruments
+      description: 'Retrieves a list of tradeable instruments.
+
+
+        '
+      operationId: get_instruments
+      parameters:
+      - name: instrument_type
+        in: query
+        description: Filter by instrument type (e.g. COMMON_STOCK, OPTION)
+        required: false
+        schema:
+          type: string
+          description: Security type
+          enum:
+          - COMMON_STOCK
+          - INDEX
+          - OPTION
+          - CASH
+      - name: instrument_ids
+        in: query
+        description: 'Comma-separated instrument identifiers: unique identifiers or symbols (symbol for equities, OSI for options)'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
+            minLength: 1
+        style: form
+        explode: false
+      - name: is_marginable
+        in: query
+        description: Filter by marginable status
+        required: false
+        schema:
+          type: boolean
+      - name: easy_to_borrow
+        in: query
+        description: Filter by easy to borrow status
+        required: false
+        schema:
+          type: boolean
+      - name: is_short_prohibited
+        in: query
+        description: Filter by short prohibited status
+        required: false
+        schema:
+          type: boolean
+      - name: is_threshold_security
+        in: query
+        description: Filter by threshold security status
+        required: false
+        schema:
+          type: boolean
+      - name: is_liquidation_only
+        in: query
+        description: Filter by liquidation only status
+        required: false
+        schema:
+          type: boolean
+      - name: is_ptp
+        in: query
+        description: Filter by publicly traded partnership (PTP) status
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: The number of items to return per page. Only used when page_token is not provided.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 1000
+          maximum: 1000
+          minimum: 1
+      - name: page_token
+        in: query
+        description: Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored.
+        required: false
+        schema:
+          type: string
+          format: byte
+          description: Base64URL-encoded pagination token
+        example: eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=
+      responses:
+        '200':
+          description: List of instruments
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/InstrumentCoreList'
+                type: object
+              examples:
+                ListOfInstruments:
+                  summary: A list of instruments with different characteristics
+                  value:
+                    data:
+                    - country_of_issue: US
+                      currency: USD
+                      easy_to_borrow: true
+                      id: 0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b
+                      instrument_type: COMMON_STOCK
+                      is_fractionable: false
+                      is_liquidation_only: false
+                      is_marginable: true
+                      is_ptp: false
+                      is_short_prohibited: false
+                      is_threshold_security: false
+                      is_tradable: true
+                      name: Apple Inc.
+                      symbol: AAPL
+                      venue: XNMS
+                    error: null
+                    metadata:
+                      next_page_token: cGFnZT0yJmxhc3Rfc3ltYm9sPUdNRQ==
+                      page_number: 1
+                      request_id: 4a5b6c7d-8e9f-0a1b-2c3d-4e5f6a7b8c9d
+                      total_items: 10
+                      total_pages: 5
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+  /v1/instruments/options/contracts:
+    servers:
+    - url: https://api.clearstreet.com
+      description: Clear Street API
+    - url: https://api-dev.clearstreet.com
+      description: Clear Street Development API
+    - url: http://localhost:5001
+      description: Clear Street Local API
+    get:
+      tags:
+      - Instruments
+      summary: Get Option Contracts
+      description: 'List options contracts.
+
+
+        Returns options contracts for a given underlier with options-specific metadata.
+
+        Exactly one underlier identifier must be provided.'
+      operationId: get_option_contracts
+      parameters:
+      - name: underlier
+        in: query
+        description: Underlier symbol (e.g., AAPL, SPX)
+        required: false
+        schema:
+          type: string
+      - name: underlying_instrument_id
+        in: query
+        description: Instrument identifier or symbol of the underlying equity/index
+        required: false
+        schema:
+          type: string
+          description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
+          minLength: 1
+      - name: expiry
+        in: query
+        description: Filter to contracts expiring on this date (YYYY-MM-DD)
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: contract_type
+        in: query
+        description: 'Filter by contract type: CALL or PUT'
+        required: false
+        schema:
+          type: string
+          description: The type of options contract
+          enum:
+          - CALL
+          - PUT
+      - name: page_size
+        in: query
+        description: The number of items to return per page. Only used when page_token is not provided.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 1000
+          maximum: 1000
+          minimum: 1
+      - name: page_token
+        in: query
+        description: Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored.
+        required: false
+        schema:
+          type: string
+          format: byte
+          description: Base64URL-encoded pagination token
+        example: eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=
+      responses:
+        '200':
+          description: List of options contracts
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/OptionsContractList'
+                type: object
+              examples:
+                OptionsContracts:
+                  summary: AAPL calls and puts for a given expiry
+                  value:
+                    data:
+                    - contract_type: CALL
+                      currency: USD
+                      exchange: BATO
+                      exercise_style: AMERICAN
+                      expiry: 2026-03-20
+                      id: b6f4b5e2-94a8-4fe4-9a85-2b4a81d30cc5
+                      is_liquidation_only: false
+                      is_marginable: true
+                      is_tradable: true
+                      listing_type: STANDARD
+                      multiplier: '100'
+                      strike_price: '180'
+                      symbol: AAPL  260320C00180000
+                      underlying_instrument_id: a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8
+                    - contract_type: PUT
+                      currency: USD
+                      exchange: BATO
+                      exercise_style: AMERICAN
+                      expiry: 2026-03-20
+                      id: c7e5c6f3-a5b9-5gf5-0b96-3c5b92e41dd6
+                      is_liquidation_only: false
+                      is_marginable: true
+                      is_tradable: true
+                      listing_type: STANDARD
+                      multiplier: '100'
+                      strike_price: '180'
+                      symbol: AAPL  260320P00180000
+                      underlying_instrument_id: a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8
+                    metadata:
+                      page_number: 1
+                      request_id: c2d0429d-c629-4ee1-b719-df007157f3bb
+                      total_items: 2
+                      total_pages: 1
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MissingUnderlierIdentifier:
+                  summary: No valid underlier identifier combination provided
+                  value:
+                    error:
+                      code: 400
+                      message: 'Exactly one underlier identifier must be provided: underlier or underlying_instrument_id'
+                    metadata:
+                      request_id: 4bb6025f-0415-4689-9c2f-307e9a1a47c8
+        '404':
+          description: Underlier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                UnderlierInstrumentNotFound:
+                  summary: Provided underlier instrument identifier does not exist
+                  value:
+                    error:
+                      code: 404
+                      message: 'Instrument not found: 528ec5c3-cdbf-447c-b995-ec6c83cfbc03'
+                    metadata:
+                      request_id: 58a3f5e9-74b0-48b7-a17d-16b44e123174
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+  /v1/instruments/search:
+    servers:
+    - url: https://api.clearstreet.com
+      description: Clear Street API
+    - url: https://api-dev.clearstreet.com
+      description: Clear Street Development API
+    - url: http://localhost:5001
+      description: Clear Street Local API
+    get:
+      tags:
+      - Instruments
+      summary: Search Instruments
+      description: 'Search instruments by symbol, alternate identifier, or company name.
+
+
+        The `q` parameter is case-insensitive and supports ticker symbols,
+
+        alternate identifiers such as CUSIP, ISIN, and OPRA root,
+
+        and company names for non-option instruments. Results are ranked by match
+
+        quality plus instrument quality signals and relevance. Defaults to the `EQUITY` asset class (common
+
+        stocks, preferred shares, ADRs, ETFs, and exchange-traded mutual funds).
+
+        Pass `asset_class=OPTION` to search option contracts: by full OSI symbol, by
+
+        an OSI prefix (root + `YYMMDD` expiry, e.g. `AAPL  261217`), or by a
+
+        root-scoped phrase such as `AAPL Dec 250 call`.'
+      operationId: search_instruments
+      parameters:
+      - name: q
+        in: query
+        description: Search term applied case-insensitively to ticker symbols, alternate identifiers (CUSIP, ISIN, OPRA root), and company names for non-option instruments. Option searches match symbols and alternate identifiers.
+        required: true
+        schema:
+          type: string
+      - name: asset_class
+        in: query
+        description: Comma-separated asset classes (EQUITY|OPTION|WARRANT|BOND|FX|OTHER). Defaults to EQUITY.
+        required: false
+        schema:
+          type: string
+      - name: include_inactive
+        in: query
+        description: Include inactive instruments. Default false.
+        required: false
+        schema:
+          type: boolean
+      - name: include_ptp
+        in: query
+        description: Include publicly traded partnership (PTP) instruments. Default true (penalized in ranking).
+        required: false
+        schema:
+          type: boolean
+      - name: currency
+        in: query
+        description: Optional ISO currency filter (e.g., USD).
+        required: false
+        schema:
+          type: string
+      - name: country
+        in: query
+        description: Optional listing-country filter (e.g., US).
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: The number of items to return per page. Only used when page_token is not provided.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 100
+          maximum: 100
+          minimum: 1
+      - name: page_token
+        in: query
+        description: Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored.
+        required: false
+        schema:
+          type: string
+          format: byte
+          description: Base64URL-encoded pagination token
+        example: eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=
+      responses:
+        '200':
+          description: Ranked list of matching instruments
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/InstrumentCoreList'
+                type: object
+              examples:
+                CompanyNameMatch:
+                  summary: Company-name search resolves "APPLE" to AAPL
+                  value:
+                    data:
+                    - country_of_issue: US
+                      currency: USD
+                      easy_to_borrow: true
+                      id: 0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b
+                      instrument_type: COMMON_STOCK
+                      is_fractionable: false
+                      is_liquidation_only: false
+                      is_marginable: true
+                      is_ptp: false
+                      is_short_prohibited: false
+                      is_threshold_security: false
+                      is_tradable: true
+                      name: Apple Inc.
+                      symbol: AAPL
+                      venue: XNMS
+                    error: null
+                    metadata:
+                      request_id: 6c7d8e9f-0a1b-2c3d-4e5f-6a7b8c9d0e1f
+                ExactSymbolMatch:
+                  summary: Exact symbol match for AAPL
+                  value:
+                    data:
+                    - country_of_issue: US
+                      currency: USD
+                      easy_to_borrow: true
+                      id: 0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b
+                      instrument_type: COMMON_STOCK
+                      is_fractionable: false
+                      is_liquidation_only: false
+                      is_marginable: true
+                      is_ptp: false
+                      is_short_prohibited: false
+                      is_threshold_security: false
+                      is_tradable: true
+                      name: Apple Inc.
+                      symbol: AAPL
+                      venue: XNMS
+                    error: null
+                    metadata:
+                      request_id: 5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e
+        '400':
+          description: Missing or invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '503':
+          description: Instrument data is not ready yet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+  /v1/instruments/{instrument_id}:
+    servers:
+    - url: https://api.clearstreet.com
+      description: Clear Street API
+    - url: https://api-dev.clearstreet.com
+      description: Clear Street Development API
+    - url: http://localhost:5001
+      description: Clear Street Local API
+    get:
+      tags:
+      - Instruments
+      summary: Get Instrument By ID
+      description: Retrieves detailed information for a specific instrument.
+      operationId: get_instrument_by_id
+      parameters:
+      - name: instrument_id
+        in: path
+        description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol).
+        required: true
+        schema:
+          type: string
+          description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
+          minLength: 1
+      - name: include_options_expiry_dates
+        in: query
+        description: When true, include unique options expiry dates for this instrument
+        required: false
+        schema:
+          type:
+          - boolean
+          - 'null'
+      responses:
+        '200':
+          description: Instrument details
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Instrument_2'
+                type: object
+              examples:
+                EasyToBorrowInstrument:
+                  summary: An instrument that is easy-to-borrow
+                  value:
+                    data:
+                      country_of_issue: US
+                      currency: USD
+                      easy_to_borrow: true
+                      id: 0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b
+                      instrument_type: COMMON_STOCK
+                      is_fractionable: false
+                      is_liquidation_only: false
+                      is_marginable: true
+                      is_ptp: false
+                      is_short_prohibited: false
+                      is_threshold_security: false
+                      is_tradable: true
+                      long_margin_rate: '0.25'
+                      name: Apple Inc.
+                      short_margin_rate: '0.25'
+                      symbol: AAPL
+                      venue: XNMS
+                    error: null
+                    metadata:
+                      request_id: 5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e
+        '404':
+          description: Instrument not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                InstrumentNotFound:
+                  summary: Instrument identifier does not exist
+                  value:
+                    error:
+                      code: 404
+                      message: 'Instrument not found: AAP'
+                    metadata:
+                      request_id: fa8cc9b2-fbf0-4f5b-8ce3-b3205b9f85f2
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    SymbolTuple:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        symbol_format:
+          $ref: '#/components/schemas/SymbolFormat'
+    ResponseMetadata:
+      type: object
+      description: 'Metadata for the response. This will always contain a request ID which can be used to identify
+
+        the request to Clear Street for tracing, and optionally may include pagination data.'
+      required:
+      - request_id
+      properties:
+        next_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the next page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Pagination. Included if this was a GET (list) response
+          example: '1'
+          minimum: 0
+        previous_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the previous page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        request_id:
+          type: string
+          description: A unique ID for this request, generated upon ingestion of the request.
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of items available (not just in this page).
+          example: '42'
+          minimum: 0
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total number of pages available.
+          example: '5'
+          minimum: 0
+    SymbolFormat:
+      type: string
+      enum:
+      - cms
+      - osi
+      description: Denotes the format of the provided `symbol` field.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    OptionsContractList:
+      type: array
+      items:
+        $ref: '#/components/schemas/OptionsContract'
+    SecurityType:
+      type: string
+      description: Security type
+      enum:
+      - COMMON_STOCK
+      - INDEX
+      - OPTION
+      - CASH
+    Instrument:
+      type: object
+      properties:
+        symbols:
+          type: array
+          items:
+            $ref: '#/components/schemas/SymbolTuple'
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        primary_exchange:
+          type: string
+          description: The primary exchange for the instrument.
+          example: NASDAQ
+        description:
+          type: string
+          description: A description of the instrument.
+          example: Apple Inc.
+      required:
+      - symbols
+      - asset_class
+      - primary_exchange
+      - description
+    OptionsContract:
+      type: object
+      description: An options contract with options-specific metadata
+      required:
+      - id
+      - symbol
+      - currency
+      - exchange
+      - expiry
+      - contract_type
+      - strike_price
+      - multiplier
+      - exercise_style
+      - listing_type
+      - is_liquidation_only
+      - is_marginable
+      - is_tradable
+      properties:
+        contract_type:
+          $ref: '#/components/schemas/ContractType'
+          description: Whether this is a CALL or PUT
+        currency:
+          type: string
+          description: ISO currency code
+          example: USD
+        exchange:
+          type: string
+          description: MIC code of the primary listing venue
+          example: BATO
+        exercise_style:
+          $ref: '#/components/schemas/ExerciseStyle'
+          description: Exercise style
+        expiry:
+          type: string
+          format: date
+          description: Expiration date
+          example: 2026-03-18
+        id:
+          type: string
+          format: uuid
+          description: Instrument identifier
+          example: b6f4b5e2-94a8-4fe4-9a85-2b4a81d30cc5
+        is_liquidation_only:
+          type: boolean
+          description: Whether the contract is liquidation-only
+        is_marginable:
+          type: boolean
+          description: Whether the contract is marginable
+        is_tradable:
+          type: boolean
+          description: Whether the contract is tradable
+          example: true
+        listing_type:
+          $ref: '#/components/schemas/ListingType'
+          description: Listing type
+        multiplier:
+          type: string
+          description: Contract multiplier (100 for standard options)
+          example: '100'
+        open_interest:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: 'Open interest (number of outstanding contracts), if available
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+        strike_price:
+          type: string
+          description: Strike price
+          example: '150.00'
+        symbol:
+          type: string
+          description: OSI symbol (e.g. "AAPL  251219C00150000")
+          example: AAPL  251219C00150000
+        underlying_instrument_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'Instrument ID of the underlying instrument, when available
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+    ApiError:
+      type: object
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
+
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
+    AssetClass:
+      type: string
+      enum:
+      - other
+      - currency
+      - equity
+      - option
+      - debt
+      - fund
+      description: The asset class of the symbol.
+    InstrumentCoreList:
+      type: array
+      items:
+        $ref: '#/components/schemas/InstrumentCore'
+    ErrorDetails:
+      type: array
+      items:
+        type: object
+        additionalProperties: true
+    ListingType:
+      type: string
+      description: The listing type of an options contract
+      enum:
+      - STANDARD
+      - FLEX
+      - OTC
+    BaseResponse:
+      type: object
+      required:
+      - metadata
+      properties:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
+    ContractType:
+      type: string
+      description: The type of options contract
+      enum:
+      - CALL
+      - PUT
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    InstrumentCore:
+      type: object
+      required:
+      - id
+      - symbol
+      - venue
+      - country_of_issue
+      - currency
+      - is_marginable
+      - easy_to_borrow
+      - is_short_prohibited
+      - is_threshold_security
+      - is_liquidation_only
+      - is_tradable
+      - is_fractionable
+      - is_ptp
+      properties:
+        adv:
+          type:
+          - string
+          - 'null'
+          description: 'Average daily share volume from the security definition.
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '75000000'
+        country_of_issue:
+          type: string
+          description: The ISO country code of the instrument's issue
+          example: US
+        currency:
+          type: string
+          description: The ISO currency code in which the instrument is traded
+          example: USD
+        easy_to_borrow:
+          type: boolean
+          description: Indicates if the instrument is classified as Easy-To-Borrow
+          example: true
+        id:
+          type: string
+          format: uuid
+          description: Unique instrument identifier (UUID)
+          example: 0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b
+        instrument_type:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/SecurityType'
+            description: 'The type of security (e.g., Common Stock, ETF)
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+        is_fractionable:
+          type: boolean
+          description: Indicates if the instrument supports fractional-quantity orders
+          example: false
+        is_liquidation_only:
+          type: boolean
+          description: Indicates if the instrument is liquidation only and cannot be bought
+          example: false
+        is_marginable:
+          type: boolean
+          description: Indicates if the instrument is marginable
+          example: true
+        is_ptp:
+          type: boolean
+          description: 'Indicates if the instrument is a publicly traded partnership (PTP).
+
+            PTP sales are subject to a 10% withholding tax for non-US tax residents.'
+          example: false
+        is_short_prohibited:
+          type: boolean
+          description: Indicates if short selling is prohibited for the instrument
+          example: false
+        is_threshold_security:
+          type: boolean
+          description: Indicates if the instrument is on the Regulation SHO Threshold Security List
+          example: false
+        is_tradable:
+          type: boolean
+          description: Indicates if the instrument is tradable
+          example: true
+        long_margin_rate:
+          type:
+          - string
+          - 'null'
+          description: 'The percent of a long position''s value you must post as margin
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '0.25'
+        name:
+          type:
+          - string
+          - 'null'
+          description: 'The full name of the instrument or its issuer
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: Apple Inc.
+        notional_adv:
+          type:
+          - string
+          - 'null'
+          description: 'Notional average daily volume (ADV multiplied by previous close price).
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '15815250000'
+        previous_close:
+          type:
+          - string
+          - 'null'
+          description: 'Last close price from the security definition.
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '210.87'
+        short_margin_rate:
+          type:
+          - string
+          - 'null'
+          description: 'The percent of a short position''s value you must post as margin
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '0.25'
+        symbol:
+          type: string
+          description: The trading symbol for the instrument
+          example: AAPL
+        venue:
+          type: string
+          description: The MIC code of the primary listing venue
+          example: XNMS
+      example:
+        country_of_issue: US
+        currency: USD
+        easy_to_borrow: true
+        id: 0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b
+        instrument_type: COMMON_STOCK
+        is_fractionable: false
+        is_liquidation_only: false
+        is_marginable: true
+        is_ptp: false
+        is_short_prohibited: false
+        is_threshold_security: false
+        is_tradable: true
+        long_margin_rate: '0.25'
+        name: Apple Inc.
+        short_margin_rate: '0.25'
+        symbol: AAPL
+        venue: XNMS
+    ExerciseStyle:
+      type: string
+      description: The exercise style of an options contract
+      enum:
+      - AMERICAN
+      - EUROPEAN
+    Instrument_2:
+      allOf:
+      - type: object
+        required:
+        - id
+        - symbol
+        - venue
+        - country_of_issue
+        - currency
+        - is_marginable
+        - easy_to_borrow
+        - is_short_prohibited
+        - is_threshold_security
+        - is_liquidation_only
+        - is_tradable
+        - is_fractionable
+        - is_ptp
+        properties:
+          adv:
+            type:
+            - string
+            - 'null'
+            description: 'Average daily share volume from the security definition.
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+            example: '75000000'
+          country_of_issue:
+            type: string
+            description: The ISO country code of the instrument's issue
+            example: US
+          currency:
+            type: string
+            description: The ISO currency code in which the instrument is traded
+            example: USD
+          easy_to_borrow:
+            type: boolean
+            description: Indicates if the instrument is classified as Easy-To-Borrow
+            example: true
+          id:
+            type: string
+            format: uuid
+            description: Unique instrument identifier (UUID)
+            example: 0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b
+          instrument_type:
+            oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/SecurityType'
+              description: 'The type of security (e.g., Common Stock, ETF)
+
+                When a null/undefined value is observed, it indicates that there is no available data.'
+          is_fractionable:
+            type: boolean
+            description: Indicates if the instrument supports fractional-quantity orders
+            example: false
+          is_liquidation_only:
+            type: boolean
+            description: Indicates if the instrument is liquidation only and cannot be bought
+            example: false
+          is_marginable:
+            type: boolean
+            description: Indicates if the instrument is marginable
+            example: true
+          is_ptp:
+            type: boolean
+            description: 'Indicates if the instrument is a publicly traded partnership (PTP).
+
+              PTP sales are subject to a 10% withholding tax for non-US tax residents.'
+            example: false
+          is_short_prohibited:
+            type: boolean
+            description: Indicates if short selling is prohibited for the instrument
+            example: false
+          is_threshold_security:
+            type: boolean
+            description: Indicates if the instrument is on the Regulation SHO Threshold Security List
+            example: false
+          is_tradable:
+            type: boolean
+            description: Indicates if the instrument is tradable
+            example: true
+          long_margin_rate:
+            type:
+            - string
+            - 'null'
+            description: 'The percent of a long position''s value you must post as margin
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+            example: '0.25'
+          name:
+            type:
+            - string
+            - 'null'
+            description: 'The full name of the instrument or its issuer
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+            example: Apple Inc.
+          notional_adv:
+            type:
+            - string
+            - 'null'
+            description: 'Notional average daily volume (ADV multiplied by previous close price).
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+            example: '15815250000'
+          previous_close:
+            type:
+            - string
+            - 'null'
+            description: 'Last close price from the security definition.
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+            example: '210.87'
+          short_margin_rate:
+            type:
+            - string
+            - 'null'
+            description: 'The percent of a short position''s value you must post as margin
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+            example: '0.25'
+          symbol:
+            type: string
+            description: The trading symbol for the instrument
+            example: AAPL
+          venue:
+            type: string
+            description: The MIC code of the primary listing venue
+            example: XNMS
+        example:
+          country_of_issue: US
+          currency: USD
+          easy_to_borrow: true
+          id: 0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b
+          instrument_type: COMMON_STOCK
+          is_fractionable: false
+          is_liquidation_only: false
+          is_marginable: true
+          is_ptp: false
+          is_short_prohibited: false
+          is_threshold_security: false
+          is_tradable: true
+          long_margin_rate: '0.25'
+          name: Apple Inc.
+          short_margin_rate: '0.25'
+          symbol: AAPL
+          venue: XNMS
+      - type: object
+        properties:
+          options_expiry_dates:
+            type:
+            - array
+            - 'null'
+            items:
+              type: string
+              format: date
+            description: 'Available options expiration dates for this instrument.
+
+              Present only when `include_options_expiry_dates=true` in the request.
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+      description: Represents a tradable financial instrument.
+      example:
+        country_of_issue: US
+        currency: USD
+        easy_to_borrow: true
+        id: 0f5a1a4e-5b3e-4d8f-9b7a-2b1d0e3f4a5b
+        instrument_type: COMMON_STOCK
+        is_fractionable: false
+        is_liquidation_only: false
+        is_marginable: true
+        is_ptp: false
+        is_short_prohibited: false
+        is_threshold_security: false
+        is_tradable: true
+        long_margin_rate: '0.25'
+        name: Apple Inc.
+        short_margin_rate: '0.25'
+        symbol: AAPL
+        venue: XNMS
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+externalDocs:
+  url: https://docs.clearstreet.io/
+x-refined-from:
+- clear-street-studio-openapi.yml
+- clear-street-trading-api-openapi.yml

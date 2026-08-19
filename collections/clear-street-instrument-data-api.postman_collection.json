@@ -1,0 +1,2589 @@
+{
+  "item": [
+    {
+      "id": "31833b21-16b5-4b2a-87d7-3d9e884a61f9",
+      "name": "Instrument Data",
+      "description": {
+        "content": "Retrieve instrument analytics, market data, news, and related reference data.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "427117d4-eda2-42ba-be5a-2e7c1db91dc2",
+          "name": "Get All Instrument Events",
+          "request": {
+            "name": "Get All Instrument Events",
+            "description": {
+              "content": "List instrument events across all securities, grouped by date.\n\nDate range defaults (anchored on the current trading day, or the next trading day\nif today is a weekend or US market holiday):\n- Unfiltered (no `instrument_ids`): a single trading day\n  (`from_date` = `to_date` = anchor); the requested span is capped at 6 days.\n- Filtered (with `instrument_ids`): a 30-day lookback ending on the anchor\n  (`from_date` = anchor − 30 days, `to_date` = anchor).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "event_types",
+                  "value": "<string>,<string>",
+                  "description": "Filter by event type(s). Comma-delimited list. Example: `event_types=EARNINGS,IPO`."
+                },
+                {
+                  "disabled": false,
+                  "key": "instrument_ids",
+                  "value": "<string>,<string>",
+                  "description": "Filter by instrument. Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols). Example: `instrument_ids=550e8400-e29b-41d4-a716-446655440000,AAPL`."
+                },
+                {
+                  "disabled": false,
+                  "key": "from_date",
+                  "value": "<string>",
+                  "description": "The start date for the query range, inclusive (YYYY-MM-DD)."
+                },
+                {
+                  "disabled": false,
+                  "key": "to_date",
+                  "value": "<string>",
+                  "description": "The end date for the query range, inclusive (YYYY-MM-DD)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "668d89f8-5535-4891-bc8e-d485832be624",
+              "name": "Instrument events grouped by date",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "event_types",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"event_dates\": [\n      {\n        \"date\": \"2026-04-23\",\n        \"events\": [\n          {\n            \"dividend_event_data\": {\n              \"adjusted_dividend_amount\": \"0.5236\",\n              \"declaration_date\": \"2026-04-22\",\n              \"dividend_amount\": \"0.5236\",\n              \"dividend_yield\": \"43.82881469863321\",\n              \"ex_date\": \"2026-04-23\",\n              \"frequency\": \"Weekly\",\n              \"payment_date\": \"2026-04-24\",\n              \"record_date\": \"2026-04-23\"\n            },\n            \"instrument_id\": \"2281b543-7136-4008-aa0a-a402bf9d9f90\",\n            \"name\": \"YieldMax ABNB Option Income Strategy ETF\",\n            \"reporting_currency\": \"USD\",\n            \"symbol\": \"ABNY\",\n            \"type\": \"DIVIDEND\"\n          },\n          {\n            \"dividend_event_data\": {\n              \"adjusted_dividend_amount\": \"0.1432\",\n              \"declaration_date\": \"2026-04-22\",\n              \"dividend_amount\": \"0.1432\",\n              \"dividend_yield\": \"181.7918287937743\",\n              \"ex_date\": \"2026-04-23\",\n              \"frequency\": \"Weekly\",\n              \"payment_date\": \"2026-04-24\",\n              \"record_date\": \"2026-04-23\"\n            },\n            \"instrument_id\": \"4b33fa52-8ab6-43f5-a8df-042e0c63d20e\",\n            \"name\": \"YieldMax AI Option Income Strategy ETF\",\n            \"reporting_currency\": \"USD\",\n            \"symbol\": \"AIYY\",\n            \"type\": \"DIVIDEND\"\n          }\n        ]\n      }\n    ]\n  },\n  \"metadata\": {\n    \"request_id\": \"5efbf08a-9067-4491-9f29-cf0b233507ef\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0048f343-7a81-4d81-a215-d69e5b203650",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "event_types",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to deserialize query string. Error: premature end of input\"\n  },\n  \"metadata\": {\n    \"request_id\": \"e0a9bd3a-8510-41a7-8144-c51a27787b9c\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a93b10ff-e380-4fc1-93a7-25f094ee8840",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "event_types",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 55.07954720804453,\n      \"key_1\": 5413,\n      \"key_2\": 740,\n      \"key_3\": true\n    },\n    {\n      \"key_0\": false,\n      \"key_1\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9e48c594-a2b0-41f9-a346-35de54407168",
+          "name": "Get Instrument Analyst Consensus",
+          "request": {
+            "name": "Get Instrument Analyst Consensus",
+            "description": {
+              "content": "Retrieves analyst ratings and price targets for an instrument.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments",
+                ":instrument_id",
+                "analyst-reporting"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<date>",
+                  "description": "The start date for the query range, inclusive (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<date>",
+                  "description": "The end date for the query range, inclusive (YYYY-MM-DD)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "instrument_id",
+                  "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f52fbc99-97ef-40e2-9669-4e574f66728d",
+              "name": "Analyst consensus data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "analyst-reporting"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"date\": \"2025-10-01\",\n    \"distribution\": {\n      \"buy\": 20,\n      \"hold\": 3,\n      \"sell\": 1,\n      \"strong_buy\": 18,\n      \"strong_sell\": 0\n    },\n    \"price_target\": {\n      \"average\": \"240.00\",\n      \"currency\": \"USD\",\n      \"high\": \"275.00\",\n      \"low\": \"190.00\"\n    },\n    \"rating\": \"BUY\"\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"9e0f1a2b-3c4d-5e6f-7890-1a2b3c4d5e6f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f737d677-ce32-419b-aea3-0af73016c38c",
+              "name": "Instrument not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "analyst-reporting"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Instrument not found: AAP\"\n  },\n  \"metadata\": {\n    \"request_id\": \"fa8cc9b2-fbf0-4f5b-8ce3-b3205b9f85f2\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7e1e19db-b842-4e06-94f8-c99b305f4b26",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "analyst-reporting"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 9256\n    },\n    {\n      \"key_0\": 1470.199446510908,\n      \"key_1\": 9944,\n      \"key_2\": 3642\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8667c206-e4c5-4c97-b1ed-f96a1ce6a1f9",
+          "name": "Get Instrument Balance Sheet Statements",
+          "request": {
+            "name": "Get Instrument Balance Sheet Statements",
+            "description": {
+              "content": "Get balance sheet statements for an instrument.\n\nRetrieves quarterly balance sheet statements for a specific instrument, sorted by fiscal period\n(most recent first).\n\nDate range defaults:\n- `from_date`: None (no lower bound)\n- `to_date`: None (no upper bound)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments",
+                ":instrument_id",
+                "balance-sheets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "1000",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "from_date",
+                  "value": "<string>",
+                  "description": "The start date for the query range, inclusive (YYYY-MM-DD)."
+                },
+                {
+                  "disabled": false,
+                  "key": "to_date",
+                  "value": "<string>",
+                  "description": "The end date for the query range, inclusive (YYYY-MM-DD)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "instrument_id",
+                  "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f528f301-7c4a-4b3e-9211-d7ec4ff182ad",
+              "name": "List of quarterly balance sheet statements",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "balance-sheets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"accepted_date\": \"2025-05-02 14:30:00+00:00\",\n      \"cash_and_cash_equivalents\": \"29943000000\",\n      \"filing_date\": \"2025-05-01\",\n      \"net_debt\": \"76323000000\",\n      \"period\": \"Q1\",\n      \"period_type\": \"QUARTERLY\",\n      \"reported_currency\": \"USD\",\n      \"total_assets\": \"352583000000\",\n      \"total_debt\": \"106266000000\",\n      \"total_liabilities\": \"308258000000\",\n      \"total_stockholders_equity\": \"56727000000\",\n      \"year\": 2025\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"next_page_token\": \"AAAAAAAAAGQAAAAAAAAAZQ==\",\n    \"page_number\": 1,\n    \"request_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"total_items\": 20,\n    \"total_pages\": 2\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "809b6241-3d78-4c77-a706-7008bf8ce9a3",
+              "name": "Instrument not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "balance-sheets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Instrument not found: AAP\"\n  },\n  \"metadata\": {\n    \"request_id\": \"fa8cc9b2-fbf0-4f5b-8ce3-b3205b9f85f2\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2988b37b-e470-4188-8a6a-62cf133fc0bd",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "balance-sheets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 9256\n    },\n    {\n      \"key_0\": 1470.199446510908,\n      \"key_1\": 9944,\n      \"key_2\": 3642\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f5aefe79-3417-467e-8810-f4d3adf0045d",
+          "name": "Get Instrument Cash Flow Statements",
+          "request": {
+            "name": "Get Instrument Cash Flow Statements",
+            "description": {
+              "content": "Get cash flow statements for an instrument.\n\nRetrieves historical cash flow statements for the specified instrument.\nCash flow statements show cash inflows and outflows from operating, investing,\nand financing activities.\n\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments",
+                ":instrument_id",
+                "cash-flow-statements"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "1000",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "from_date",
+                  "value": "<string>",
+                  "description": "The start date for the query range, inclusive (YYYY-MM-DD)."
+                },
+                {
+                  "disabled": false,
+                  "key": "to_date",
+                  "value": "<string>",
+                  "description": "The end date for the query range, inclusive (YYYY-MM-DD)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "instrument_id",
+                  "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "308802a4-9fa7-4df1-b81f-ed1bcb6ec4cc",
+              "name": "Cash flow statements retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "cash-flow-statements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"accepted_date\": \"2025-05-02 14:30:00+00:00\",\n      \"capital_expenditure\": \"-2600000000\",\n      \"cash_at_beginning_of_period\": \"33743000000\",\n      \"cash_at_end_of_period\": \"29943000000\",\n      \"change_in_working_capital\": \"-3200000000\",\n      \"common_stock_repurchased\": \"-23000000000\",\n      \"depreciation_and_amortization\": \"2900000000\",\n      \"filing_date\": \"2025-05-01\",\n      \"free_cash_flow\": \"25800000000\",\n      \"investments_in_property_plant_and_equipment\": \"-2600000000\",\n      \"net_cash_provided_by_financing_activities\": \"-28300000000\",\n      \"net_cash_provided_by_investing_activities\": \"-3900000000\",\n      \"net_cash_provided_by_operating_activities\": \"28400000000\",\n      \"net_change_in_cash\": \"-3800000000\",\n      \"net_debt_issuance\": \"-1500000000\",\n      \"net_dividends_paid\": \"-3800000000\",\n      \"net_income\": \"22200000000\",\n      \"operating_cash_flow\": \"28400000000\",\n      \"period\": \"Q1\",\n      \"period_type\": \"QUARTERLY\",\n      \"purchases_of_investments\": \"-9500000000\",\n      \"reported_currency\": \"USD\",\n      \"sales_maturities_of_investments\": \"8200000000\",\n      \"stock_based_compensation\": \"2500000000\",\n      \"year\": 2025\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"next_page_token\": \"AAAAAAAAAGQAAAAAAAAAZQ==\",\n    \"page_number\": 1,\n    \"request_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"total_items\": 20,\n    \"total_pages\": 2\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85fe1b54-f9a0-4016-b540-4060091c9d2e",
+              "name": "Instrument not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "cash-flow-statements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Instrument not found: AAP\"\n  },\n  \"metadata\": {\n    \"request_id\": \"fa8cc9b2-fbf0-4f5b-8ce3-b3205b9f85f2\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "086fda06-31a9-48b3-8c04-b539a48cffb8",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "cash-flow-statements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 9256\n    },\n    {\n      \"key_0\": 1470.199446510908,\n      \"key_1\": 9944,\n      \"key_2\": 3642\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c2262bf6-250c-44a9-a189-4a96a83cc9bd",
+          "name": "Get Instrument Events",
+          "request": {
+            "name": "Get Instrument Events",
+            "description": {
+              "content": "Retrieves corporate events (dividends, splits, etc.) for an instrument, grouped by event type.\n\nDate range defaults:\n- `from_date`: today - 365 days\n- `to_date`: today + 60 days",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments",
+                ":instrument_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "from_date",
+                  "value": "<string>",
+                  "description": "The start date for the query range, inclusive (YYYY-MM-DD)."
+                },
+                {
+                  "disabled": false,
+                  "key": "to_date",
+                  "value": "<string>",
+                  "description": "The end date for the query range, inclusive (YYYY-MM-DD)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "instrument_id",
+                  "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3dc4497a-47a5-4fae-9a67-ed313852ce21",
+              "name": "Instrument events grouped by type",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"dividends\": [\n      {\n        \"adjusted_dividend_amount\": \"0.25\",\n        \"declaration_date\": \"2024-10-31\",\n        \"dividend_amount\": \"0.25\",\n        \"dividend_yield\": \"0.44\",\n        \"ex_date\": \"2024-11-08\",\n        \"frequency\": \"Quarterly\",\n        \"payment_date\": \"2024-11-14\",\n        \"record_date\": \"2024-11-11\"\n      }\n    ],\n    \"earnings\": [\n      {\n        \"date\": \"2024-10-31\",\n        \"eps_actual\": \"1.64\",\n        \"eps_estimate\": \"1.60\",\n        \"eps_surprise_percent\": \"2.5\",\n        \"revenue_actual\": \"94930000000\",\n        \"revenue_estimate\": \"94500000000\",\n        \"revenue_surprise_percent\": \"0.45\"\n      }\n    ],\n    \"instrument_id\": \"a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8\",\n    \"reporting_currency\": \"USD\",\n    \"splits\": [\n      {\n        \"date\": \"2020-08-31\",\n        \"denominator\": \"1\",\n        \"numerator\": \"4\",\n        \"split_type\": \"stock-split\"\n      }\n    ]\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"0f1a2b3c-4d5e-6789-8a7b-6c5d4e3f2a1b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "11f988b2-1508-403c-a40e-042c381e5774",
+              "name": "Instrument not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Instrument not found: AAP\"\n  },\n  \"metadata\": {\n    \"request_id\": \"fa8cc9b2-fbf0-4f5b-8ce3-b3205b9f85f2\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac866328-bace-4447-a4a9-4e6cffd18de3",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 9256\n    },\n    {\n      \"key_0\": 1470.199446510908,\n      \"key_1\": 9944,\n      \"key_2\": 3642\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a8aa9a7e-ae55-49db-bdc9-908f68201262",
+          "name": "Get Instrument Fundamentals",
+          "request": {
+            "name": "Get Instrument Fundamentals",
+            "description": {
+              "content": "Retrieves supplemental fundamentals and company profile data for an instrument.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments",
+                ":instrument_id",
+                "fundamentals"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "instrument_id",
+                  "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5216a29b-d0de-4812-8c59-8aafb0c111a5",
+              "name": "Instrument fundamentals",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "fundamentals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"average_volume\": 76000000,\n    \"beta\": \"1.20\",\n    \"description\": \"Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide.\",\n    \"dividend_yield\": \"0.005\",\n    \"earnings_per_share\": \"5.61\",\n    \"fifty_two_week_high\": \"230.00\",\n    \"fifty_two_week_low\": \"165.00\",\n    \"industry\": \"Consumer Electronics\",\n    \"list_date\": \"1980-12-12\",\n    \"logo_url\": \"https://example.com/logos/aapl.png\",\n    \"market_cap\": \"2800000000000\",\n    \"previous_close\": \"210.87\",\n    \"price_to_earnings\": \"30.5\",\n    \"reporting_currency\": \"USD\",\n    \"sector\": \"Technology\"\n  },\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"5b6c7d8e-9f0a-1b2c-3d4e-5f6a7b8c9d0e\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5dbaa645-b67f-43fb-975c-6362e358ada2",
+              "name": "Fundamentals not applicable to this instrument type (e.g. an index)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "fundamentals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 9256\n    },\n    {\n      \"key_0\": 1470.199446510908,\n      \"key_1\": 9944,\n      \"key_2\": 3642\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "68462404-d2f9-48f5-9619-d2610912a88e",
+              "name": "Instrument or fundamentals not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "fundamentals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 9256\n    },\n    {\n      \"key_0\": 1470.199446510908,\n      \"key_1\": 9944,\n      \"key_2\": 3642\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2318edd-c7e0-4fa1-8d06-658001168781",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "fundamentals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 9256\n    },\n    {\n      \"key_0\": 1470.199446510908,\n      \"key_1\": 9944,\n      \"key_2\": 3642\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e281226a-14f7-4094-9600-a8ed22646d1a",
+          "name": "Get Instrument Income Statements",
+          "request": {
+            "name": "Get Instrument Income Statements",
+            "description": {
+              "content": "Retrieves quarterly income statements for a specific instrument, sorted by fiscal period\n(most recent first).\n\nDate range defaults:\n- `from_date`: None (no lower bound)\n- `to_date`: None (no upper bound)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "instruments",
+                ":instrument_id",
+                "income-statements"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "1000",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "from_date",
+                  "value": "<string>",
+                  "description": "The start date for the query range, inclusive (YYYY-MM-DD)."
+                },
+                {
+                  "disabled": false,
+                  "key": "to_date",
+                  "value": "<string>",
+                  "description": "The end date for the query range, inclusive (YYYY-MM-DD)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "instrument_id",
+                  "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "43a8a12c-72c2-4c49-ac4c-af7dae4b12f1",
+              "name": "List of quarterly income statements",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "income-statements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"accepted_date\": \"2025-05-02 14:30:00+00:00\",\n      \"cost_of_revenue\": \"52080000000\",\n      \"eps\": \"1.40\",\n      \"eps_diluted\": \"1.38\",\n      \"filing_date\": \"2025-05-01\",\n      \"gross_profit\": \"42850000000\",\n      \"net_income\": \"22200000000\",\n      \"operating_income\": \"26550000000\",\n      \"period\": \"Q1\",\n      \"period_type\": \"QUARTERLY\",\n      \"reported_currency\": \"USD\",\n      \"revenue\": \"94930000000\",\n      \"year\": 2025\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"next_page_token\": \"AAAAAAAAAGQAAAAAAAAAZQ==\",\n    \"page_number\": 1,\n    \"request_id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"total_items\": 20,\n    \"total_pages\": 2\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "322c6c61-e8d2-4d39-8658-694b5133e783",
+              "name": "Instrument not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "income-statements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Instrument not found: AAP\"\n  },\n  \"metadata\": {\n    \"request_id\": \"fa8cc9b2-fbf0-4f5b-8ce3-b3205b9f85f2\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63e204d1-6bb8-45cd-8fde-5f8ece2dd076",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "instruments",
+                    ":instrument_id",
+                    "income-statements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from_date",
+                      "value": "2025-04-24"
+                    },
+                    {
+                      "key": "to_date",
+                      "value": "2025-07-24"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "instrument_id",
+                      "description": "(Required) Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 9256\n    },\n    {\n      \"key_0\": 1470.199446510908,\n      \"key_1\": 9944,\n      \"key_2\": 3642\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8f4d2444-db4b-4ca1-a812-5bcaca8074d4",
+          "name": "Get Daily Aggregate Summaries",
+          "request": {
+            "name": "Get Daily Aggregate Summaries",
+            "description": {
+              "content": "Returns the most recent open, high, low, volume (OHLV) and current price\nfor the requested instruments.\n\nResponse contract: every request returns one row per **unique**\n`instrument_id`, in first-seen request order. Unresolvable IDs come back\nwith `symbol = null` and every market-data field `null`; resolvable IDs\nwith no available data come back with `symbol` populated but market-data\nfields `null`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "market-data",
+                "daily-summary"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "instrument_ids",
+                  "value": "<string>",
+                  "description": "(Required) Comma-separated instrument identifiers (required, 1..=100)"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2707c298-a24b-48a5-af6d-37690f70ccc2",
+              "name": "Daily aggregate summaries",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "market-data",
+                    "daily-summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"high\": \"215.20\",\n      \"instrument_id\": \"a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8\",\n      \"low\": \"210.10\",\n      \"not_applicable\": false,\n      \"open\": \"211.00\",\n      \"symbol\": \"AAPL\",\n      \"trade_date\": \"2026-04-23\",\n      \"volume\": 88000000\n    },\n    {\n      \"high\": \"215.20\",\n      \"instrument_id\": \"a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8\",\n      \"low\": \"210.10\",\n      \"not_applicable\": false,\n      \"open\": \"211.00\",\n      \"symbol\": \"AAPL\",\n      \"trade_date\": \"2026-04-23\",\n      \"volume\": 88000000\n    }\n  ],\n  \"metadata\": {\n    \"request_id\": \"string\",\n    \"next_page_token\": null,\n    \"page_number\": null,\n    \"previous_page_token\": null,\n    \"total_items\": null,\n    \"total_pages\": null\n  },\n  \"error\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2894aac4-ce5a-45fa-9f20-7d1b991bcd53",
+              "name": "Missing, empty, or over-cap instrument_ids",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "market-data",
+                    "daily-summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 9256\n    },\n    {\n      \"key_0\": 1470.199446510908,\n      \"key_1\": 9944,\n      \"key_2\": 3642\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c2aa0c17-4e87-4d19-81e1-745d8963c66f",
+          "name": "Get Snapshots",
+          "request": {
+            "name": "Get Snapshots",
+            "description": {
+              "content": "Get market data snapshots for one or more securities.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "market-data",
+                "snapshot"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "instrument_ids",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e51c6f4a-16ea-4d9a-b5ef-cf0eb0f8d901",
+              "name": "Market data snapshots",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "market-data",
+                    "snapshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"cumulative_volume\": 12345678,\n      \"instrument_id\": \"a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8\",\n      \"last_quote\": {\n        \"ask\": \"210.14\",\n        \"ask_size\": 120,\n        \"bid\": \"210.10\",\n        \"bid_size\": 100,\n        \"midpoint\": \"210.12\"\n      },\n      \"last_trade\": {\n        \"price\": \"210.12\",\n        \"size\": 150\n      },\n      \"name\": \"Apple Inc.\",\n      \"session\": {\n        \"change\": \"1.82\",\n        \"change_percent\": \"0.8737\",\n        \"previous_close\": \"208.30\"\n      },\n      \"symbol\": \"AAPL\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"request_id\": \"2d0c9159-8f5d-49ca-a861-0d8346fd11da\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "881f92c5-68a6-4515-bb8b-0f7882aa16f0",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "market-data",
+                    "snapshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"At least one instrument_id is required\"\n  },\n  \"metadata\": {\n    \"request_id\": \"3af8662e-2dd9-4c59-8d32-7c167377fb8f\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d113fc9a-8bf2-4ade-81a4-c7664552ab7a",
+              "name": "Instrument not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "market-data",
+                    "snapshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"Instrument not found for id `a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8`\"\n  },\n  \"metadata\": {\n    \"request_id\": \"95683d84-2863-43f0-8f0a-63537c3cef85\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe5ed9ce-0238-4130-82e2-94d66140104d",
+          "name": "Get News",
+          "request": {
+            "name": "Get News",
+            "description": {
+              "content": "Retrieves news items with optional filtering by security IDs, time range, publisher,\ntype, and text query.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "news"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "1000",
+                  "description": "The number of items to return per page. Only used when page_token is not provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<byte>",
+                  "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "Inclusive start timestamp. Accepts `YYYY-MM-DD` or RFC3339 datetime."
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<string>",
+                  "description": "Inclusive end timestamp. Accepts `YYYY-MM-DD` or RFC3339 datetime."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_publishers",
+                  "value": "<string>",
+                  "description": "Comma-separated list of publishers to include (mutually exclusive with exclude_publishers)."
+                },
+                {
+                  "disabled": false,
+                  "key": "exclude_publishers",
+                  "value": "<string>",
+                  "description": "Comma-separated list of publishers to exclude (mutually exclusive with include_publishers)."
+                },
+                {
+                  "disabled": false,
+                  "key": "news_type",
+                  "value": "<string>",
+                  "description": "Filter by news type."
+                },
+                {
+                  "disabled": false,
+                  "key": "search_query",
+                  "value": "<string>",
+                  "description": "Free-text query matched against title/text and associated security IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "instrument_ids",
+                  "value": "<string>,<string>",
+                  "description": "Comma-delimited instrument identifiers to filter by."
+                },
+                {
+                  "disabled": false,
+                  "key": "sectors",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated sector values to filter by."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5b8f20da-95d4-44f6-98dd-9013bdb3c930",
+              "name": "News items",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_publishers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exclude_publishers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "news_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sectors",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"instruments\": [\n        {\n          \"instrument_id\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\",\n          \"name\": \"Apple Inc.\",\n          \"symbol\": \"AAPL\"\n        }\n      ],\n      \"news_type\": \"NEWS\",\n      \"published_at\": \"2025-10-31 14:30:00+00:00\",\n      \"publisher\": \"Reuters\",\n      \"site\": \"reuters.com\",\n      \"title\": \"Apple announces new hardware lineup\",\n      \"url\": \"https://example.com/news/1\"\n    }\n  ],\n  \"error\": null,\n  \"metadata\": {\n    \"next_page_token\": \"cGFnZT0yJmxhc3Rfc3ltYm9sPVRTM0E\",\n    \"page_number\": 1,\n    \"request_id\": \"0f1a2b3c-4d5e-6f78-9012-3a4b5c6d7e8f\",\n    \"total_items\": 25,\n    \"total_pages\": 3\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e4f5195-c205-4fd8-b110-3b0cdc49bd6a",
+              "name": "Invalid query parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_publishers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exclude_publishers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "news_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sectors",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Failed to deserialize query string: from: invalid date or datetime '123': expected YYYY-MM-DD or RFC3339 (e.g. 2025-01-30T14:30:00Z)\"\n  },\n  \"metadata\": {\n    \"request_id\": \"d706b33d-ef0c-484d-a5e5-2f8b68ecb203\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6cb43407-352b-4212-9e55-088f6464f6a0",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0="
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_publishers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exclude_publishers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "news_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_query",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_ids",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sectors",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 400,\n  \"message\": \"Order quantity must be greater than zero\",\n  \"details\": [\n    {\n      \"key_0\": 9256\n    },\n    {\n      \"key_0\": 1470.199446510908,\n      \"key_1\": 9944,\n      \"key_2\": 3642\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "20c46da7-e76d-480a-b4f4-95121a499ad6",
+    "name": "Clear Street Trading Instrument Data API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.\nThis specification provides a single source of truth for the API surface, covering order management, trade execution, market data, and account services.\n\n### Authentication\nAll endpoints require authentication via a JWT Bearer token provided in the `Authorization` header.\n\n### Response Structure\nAll responses, both for success and error, adhere to a standard envelope structure:\n- `data`: Contains the response payload on success, or `null` on error.\n- `error`: Contains a structured error object on failure, or `null` on success.\n- `metadata`: Contains the `request_id` and pagination information.\n\n### WebSockets\nReal-time market data is available via WebSocket connections, which are not formally described in this OpenAPI specification. The following operations are available:\n- `market-data-l1-subscribe`: To start receiving L1 market data updates for a set of symbols.\n- `market-data-l1-unsubscribe`: To stop receiving L1 market data updates.\n\nContact Support:\n Name: Clear Street API Support\n Email: concierge@clearstreet.com",
+      "type": "text/plain"
+    }
+  }
+}

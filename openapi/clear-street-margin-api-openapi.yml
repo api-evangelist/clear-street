@@ -1,0 +1,554 @@
+openapi: 3.2.0
+info:
+  title: Common API Models Margin API
+  description: Common API models for all of Studio's APIs
+  version: 2.0.0
+servers:
+- url: https://api.clearstreet.io/studio/v2
+  description: Production environment
+- url: https://sandbox-api.clearstreet.io/studio/v2
+  description: Sandbox environment
+tags:
+- name: Margin
+  x-displayName: Margin
+paths:
+  /entities/{entity_id}/regt-margin:
+    get:
+      operationId: getRegTMargin
+      summary: Get Reg-T margin
+      description: Get the latest Reg-T margin calculation for the given entity
+      tags:
+      - Margin
+      parameters:
+      - in: path
+        name: entity_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/EntityId'
+        description: Entity ID
+      responses:
+        '200':
+          description: Reg-T margin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegTMargin'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+  /entities/{entity_id}/portfolio-margin:
+    get:
+      operationId: getPortfolioMargin
+      summary: Get portfolio margin
+      description: Get latest portfolio margin calculation for the given entity
+      tags:
+      - Margin
+      parameters:
+      - in: path
+        name: entity_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/EntityId'
+        description: Entity ID
+      responses:
+        '200':
+          description: Portfolio margin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioMargin'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    EntityId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Entity ID for the legal entity.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    RegTGroupMember:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for the instrument.
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity held for this instrument.
+        market_value:
+          type: number
+          format: double
+          description: Market value of the instrument.
+        market_value_percent:
+          type: number
+          format: double
+          description: 'The percentage market value of the instrument in terms of the total `net_market_value` of all positions held.
+
+            Formula: `market_value / net_market_value`
+
+            '
+      required:
+      - symbol
+      - asset_class
+      - quantity
+      - market_value
+      - market_value_percent
+    PortfolioMarginGroupMember:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for the instrument.
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity held for this instrument.
+        market_value:
+          type: number
+          format: double
+          description: Market value of the instrument.
+        market_value_percent:
+          type: number
+          format: double
+          description: 'The percentage market value of the instrument in terms of the total `net_market_value` of all positions held.
+
+            Formula: `market_value / net_market_value`
+
+            '
+        shocks:
+          $ref: '#/components/schemas/Shocks'
+    AssetClass:
+      type: string
+      enum:
+      - other
+      - currency
+      - equity
+      - option
+      - debt
+      - fund
+      description: The asset class of the symbol.
+    PortfolioMarginGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name of the group, typically the symbol of the underlier.
+        market_value:
+          type: number
+          format: double
+          description: The aggregated market value of all instruments for the group.
+        market_value_percent:
+          type: number
+          format: double
+          description: 'The percentage market value of the group in terms of the total net_market_value of all positions.
+
+            Formula: `(market_value / net_market_value)`
+
+            '
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect for the group.
+        margin_percent:
+          type: number
+          format: double
+          description: 'The percentage effective margin requirement in terms of the group market value.
+
+            Formula: `(effective_requirement / net_market_value)`
+
+            '
+        margin_percent_contribution:
+          type: number
+          format: double
+          description: 'The percentage effective margin requirement in terms of the total effective requirement.
+
+            Formula: `(effective_requirement / sum(effective_requirement))`
+
+            '
+        risk_based_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures base-case risk for the group under house margin methodology
+        non_marginable_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk for the group that are not margin eligible.
+        liquidity_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk for the group based on liquidity, Market Cap, and Average Daily Volume factors.
+        concentration_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk for the group based on gross exposure to total equity
+        discretionary_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures miscellaneous risk factors for the group.
+        regulatory_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on OCC TIMS regulatory margin methodology
+        var_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on value-at-risk over any 5-day period in a 2 year historic lookback
+        shocks:
+          $ref: '#/components/schemas/Shocks'
+        members:
+          type: array
+          description: A list of securities that comprise this group.
+          items:
+            $ref: '#/components/schemas/PortfolioMarginGroupMember'
+      required:
+      - name
+      - market_value
+      - market_value_percent
+      - effective_requirement
+      - house_requirement
+      - exchange_requirement
+      - margin_percent
+      - margin_percent_contribution
+      - members
+    RegTGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name of the group, typically the symbol of the underlier.
+        market_value:
+          type: number
+          format: double
+          description: The aggregated market value of all instruments for the symbol group.
+        market_value_percent:
+          type: number
+          format: double
+          description: 'The percentage market value of the symbol group in terms of the total net_market_value of all positions.
+
+            Formula: `(market_value / net_market_value)`
+
+            '
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect for the symbol group.
+        house_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on Clear Street's house margin methodology for the symbol group.
+        exchange_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on regulatory rules for the symbol group.
+        margin_percent:
+          type: number
+          format: double
+          description: 'The percentage effective margin requirement in terms of the symbol group market value.
+
+            Formula: `(effective_requirement / net_market_value)`
+
+            '
+        margin_percent_contribution:
+          type: number
+          format: double
+          description: 'The percentage effective margin requirement in terms of the total effective requirement.
+
+            Formula: `(effective_requirement / sum(effective_requirement))`
+
+            '
+        members:
+          type: array
+          description: A list of securities that comprise this group.
+          items:
+            $ref: '#/components/schemas/RegTGroupMember'
+      required:
+      - name
+      - market_value
+      - market_value_percent
+      - effective_requirement
+      - house_requirement
+      - exchange_requirement
+      - margin_percent
+      - margin_percent_contribution
+      - members
+    PortfolioMargin:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Unique identifier for this margin calculation.
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+          description: Timestamp of when this margin was calculated.
+        net_market_value:
+          type: number
+          format: double
+          description: Sum of market values across all positions.
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect.
+        effecive_excess:
+          type: number
+          format: double
+          description: The maring amount by taking the difference between total equity and the effective requirement. A negative number reflects an effective margin deficit.
+        house_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on Clear Street's house margin methodology.
+        house_excess:
+          type: number
+          format: double
+          description: The margin amount by taking the difference between total equity and the house requirement. A negative number reflects a house margin deficit.
+        risk_based_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures base-case risk under house margin methodology.
+        risk_based_requirement_percent:
+          type: number
+          format: double
+          description: 'The percentage risk_base margin requirement in terms of total house requirement
+
+            Formula: `risk_based_requirement / house_requirement`
+
+            '
+        non_marginable_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk for security instruments that are not margin eligible.
+        non_marginable_requirement_percent:
+          type: number
+          format: double
+          description: 'The percentage non-marginable requirement in terms of total house requirement
+
+            Formula: `non_marginable_requirement / house_requirement`
+
+            '
+        add_on_requirement:
+          type: number
+          format: double
+          description: 'Sum of add-on margin requirements.
+
+            Formula: `liquidity_add_on + concentration_add_on + discretionary_requirement`
+
+            '
+        add_on_requirement_percent:
+          type: number
+          format: double
+          description: 'The percentage add-on margin requirements in terms of total house requirement.
+
+            Formula: `add_on_requirement / house_requirement`
+
+            '
+        liquidity_add_on:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk based on liquidity, Market Cap, and Average Daily Volume factors.
+        liquidity_add_on_percent:
+          type: number
+          format: double
+          description: 'The percentage liquidity add-on margin requirements in terms of total house requirement.
+
+            Formula: `liquidity_add_on / house_requirement`
+
+            '
+        concentration_add_on:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk based on gross exposure to total equity.
+        concentration_add_on_percent:
+          type: number
+          format: double
+          description: 'The percentage concentration add-on margin requirements in terms of total house requirement.
+
+            Formula: `concentration_add_on / house_requirement`
+
+            '
+        discretionary_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures miscellaneous risk factors.
+        discretionary_requirement_percent:
+          type: number
+          format: double
+          description: 'The percentage discretionary margin requirements in terms of total house requirement
+
+            Formula: `discretionary_requirement / house_requirement`
+
+            '
+        vega_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk based on vega.
+        groups:
+          type: array
+          description: Portfolio margin groups
+          items:
+            $ref: '#/components/schemas/PortfolioMarginGroup'
+    RegTMargin:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Unique identifier for this margin calculation.
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+          description: Timestamp of when this margin was calculated.
+        net_market_value:
+          type: number
+          format: double
+          description: Market value net of long and short market values.
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect.
+        effective_excess:
+          type: number
+          format: double
+          description: The maring amount by taking the difference between total equity and the effective requirement. A negative number reflects an effective margin deficit.
+        house_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on Clear Street's house margin methodology.
+        house_excess:
+          type: number
+          format: double
+          description: The margin amount by taking the difference between total equity and the house requirement. A negative number reflects a house margin deficit.
+        exchange_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on regulatory rules.
+        exchange_excess:
+          type: number
+          format: double
+          description: The margin amount by taking the difference between total equity and the exchange requirement. A negative number reflects an regulatory margin deficit.
+        sma:
+          type: number
+          format: double
+          description: Special Memorandum Account (SMA). The regulatory line of credit amount for margin trading based on market value, trading activity, and available cash.
+        sod_buying_power:
+          type: number
+          format: double
+          description: The limit, or "up-to" amount, of securities value that can be day-traded for a given trading day.
+        overnight_buying_power:
+          type: number
+          format: double
+          description: The limit, or "up-to" amount, of securities value that can be purchased and held overnight.
+        day_trade_buying_power:
+          type: number
+          format: double
+          description: The remaining amount of start_of_day_buying_power that captures any day-trading activity.
+        groups:
+          type: array
+          description: Reg-T margin groups
+          items:
+            $ref: '#/components/schemas/RegTGroup'
+      required:
+      - version
+      - timestamp
+      - net_market_value
+      - effective_requirement
+      - effecive_excess
+      - house_requirement
+      - house_excess
+      - exchange_requirement
+      - exchange_deficit
+      - sma
+      - sod_buying_power
+      - overnight_buying_power
+      - day_trade_buying_power
+      - groups
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    Shocks:
+      type: object
+      description: Maps shock scenarios to their resulting pnl.
+      additionalProperties:
+        type: number
+        format: double
+        description: The resulting pnl from the shock.
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+externalDocs:
+  url: https://docs.clearstreet.io/
+x-tagGroups:
+- name: Custodial API
+  tags:
+  - Performance
+  - Holdings
+- name: Execution API
+  tags:
+  - Orders
+  - Trades
+  - Positions
+- name: Lending API
+  tags:
+  - Locates
+  - Rates
+  - Inventories
+- name: Reference API
+  tags:
+  - Entities
+  - Accounts
+  - Instruments
+- name: Risk & Margin API
+  tags:
+  - PNL
+  - Margin
+  - Margin Simulations

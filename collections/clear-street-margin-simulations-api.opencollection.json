@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Common API Models Margin Simulations API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Margin Simulations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Reg-T simulation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.io/studio/v2/entities/:entity_id/regt-margin-simulations",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path",
+                "description": "Entity ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Simulate Reg-T margin calculation for a given hypothetical set of prices and/or trades. This is useful for understanding the impact of price fluctuations or trades on margin requirements. Once a simulation is created, it remains available for 48-hours, after which it will automatically be deleted.\n\nSimulations created through the API are visible in the Studio UI under the Risk & Margin section, after enabling the \"Risk Simulations\" toggle.\n"
+        },
+        {
+          "info": {
+            "name": "Get Reg-T simulation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/entities/:entity_id/regt-margin-simulations/:simulation_id",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path",
+                "description": "Entity ID"
+              },
+              {
+                "name": "simulation_id",
+                "value": "",
+                "type": "path",
+                "description": "Simulation ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a Reg-T margin simluation that was previously created. Note, simulations are automatically deleted after 48-hours."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

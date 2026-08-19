@@ -1,0 +1,35 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Trading API version API",
+    "version": "2025-10-31"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "API version",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the API version.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/version"
+          },
+          "docs": "Returns the current version string for this API endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

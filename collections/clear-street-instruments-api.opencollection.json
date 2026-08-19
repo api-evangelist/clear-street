@@ -1,0 +1,282 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Instruments API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Instruments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List instruments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/instruments"
+          },
+          "docs": "List all available instruments."
+        },
+        {
+          "info": {
+            "name": "Get instrument",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/instruments/:symbol",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "path",
+                "description": "The symbol for the instrument."
+              },
+              {
+                "name": "symbol_format",
+                "value": "",
+                "type": "query",
+                "description": "The format of the provided symbol."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get an instrument by the given symbol"
+        },
+        {
+          "info": {
+            "name": "Get Instruments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/v1/instruments",
+            "params": [
+              {
+                "name": "instrument_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by instrument type (e.g. COMMON_STOCK, OPTION)"
+              },
+              {
+                "name": "instrument_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated instrument identifiers: unique identifiers or symbols (symbol for equities, OSI for options)"
+              },
+              {
+                "name": "is_marginable",
+                "value": "",
+                "type": "query",
+                "description": "Filter by marginable status"
+              },
+              {
+                "name": "easy_to_borrow",
+                "value": "",
+                "type": "query",
+                "description": "Filter by easy to borrow status"
+              },
+              {
+                "name": "is_short_prohibited",
+                "value": "",
+                "type": "query",
+                "description": "Filter by short prohibited status"
+              },
+              {
+                "name": "is_threshold_security",
+                "value": "",
+                "type": "query",
+                "description": "Filter by threshold security status"
+              },
+              {
+                "name": "is_liquidation_only",
+                "value": "",
+                "type": "query",
+                "description": "Filter by liquidation only status"
+              },
+              {
+                "name": "is_ptp",
+                "value": "",
+                "type": "query",
+                "description": "Filter by publicly traded partnership (PTP) status"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves a list of tradeable instruments.\n\n"
+        },
+        {
+          "info": {
+            "name": "Get Option Contracts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/v1/instruments/options/contracts",
+            "params": [
+              {
+                "name": "underlier",
+                "value": "",
+                "type": "query",
+                "description": "Underlier symbol (e.g., AAPL, SPX)"
+              },
+              {
+                "name": "underlying_instrument_id",
+                "value": "",
+                "type": "query",
+                "description": "Instrument identifier or symbol of the underlying equity/index"
+              },
+              {
+                "name": "expiry",
+                "value": "",
+                "type": "query",
+                "description": "Filter to contracts expiring on this date (YYYY-MM-DD)"
+              },
+              {
+                "name": "contract_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by contract type: CALL or PUT"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List options contracts.\n\nReturns options contracts for a given underlier with options-specific metadata.\nExactly one underlier identifier must be provided."
+        },
+        {
+          "info": {
+            "name": "Search Instruments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/v1/instruments/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search term applied case-insensitively to ticker symbols, alternate identifiers (CUSIP, ISIN, OPRA root), and company names for non-option instruments. Option searches match symbols and alternate identifiers."
+              },
+              {
+                "name": "asset_class",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated asset classes (EQUITY|OPTION|WARRANT|BOND|FX|OTHER). Defaults to EQUITY."
+              },
+              {
+                "name": "include_inactive",
+                "value": "",
+                "type": "query",
+                "description": "Include inactive instruments. Default false."
+              },
+              {
+                "name": "include_ptp",
+                "value": "",
+                "type": "query",
+                "description": "Include publicly traded partnership (PTP) instruments. Default true (penalized in ranking)."
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "Optional ISO currency filter (e.g., USD)."
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query",
+                "description": "Optional listing-country filter (e.g., US)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Search instruments by symbol, alternate identifier, or company name.\n\nThe `q` parameter is case-insensitive and supports ticker symbols,\nalternate identifiers such as CUSIP, ISIN, and OPRA root,\nand company names for non-option instruments. Results are ranked by match\nquality plus instrument quality signals and relevance. Defaults to the `EQUITY` asset class (common\nstocks, preferred shares, ADRs, ETFs, and exchange-traded mutual funds).\nPass `asset_class=OPTION` to search option contracts: by f"
+        },
+        {
+          "info": {
+            "name": "Get Instrument By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/v1/instruments/:instrument_id",
+            "params": [
+              {
+                "name": "instrument_id",
+                "value": "",
+                "type": "path",
+                "description": "Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+              },
+              {
+                "name": "include_options_expiry_dates",
+                "value": "",
+                "type": "query",
+                "description": "When true, include unique options expiry dates for this instrument"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves detailed information for a specific instrument."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

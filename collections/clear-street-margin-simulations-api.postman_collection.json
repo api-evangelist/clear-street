@@ -1,0 +1,403 @@
+{
+  "item": [
+    {
+      "id": "4ccccf57-df9f-403a-b0d1-7e4d6cf715bc",
+      "name": "Margin Simulations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f2e04d80-72b6-4f07-8c61-6b4b2f618b7b",
+          "name": "Create Reg-T simulation",
+          "request": {
+            "name": "Create Reg-T simulation",
+            "description": {
+              "content": "Simulate Reg-T margin calculation for a given hypothetical set of prices and/or trades. This is useful for understanding the impact of price fluctuations or trades on margin requirements. Once a simulation is created, it remains available for 48-hours, after which it will automatically be deleted.\n\nSimulations created through the API are visible in the Studio UI under the Risk & Margin section, after enabling the \"Risk Simulations\" toggle.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "entities",
+                ":entity_id",
+                "regt-margin-simulations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "entity_id",
+                  "description": "(Required) Entity ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"prices\": [\n    {\n      \"symbol\": \"<string>\",\n      \"price\": \"<string>\",\n      \"symbol_format\": \"<string>\"\n    },\n    {\n      \"symbol\": \"<string>\",\n      \"price\": \"<string>\",\n      \"symbol_format\": \"<string>\"\n    }\n  ],\n  \"trades\": [\n    {\n      \"symbol\": \"<string>\",\n      \"side\": \"<string>\",\n      \"quantity\": \"<string>\",\n      \"price\": \"<string>\",\n      \"symbol_format\": \"<string>\"\n    },\n    {\n      \"symbol\": \"<string>\",\n      \"side\": \"<string>\",\n      \"quantity\": \"<string>\",\n      \"price\": \"<string>\",\n      \"symbol_format\": \"<string>\"\n    }\n  ],\n  \"ignore_existing\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "56c053a2-4800-40e1-90e6-b7248caf0cfe",
+              "name": "Reg-T margin simulation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id",
+                    "regt-margin-simulations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) Entity ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"prices\": [\n    {\n      \"symbol\": \"AAPL\",\n      \"price\": \"123.99\",\n      \"symbol_format\": \"<string>\"\n    },\n    {\n      \"symbol\": \"AAPL\",\n      \"price\": \"123.99\",\n      \"symbol_format\": \"<string>\"\n    }\n  ],\n  \"trades\": [\n    {\n      \"symbol\": \"AAPL\",\n      \"side\": \"<string>\",\n      \"quantity\": \"100\",\n      \"price\": \"123.99\",\n      \"symbol_format\": \"<string>\"\n    },\n    {\n      \"symbol\": \"AAPL\",\n      \"side\": \"<string>\",\n      \"quantity\": \"100\",\n      \"price\": \"123.99\",\n      \"symbol_format\": \"<string>\"\n    }\n  ],\n  \"ignore_existing\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"simulation_id\": \"6460030d-8ed4-19d3-818e-e87b36e90005\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "707acf0d-cee0-461f-b90e-a7bbb95ec621",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id",
+                    "regt-margin-simulations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) Entity ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"prices\": [\n    {\n      \"symbol\": \"AAPL\",\n      \"price\": \"123.99\",\n      \"symbol_format\": \"<string>\"\n    },\n    {\n      \"symbol\": \"AAPL\",\n      \"price\": \"123.99\",\n      \"symbol_format\": \"<string>\"\n    }\n  ],\n  \"trades\": [\n    {\n      \"symbol\": \"AAPL\",\n      \"side\": \"<string>\",\n      \"quantity\": \"100\",\n      \"price\": \"123.99\",\n      \"symbol_format\": \"<string>\"\n    },\n    {\n      \"symbol\": \"AAPL\",\n      \"side\": \"<string>\",\n      \"quantity\": \"100\",\n      \"price\": \"123.99\",\n      \"symbol_format\": \"<string>\"\n    }\n  ],\n  \"ignore_existing\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://lIznm.quqlVU+bz\",\n  \"title\": \"string\",\n  \"status\": 391.9568536501537,\n  \"detail\": \"string\",\n  \"instance\": \"https://QlBQvvhUksSbSDEflVdJGl.wxXv+CfHBN1ryZqgHmrctLEdZpZGQpmlHvxO40hlKJW.0Vy8GU,r9I4-dxwejuSZycuCuw4aGG\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2383306f-d4a8-436c-ac64-a426e476f8ef",
+          "name": "Get Reg-T simulation",
+          "request": {
+            "name": "Get Reg-T simulation",
+            "description": {
+              "content": "Get a Reg-T margin simluation that was previously created. Note, simulations are automatically deleted after 48-hours.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "entities",
+                ":entity_id",
+                "regt-margin-simulations",
+                ":simulation_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "entity_id",
+                  "description": "(Required) Entity ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "simulation_id",
+                  "description": "(Required) Simulation ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9765dddb-d32a-4ab5-9654-0bfd2a084dd4",
+              "name": "Reg-T margin simulation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id",
+                    "regt-margin-simulations",
+                    ":simulation_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) Entity ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "simulation_id",
+                      "description": "(Required) Simulation ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created_at\": 2781497985687,\n  \"name\": \"<string>\",\n  \"simulation_id\": \"6460030d-8ed4-19d3-818e-e87b36e90005\",\n  \"before\": {\n    \"version\": \"string\",\n    \"timestamp\": 2753692851703,\n    \"net_market_value\": 7822.033520180279,\n    \"effective_requirement\": 4688.323066015775,\n    \"house_requirement\": 4365.866620510673,\n    \"house_excess\": 9674.097937462877,\n    \"exchange_requirement\": 6453.729193423462,\n    \"sma\": 1221.3212339639601,\n    \"sod_buying_power\": 2459.7418864390984,\n    \"overnight_buying_power\": 9764.809002348438,\n    \"day_trade_buying_power\": 253.97582418211772,\n    \"groups\": [\n      {\n        \"name\": \"string\",\n        \"market_value\": 8119.58248458766,\n        \"market_value_percent\": 8555.191732328198,\n        \"effective_requirement\": 6910.7979790241625,\n        \"house_requirement\": 6646.616045257414,\n        \"exchange_requirement\": 517.8613369000929,\n        \"margin_percent\": 6880.03697731896,\n        \"margin_percent_contribution\": 9191.685916287983,\n        \"members\": [\n          {\n            \"symbol\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"asset_class\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"quantity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"market_value\": 9774.953813725531,\n            \"market_value_percent\": 2761.6018360890903\n          },\n          {\n            \"symbol\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"asset_class\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"quantity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"market_value\": 9293.812261011179,\n            \"market_value_percent\": 9171.13043722675\n          }\n        ]\n      },\n      {\n        \"name\": \"string\",\n        \"market_value\": 2095.850889452775,\n        \"market_value_percent\": 3271.498456997325,\n        \"effective_requirement\": 5238.488609210046,\n        \"house_requirement\": 679.9968452351724,\n        \"exchange_requirement\": 2860.161809339904,\n        \"margin_percent\": 6688.648250474302,\n        \"margin_percent_contribution\": 380.4947412259163,\n        \"members\": [\n          {\n            \"symbol\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"asset_class\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"quantity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"market_value\": 7199.891988323127,\n            \"market_value_percent\": 9368.980743767584\n          },\n          {\n            \"symbol\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"asset_class\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"quantity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"market_value\": 6648.105470486593,\n            \"market_value_percent\": 7751.961160883868\n          }\n        ]\n      }\n    ],\n    \"effective_excess\": 203.32480301093136,\n    \"exchange_excess\": 6018.794473988443\n  },\n  \"after\": {\n    \"version\": \"string\",\n    \"timestamp\": 2628151448181,\n    \"net_market_value\": 4097.43130654354,\n    \"effective_requirement\": 573.1683606484272,\n    \"house_requirement\": 1484.404880006156,\n    \"house_excess\": 3761.1735820596414,\n    \"exchange_requirement\": 9525.381292329115,\n    \"sma\": 1002.519217719755,\n    \"sod_buying_power\": 1662.0570457083184,\n    \"overnight_buying_power\": 2709.9873247353657,\n    \"day_trade_buying_power\": 7366.946191225338,\n    \"groups\": [\n      {\n        \"name\": \"string\",\n        \"market_value\": 3891.620395122608,\n        \"market_value_percent\": 7539.025093390927,\n        \"effective_requirement\": 2744.766072684971,\n        \"house_requirement\": 8636.635312984088,\n        \"exchange_requirement\": 3392.9716290275624,\n        \"margin_percent\": 8403.756425773028,\n        \"margin_percent_contribution\": 8467.635002959041,\n        \"members\": [\n          {\n            \"symbol\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"asset_class\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"quantity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"market_value\": 7175.590736240593,\n            \"market_value_percent\": 2356.3927875998493\n          },\n          {\n            \"symbol\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"asset_class\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"quantity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"market_value\": 6718.099873604747,\n            \"market_value_percent\": 2486.9803416783034\n          }\n        ]\n      },\n      {\n        \"name\": \"string\",\n        \"market_value\": 7331.33697465296,\n        \"market_value_percent\": 6092.148829386096,\n        \"effective_requirement\": 8620.801646029418,\n        \"house_requirement\": 330.0308050412637,\n        \"exchange_requirement\": 7813.512665164953,\n        \"margin_percent\": 8940.30889849634,\n        \"margin_percent_contribution\": 1732.916786130061,\n        \"members\": [\n          {\n            \"symbol\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"asset_class\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"quantity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"market_value\": 2906.09483791616,\n            \"market_value_percent\": 6952.628760463281\n          },\n          {\n            \"symbol\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"asset_class\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"quantity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"market_value\": 3399.7636595593704,\n            \"market_value_percent\": 7468.5215130577435\n          }\n        ]\n      }\n    ],\n    \"effective_excess\": 1447.1081933001672,\n    \"exchange_excess\": 5306.931421707165\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8a8d5c0e-5cbe-484e-82de-b87e980987a2",
+              "name": "Error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":entity_id",
+                    "regt-margin-simulations",
+                    ":simulation_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "entity_id",
+                      "description": "(Required) Entity ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "simulation_id",
+                      "description": "(Required) Simulation ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"http://lIznm.quqlVU+bz\",\n  \"title\": \"string\",\n  \"status\": 391.9568536501537,\n  \"detail\": \"string\",\n  \"instance\": \"https://QlBQvvhUksSbSDEflVdJGl.wxXv+CfHBN1ryZqgHmrctLEdZpZGQpmlHvxO40hlKJW.0Vy8GU,r9I4-dxwejuSZycuCuw4aGG\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.clearstreet.io/studio/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d3ff1ef7-67f1-4abd-b0c4-cd763ec23531",
+    "name": "Common API Models Margin Simulations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Common API models for all of Studio's APIs",
+      "type": "text/plain"
+    }
+  }
+}

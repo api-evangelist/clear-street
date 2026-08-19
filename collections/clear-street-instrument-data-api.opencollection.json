@@ -1,0 +1,382 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Trading Instrument Data API",
+    "version": "2025-10-31"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Instrument Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get All Instrument Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/instruments/events",
+            "params": [
+              {
+                "name": "event_types",
+                "value": "",
+                "type": "query",
+                "description": "Filter by event type(s). Comma-delimited list. Example: `event_types=EARNINGS,IPO`."
+              },
+              {
+                "name": "instrument_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by instrument. Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols). Example: `instrument_ids=550e8400-e29b-41d4-a716-446655440000,AAPL`."
+              },
+              {
+                "name": "from_date",
+                "value": "2025-04-24",
+                "type": "query",
+                "description": "The start date for the query range, inclusive (YYYY-MM-DD)."
+              },
+              {
+                "name": "to_date",
+                "value": "2025-07-24",
+                "type": "query",
+                "description": "The end date for the query range, inclusive (YYYY-MM-DD)."
+              }
+            ]
+          },
+          "docs": "List instrument events across all securities, grouped by date.\n\nDate range defaults (anchored on the current trading day, or the next trading day\nif today is a weekend or US market holiday):\n- Unfiltered (no `instrument_ids`): a single trading day\n  (`from_date` = `to_date` = anchor); the requested span is capped at 6 days.\n- Filtered (with `instrument_ids`): a 30-day lookback ending on the anchor\n  (`from_date` = anchor − 30 days, `to_date` = anchor)."
+        },
+        {
+          "info": {
+            "name": "Get Instrument Analyst Consensus",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/instruments/:instrument_id/analyst-reporting",
+            "params": [
+              {
+                "name": "instrument_id",
+                "value": "",
+                "type": "path",
+                "description": "Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+              },
+              {
+                "name": "from",
+                "value": "2025-04-24",
+                "type": "query",
+                "description": "The start date for the query range, inclusive (YYYY-MM-DD)"
+              },
+              {
+                "name": "to",
+                "value": "2025-07-24",
+                "type": "query",
+                "description": "The end date for the query range, inclusive (YYYY-MM-DD)"
+              }
+            ]
+          },
+          "docs": "Retrieves analyst ratings and price targets for an instrument."
+        },
+        {
+          "info": {
+            "name": "Get Instrument Balance Sheet Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/instruments/:instrument_id/balance-sheets",
+            "params": [
+              {
+                "name": "instrument_id",
+                "value": "",
+                "type": "path",
+                "description": "Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              },
+              {
+                "name": "from_date",
+                "value": "2025-04-24",
+                "type": "query",
+                "description": "The start date for the query range, inclusive (YYYY-MM-DD)."
+              },
+              {
+                "name": "to_date",
+                "value": "2025-07-24",
+                "type": "query",
+                "description": "The end date for the query range, inclusive (YYYY-MM-DD)."
+              }
+            ]
+          },
+          "docs": "Get balance sheet statements for an instrument.\n\nRetrieves quarterly balance sheet statements for a specific instrument, sorted by fiscal period\n(most recent first).\n\nDate range defaults:\n- `from_date`: None (no lower bound)\n- `to_date`: None (no upper bound)"
+        },
+        {
+          "info": {
+            "name": "Get Instrument Cash Flow Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/instruments/:instrument_id/cash-flow-statements",
+            "params": [
+              {
+                "name": "instrument_id",
+                "value": "",
+                "type": "path",
+                "description": "Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              },
+              {
+                "name": "from_date",
+                "value": "2025-04-24",
+                "type": "query",
+                "description": "The start date for the query range, inclusive (YYYY-MM-DD)."
+              },
+              {
+                "name": "to_date",
+                "value": "2025-07-24",
+                "type": "query",
+                "description": "The end date for the query range, inclusive (YYYY-MM-DD)."
+              }
+            ]
+          },
+          "docs": "Get cash flow statements for an instrument.\n\nRetrieves historical cash flow statements for the specified instrument.\nCash flow statements show cash inflows and outflows from operating, investing,\nand financing activities.\n\n"
+        },
+        {
+          "info": {
+            "name": "Get Instrument Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/instruments/:instrument_id/events",
+            "params": [
+              {
+                "name": "instrument_id",
+                "value": "",
+                "type": "path",
+                "description": "Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+              },
+              {
+                "name": "from_date",
+                "value": "2025-04-24",
+                "type": "query",
+                "description": "The start date for the query range, inclusive (YYYY-MM-DD)."
+              },
+              {
+                "name": "to_date",
+                "value": "2025-07-24",
+                "type": "query",
+                "description": "The end date for the query range, inclusive (YYYY-MM-DD)."
+              }
+            ]
+          },
+          "docs": "Retrieves corporate events (dividends, splits, etc.) for an instrument, grouped by event type.\n\nDate range defaults:\n- `from_date`: today - 365 days\n- `to_date`: today + 60 days"
+        },
+        {
+          "info": {
+            "name": "Get Instrument Fundamentals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/instruments/:instrument_id/fundamentals",
+            "params": [
+              {
+                "name": "instrument_id",
+                "value": "",
+                "type": "path",
+                "description": "Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+              }
+            ]
+          },
+          "docs": "Retrieves supplemental fundamentals and company profile data for an instrument."
+        },
+        {
+          "info": {
+            "name": "Get Instrument Income Statements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/instruments/:instrument_id/income-statements",
+            "params": [
+              {
+                "name": "instrument_id",
+                "value": "",
+                "type": "path",
+                "description": "Instrument ID (UUID) or symbol (equity ticker or OSI option symbol)."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              },
+              {
+                "name": "from_date",
+                "value": "2025-04-24",
+                "type": "query",
+                "description": "The start date for the query range, inclusive (YYYY-MM-DD)."
+              },
+              {
+                "name": "to_date",
+                "value": "2025-07-24",
+                "type": "query",
+                "description": "The end date for the query range, inclusive (YYYY-MM-DD)."
+              }
+            ]
+          },
+          "docs": "Retrieves quarterly income statements for a specific instrument, sorted by fiscal period\n(most recent first).\n\nDate range defaults:\n- `from_date`: None (no lower bound)\n- `to_date`: None (no upper bound)"
+        },
+        {
+          "info": {
+            "name": "Get Daily Aggregate Summaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/market-data/daily-summary",
+            "params": [
+              {
+                "name": "instrument_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated instrument identifiers (required, 1..=100)"
+              }
+            ]
+          },
+          "docs": "Returns the most recent open, high, low, volume (OHLV) and current price\nfor the requested instruments.\n\nResponse contract: every request returns one row per **unique**\n`instrument_id`, in first-seen request order. Unresolvable IDs come back\nwith `symbol = null` and every market-data field `null`; resolvable IDs\nwith no available data come back with `symbol` populated but market-data\nfields `null`."
+        },
+        {
+          "info": {
+            "name": "Get Snapshots",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/market-data/snapshot",
+            "params": [
+              {
+                "name": "instrument_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated instrument IDs (UUID) or symbols (equity tickers or OSI option symbols)."
+              }
+            ]
+          },
+          "docs": "Get market data snapshots for one or more securities."
+        },
+        {
+          "info": {
+            "name": "Get News",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/news",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to return per page. Only used when page_token is not provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=",
+                "type": "query",
+                "description": "Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Inclusive start timestamp. Accepts `YYYY-MM-DD` or RFC3339 datetime."
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Inclusive end timestamp. Accepts `YYYY-MM-DD` or RFC3339 datetime."
+              },
+              {
+                "name": "include_publishers",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of publishers to include (mutually exclusive with exclude_publishers)."
+              },
+              {
+                "name": "exclude_publishers",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of publishers to exclude (mutually exclusive with include_publishers)."
+              },
+              {
+                "name": "news_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by news type."
+              },
+              {
+                "name": "search_query",
+                "value": "",
+                "type": "query",
+                "description": "Free-text query matched against title/text and associated security IDs."
+              },
+              {
+                "name": "instrument_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-delimited instrument identifiers to filter by."
+              },
+              {
+                "name": "sectors",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated sector values to filter by."
+              }
+            ]
+          },
+          "docs": "Retrieves news items with optional filtering by security IDs, time range, publisher,\ntype, and text query."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

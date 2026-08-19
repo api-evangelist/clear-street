@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Common API Models Locates API",
+    "version": "2.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Locates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List locate orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/locate-orders",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all locate orders"
+        },
+        {
+          "info": {
+            "name": "Create locate order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/locate-orders",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create locate order to borrow inventory for short-selling."
+        },
+        {
+          "info": {
+            "name": "Get locate order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/locate-orders/:locate_order_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locate_order_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get locate order by its unique locate order ID."
+        },
+        {
+          "info": {
+            "name": "Update locate order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.clearstreet.io/studio/v2/accounts/:account_id/locate-orders/:locate_order_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locate_order_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Accept or decline locate order that has been offered."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

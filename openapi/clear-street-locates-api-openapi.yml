@@ -1,0 +1,366 @@
+openapi: 3.2.0
+info:
+  title: Common API Models Locates API
+  description: Common API models for all of Studio's APIs
+  version: 2.0.0
+servers:
+- url: https://api.clearstreet.io/studio/v2
+  description: Production environment
+- url: https://sandbox-api.clearstreet.io/studio/v2
+  description: Sandbox environment
+tags:
+- name: Locates
+  x-displayName: Locates
+paths:
+  /accounts/{account_id}/locate-orders:
+    post:
+      operationId: createLocateOrder
+      summary: Create locate order
+      description: Create locate order to borrow inventory for short-selling.
+      tags:
+      - Locates
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to create the locate order for.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                symbol:
+                  $ref: '#/components/schemas/Symbol'
+                quantity:
+                  $ref: '#/components/schemas/Quantity'
+                mpid:
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+                  description: The market participant where the locate will be sent.
+                reference_id:
+                  $ref: '#/components/schemas/ReferenceId'
+                  description: Your unique ID for this locate order.
+                comments:
+                  type: string
+                  description: Any additional comments for the locate request.
+              required:
+              - symbol
+              - quantity
+              - mpid
+              - reference_id
+      responses:
+        '200':
+          description: Locate order successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocateOrder'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+    get:
+      operationId: listLocateOrders
+      summary: List locate orders
+      description: List all locate orders
+      tags:
+      - Locates
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to list locate orders for.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LocateOrder'
+                required:
+                - data
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+  /accounts/{account_id}/locate-orders/{locate_order_id}:
+    get:
+      operationId: getLocateOrder
+      summary: Get locate order
+      description: Get locate order by its unique locate order ID.
+      tags:
+      - Locates
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to get the locate order for.
+      - in: path
+        name: locate_order_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/LocateOrderId'
+          description: Locate order ID to get.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocateOrder'
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+    patch:
+      operationId: updateLocateOrder
+      summary: Update locate order
+      description: Accept or decline locate order that has been offered.
+      tags:
+      - Locates
+      parameters:
+      - in: path
+        name: account_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/AccountId'
+          description: The account ID or account number to update the locate order for.
+      - in: path
+        name: locate_order_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/LocateOrderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accept:
+                  type: boolean
+                  description: Accept or decline the locate order.
+              required:
+              - accept
+      responses:
+        '200':
+          description: Locate accepted or declined successfully.
+        default:
+          $ref: '#/components/responses/error'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    MpId:
+      type: string
+      minLength: 1
+      maxLength: 12
+      example: CLST
+      description: Unique MPID assigned by us.
+    Rate:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '0.23'
+      description: String representation of a rate.
+    LocateOrder:
+      type: object
+      properties:
+        locate_order_id:
+          $ref: '#/components/schemas/LocateOrderId'
+        requested_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp indicating when the locate order was requested.
+        updated_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp indicating when the locate order was last updated.
+        mpid:
+          $ref: '#/components/schemas/MpId'
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        status:
+          $ref: '#/components/schemas/LocateOrderStatus'
+        requested_quantity:
+          $ref: '#/components/schemas/Quantity'
+        locate_id:
+          $ref: '#/components/schemas/LocateId'
+          description: The locate ID, available once the locate order has been offered
+        located_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp indicating when the locate-order was located.
+        expires_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: The timestamp indicating when the locate-order will expire.
+        borrow_rate:
+          $ref: '#/components/schemas/Rate'
+          description: The rate charged if the instrument is held overnight.
+        located_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity that has been located.
+        total_cost:
+          $ref: '#/components/schemas/Price'
+          description: The total cost of the locate.
+        desk_comment:
+          type: string
+          description: Comment from the desk.
+        trader_comment:
+          type: string
+          description: Comment from the trader.
+        reference_id:
+          $ref: '#/components/schemas/ReferenceId'
+          description: The reference ID provided by you.
+      required:
+      - locate_order_id
+      - requested_at
+      - updated_at
+      - mpid
+      - account_id
+      - account_number
+      - symbol
+      - status
+      - requested_quantity
+    LocateOrderId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique locate ID assigned by us.
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    Price:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '123.99'
+      description: String representation of a price.
+    ReferenceId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: my-order-id-123
+      description: An ID that you provide.
+    LocateOrderStatus:
+      type: string
+      enum:
+      - pending
+      - offered
+      - filled
+      - rejected
+      - declined
+      - expired
+      - cancelled
+      description: The status of the locate order.
+    LocateId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique locate ID assigned by us.
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+externalDocs:
+  url: https://docs.clearstreet.io/
+x-tagGroups:
+- name: Custodial API
+  tags:
+  - Performance
+  - Holdings
+- name: Execution API
+  tags:
+  - Orders
+  - Trades
+  - Positions
+- name: Lending API
+  tags:
+  - Locates
+  - Rates
+  - Inventories
+- name: Reference API
+  tags:
+  - Entities
+  - Accounts
+  - Instruments
+- name: Risk & Margin API
+  tags:
+  - PNL
+  - Margin
+  - Margin Simulations

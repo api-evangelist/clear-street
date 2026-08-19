@@ -1,0 +1,2624 @@
+openapi: 3.2.0
+info:
+  title: Clear Street Trading Omni AI API
+  description: 'A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.
+
+    This specification provides a single source of truth for the API surface, covering order management, trade execution, market data, and account services.
+
+
+    ### Authentication
+
+    All endpoints require authentication via a JWT Bearer token provided in the `Authorization` header.
+
+
+    ### Response Structure
+
+    All responses, both for success and error, adhere to a standard envelope structure:
+
+    - `data`: Contains the response payload on success, or `null` on error.
+
+    - `error`: Contains a structured error object on failure, or `null` on success.
+
+    - `metadata`: Contains the `request_id` and pagination information.
+
+
+    ### WebSockets
+
+    Real-time market data is available via WebSocket connections, which are not formally described in this OpenAPI specification. The following operations are available:
+
+    - `market-data-l1-subscribe`: To start receiving L1 market data updates for a set of symbols.
+
+    - `market-data-l1-unsubscribe`: To stop receiving L1 market data updates.'
+  contact:
+    name: Clear Street API Support
+    url: https://clearstreet.io/contact
+    email: concierge@clearstreet.com
+  license:
+    name: Proprietary
+    url: https://clearstreet.io/terms
+  version: 2025-10-31
+servers:
+- url: https://api.clearstreet.com
+  description: Clear Street API
+- url: https://api-dev.clearstreet.com
+  description: Clear Street Development API
+- url: http://localhost:5001
+  description: Clear Street Local API
+security:
+- BearerAuth: []
+tags:
+- name: Omni AI
+  description: Thread-centric AI assistant for conversational trading. Create threads to start conversations, poll response objects for in-progress output, and read finalized messages from thread history. Thread/message/response endpoints require an explicit account_id. Entitlement endpoints are caller-scoped and use account_ids.
+paths:
+  /v1/omni-ai/entitlement-agreements:
+    get:
+      tags:
+      - Omni AI
+      summary: Get Entitlement Agreements
+      description: List current signable entitlement agreements for consent UX.
+      operationId: get_entitlement_agreements
+      responses:
+        '200':
+          description: Current signable entitlement agreements
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/EntitlementAgreementResourceList'
+                type: object
+        '404':
+          description: No active signable agreements
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/omni-ai/entitlements:
+    get:
+      tags:
+      - Omni AI
+      summary: Get Entitlements
+      description: List caller's active entitlement grants.
+      operationId: get_entitlements
+      parameters:
+      - name: account_id
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Caller's active entitlement grants
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/EntitlementResourceList'
+                type: object
+        '403':
+          description: Caller lacks access to requested account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - Omni AI
+      summary: Create Entitlements
+      description: Record consent and upsert one-or-more active grants.
+      operationId: create_entitlements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEntitlementsRequest'
+        required: true
+      responses:
+        '200':
+          description: Resulting active grants for requested scope
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/EntitlementResourceList'
+                type: object
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: Caller lacks access to one or more requested accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/omni-ai/entitlements/{entitlement_id}:
+    delete:
+      tags:
+      - Omni AI
+      summary: Delete Entitlement
+      description: Revoke one entitlement grant by id.
+      operationId: delete_entitlement
+      parameters:
+      - name: entitlement_id
+        in: path
+        description: Entitlement grant id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Grant revoked
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/DeleteEntitlementResponse'
+                type: object
+        '404':
+          description: Grant not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: Grant already inactive
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/omni-ai/messages/{message_id}:
+    get:
+      tags:
+      - Omni AI
+      summary: Get Message By ID
+      description: 'Get a finalized message by ID.
+
+
+        Returns a single finalized message. Returns **404** if the message belongs
+
+        to an in-progress assistant turn (use the response endpoint for live
+
+        output). Once the turn completes, the message becomes available here.'
+      operationId: get_message_by_id
+      parameters:
+      - name: message_id
+        in: path
+        description: Message identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: account_id
+        in: query
+        description: Account ID for the request
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Finalized message with content parts
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Message'
+                type: object
+              examples:
+                FinalizedAssistantMessage:
+                  summary: Finalized assistant message with text and suggested actions
+                  value:
+                    data:
+                      content:
+                        parts:
+                        - text: "**Pre-market as of 7:30 AM ET**\n\n ..."
+                          type: text
+                        - payload:
+                            actionButtons:
+                            - buttonId: btn_followup_0
+                              label: Check my positions
+                              prompt:
+                                prompt: What are my current positions?
+                          type: suggested_actions
+                      created_at: 2026-04-16 09:20:17.309212+00:00
+                      id: 019d9597-599c-7132-a7de-e5c21eaaab77
+                      outcome: completed
+                      role: ASSISTANT
+                      seq: 2
+                      thread_id: 019d9597-597c-7571-a0c9-a49c0e51f6eb
+                    metadata:
+                      request_id: 0f991501-757d-4051-bf00-6d7f452d6fcf
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MissingAccountId:
+                  summary: Required account_id query parameter is missing
+                  value:
+                    error:
+                      code: 400
+                      message: 'Failed to deserialize query string: missing field `account_id`'
+                    metadata:
+                      request_id: e0c1c9f2-2100-40f0-b5fc-378a35dafa18
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: d68b5e7a-75f4-4a87-a349-3f7c57952578
+        '404':
+          description: Message not found or still in progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MessageNotFound:
+                  summary: Requested message does not exist
+                  value:
+                    error:
+                      code: 404
+                      message: Message not found
+                    metadata:
+                      request_id: ec35dacd-36f1-4bf7-b138-00b15a3d09dd
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/omni-ai/messages/{message_id}/feedback:
+    post:
+      tags:
+      - Omni AI
+      summary: Submit Feedback
+      description: 'Submit feedback on a finalized assistant message.
+
+
+        Attaches a score and optional comment to a finalized assistant message.
+
+        Feedback is only valid for messages with role `ASSISTANT` that have
+
+        reached a terminal outcome.'
+      operationId: submit_feedback
+      parameters:
+      - name: message_id
+        in: path
+        description: Finalized assistant message to rate
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFeedbackRequest'
+        required: true
+      responses:
+        '200':
+          description: Feedback recorded
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/CreateFeedbackResponse'
+                type: object
+              examples:
+                FeedbackRecorded:
+                  summary: Feedback accepted and stored
+                  value:
+                    data:
+                      created_at: 2026-04-23 16:09:51.746912+00:00
+                      feedback_id: 019dbb1a-d782-7f42-8dd8-a1a7ca5d48e3
+                    metadata:
+                      request_id: 372a359a-fd4f-4c69-8f11-d80831aa5f23
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MalformedJsonSyntax:
+                  summary: Malformed JSON payload
+                  value:
+                    error:
+                      code: 400
+                      message: 'Failed to parse the request body as JSON: trailing comma at line 3 column 1'
+                    metadata:
+                      request_id: 289d4f75-2220-4cbb-97cd-f0a64a87d470
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: 31d1fdeb-3fc6-4ded-b647-429ca7e79ffa
+        '422':
+          description: Malformed request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                PayloadMissingScore:
+                  summary: Missing required score field in JSON body
+                  value:
+                    error:
+                      code: 422
+                      message: 'Failed to deserialize the JSON body into the target type: missing field `score` at line 3 column 1'
+                    metadata:
+                      request_id: cbe190c1-b260-4016-99c9-c507e923a2a5
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/omni-ai/responses/{response_id}:
+    get:
+      tags:
+      - Omni AI
+      summary: Get Response By ID
+      description: 'Poll a response for assistant output.
+
+
+        Returns the current snapshot of an in-progress or completed response.
+
+        While the status is `queued` or `running`, the content may be partial and
+
+        may include `thinking` parts. Poll this endpoint periodically until the
+
+        status reaches a terminal value (`succeeded`, `failed`, or `canceled`).
+
+
+        Once terminal, the finalized assistant message is available in thread
+
+        history via `GET /omni-ai/threads/{thread_id}/messages`.'
+      operationId: get_response_by_id
+      parameters:
+      - name: response_id
+        in: path
+        description: Response identifier (returned by create thread/message)
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: account_id
+        in: query
+        description: Account ID for the request
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Current response snapshot with status and partial content
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Response'
+                type: object
+              examples:
+                ResponseSnapshot:
+                  summary: Succeeded response with assistant output
+                  value:
+                    data:
+                      content:
+                        parts:
+                        - text: '[AAPL](ticker:AAPL) is currently trading at ...'
+                          type: text
+                        - thoughts:
+                          - Fetching current market data for AAPL...
+                          type: thinking
+                      id: 019dbafd-db54-7523-a412-ec9195cc5d99
+                      output_message_id: 019dbafd-db61-73a0-8bd9-d4034d132f81
+                      status: succeeded
+                      thread_id: 019dbafd-db54-7523-a412-ec8a292246ad
+                      user_message_id: 019dbafd-db56-78a2-8a91-d54a39f44174
+                    metadata:
+                      request_id: abc16101-2cbc-475a-84ef-98c8c588dcbb
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MissingAccountId:
+                  summary: Required account_id query parameter is missing
+                  value:
+                    error:
+                      code: 400
+                      message: 'Failed to deserialize query string: missing field `account_id`'
+                    metadata:
+                      request_id: f5acc83c-57e7-4966-a699-17a9b552199b
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: b2d2d764-61f9-41c4-91c8-dd4366fc35c8
+        '404':
+          description: Response not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                ResponseNotFound:
+                  summary: Requested response does not exist
+                  value:
+                    error:
+                      code: 404
+                      message: Response not found
+                    metadata:
+                      request_id: e232b453-b4a9-4594-a56f-85c1e62ef40f
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    delete:
+      tags:
+      - Omni AI
+      summary: Cancel Response
+      description: 'Cancel a response.
+
+
+        Requests cancellation of a queued or running response. If the response has
+
+        already reached a terminal status, this is an idempotent success. A
+
+        canceled turn still produces a final assistant message with outcome
+
+        `canceled` in the thread history.'
+      operationId: cancel_response
+      parameters:
+      - name: response_id
+        in: path
+        description: Response identifier to cancel
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: account_id
+        in: query
+        description: Account ID for the request
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Cancellation accepted (idempotent)
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/CancelResponsePayload'
+                type: object
+              examples:
+                CancellationResult:
+                  summary: Response cancellation result
+                  value:
+                    data:
+                      canceled: false
+                    metadata:
+                      request_id: fa26a786-f5d3-48b0-80eb-778e17af4964
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MissingAccountId:
+                  summary: Required account_id query parameter is missing
+                  value:
+                    error:
+                      code: 400
+                      message: 'Failed to deserialize query string: missing field `account_id`'
+                    metadata:
+                      request_id: 10f877f8-130b-4f02-b40a-1b6ab5d8acdf
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: 1c610eec-b873-4092-93aa-f14b6f501e4b
+        '404':
+          description: Response not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                ResponseNotFound:
+                  summary: Requested response does not exist
+                  value:
+                    error:
+                      code: 404
+                      message: Response not found
+                    metadata:
+                      request_id: a5bc6ea6-1b72-4f31-bb7d-2bd57151decc
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/omni-ai/threads:
+    get:
+      tags:
+      - Omni AI
+      summary: Get Threads
+      description: 'List conversation threads.
+
+
+        Returns thread metadata ordered by most recently created first. Use
+
+        `page_size` and `page_token` for pagination. Thread objects contain only
+
+        metadata (title, timestamps) — use the messages endpoint for conversation
+
+        history.'
+      operationId: get_threads
+      parameters:
+      - name: account_id
+        in: query
+        description: Account ID for the request
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: page_size
+        in: query
+        description: The number of items to return per page. Only used when page_token is not provided.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 100
+          maximum: 100
+          minimum: 1
+      - name: page_token
+        in: query
+        description: Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored.
+        required: false
+        schema:
+          type: string
+          format: byte
+          description: Base64URL-encoded pagination token
+        example: eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=
+      responses:
+        '200':
+          description: Paginated list of thread metadata
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/ThreadList'
+                type: object
+              examples:
+                ThreadsList:
+                  summary: Single thread in list response
+                  value:
+                    data:
+                    - created_at: 2026-04-23 15:15:54.929830+00:00
+                      id: 019dbae9-73b3-7fe0-bd14-25fe57e91475
+                      title: What is current price of AAPL?
+                      updated_at: 2026-04-23 15:15:54.929830+00:00
+                    metadata:
+                      request_id: eb95e1b8-d245-41b1-bbd0-cc1073e68bfd
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MissingAccountId:
+                  summary: Required account_id query parameter is missing
+                  value:
+                    error:
+                      code: 400
+                      message: 'Failed to deserialize query string: missing field `account_id`'
+                    metadata:
+                      request_id: 3d8aa540-5f00-4efe-bf63-e55ee65ac14b
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - Omni AI
+      summary: Create Thread
+      description: "Create a new conversation thread.\n\nAtomically creates a new thread and submits the first user turn. The\nresponse contains a `response_id` that should be polled via\n`GET /omni-ai/responses/{response_id}` for assistant output.\n\nTwo creation modes are supported:\n- **instant** — provide `text` with a natural-language prompt.\n- **deep_insights** — provide a `target` ticker and optional `thesis`\n  for long-form research."
+      operationId: create_thread
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateThreadRequest'
+        required: true
+      responses:
+        '200':
+          description: Thread created. Poll the returned `response_id` for assistant output.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/CreateThreadResponse'
+                type: object
+              examples:
+                ThreadCreated:
+                  summary: Thread created successfully
+                  value:
+                    data:
+                      response_id: 019dbae9-73b4-7760-a947-8b4bcab57c49
+                      thread_id: 019dbae9-73b3-7fe0-bd14-25fe57e91475
+                      user_message_id: 019dbae9-73b8-75b2-9c06-ac348927696d
+                    metadata:
+                      request_id: f7a9ad4d-753a-403e-aa0e-ca151f991a81
+        '400':
+          description: Invalid request (missing required fields or invalid mode)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MissingInstantText:
+                  summary: text is required in instant mode
+                  value:
+                    error:
+                      code: 400
+                      message: text is required for instant mode
+                    metadata:
+                      request_id: c075d493-8499-40e3-8ce1-411e205f0380
+        '422':
+          description: Malformed request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                PayloadMissingType:
+                  summary: Missing required `type` field in JSON body
+                  value:
+                    error:
+                      code: 422
+                      message: 'Failed to deserialize the JSON body into the target type: missing field `type` at line 3 column 1'
+                    metadata:
+                      request_id: 625523fe-02ba-4a74-8544-81f43f204b59
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/omni-ai/threads/{thread_id}:
+    get:
+      tags:
+      - Omni AI
+      summary: Get Thread By ID
+      description: 'Get a specific thread.
+
+
+        Returns metadata (title, timestamps) for a single thread. Does not include
+
+        messages — use `GET /omni-ai/threads/{thread_id}/messages` for conversation
+
+        history.'
+      operationId: get_thread_by_id
+      parameters:
+      - name: thread_id
+        in: path
+        description: Thread identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: account_id
+        in: query
+        description: Account ID for the request
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Thread metadata
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Thread'
+                type: object
+              examples:
+                ThreadMetadata:
+                  summary: Thread metadata for a single thread
+                  value:
+                    data:
+                      created_at: 2026-04-23 15:15:54.929830+00:00
+                      id: 019dbae9-73b3-7fe0-bd14-25fe57e91475
+                      title: What is current price of AAPL?
+                      updated_at: 2026-04-23 15:15:54.929830+00:00
+                    metadata:
+                      request_id: 5683a394-6dd1-4843-8591-f102ced2e636
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MissingAccountId:
+                  summary: Required account_id query parameter is missing
+                  value:
+                    error:
+                      code: 400
+                      message: 'Failed to deserialize query string: missing field `account_id`'
+                    metadata:
+                      request_id: e949291a-3817-4e72-8298-90420c86e6be
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: 31d1fdeb-3fc6-4ded-b647-429ca7e79ffa
+        '404':
+          description: Thread not found or not owned by this user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                ThreadNotFound:
+                  summary: Thread does not exist for this account/user
+                  value:
+                    error:
+                      code: 404
+                      message: Thread not found
+                    metadata:
+                      request_id: f1556e8f-a7aa-43d3-b7d1-2229e266ada7
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/omni-ai/threads/{thread_id}/messages:
+    get:
+      tags:
+      - Omni AI
+      summary: Get Messages
+      description: 'List finalized messages in a thread.
+
+
+        Returns the latest page of **finalized** messages by default, with messages
+
+        within each page ordered chronologically. Messages from in-progress
+
+        assistant turns are excluded — use
+
+        `GET /omni-ai/threads/{thread_id}/response` or
+
+        `GET /omni-ai/responses/{response_id}` for live output.
+
+
+        If the last finalized message has role `USER`, an active response likely
+
+        exists and should be polled separately.'
+      operationId: get_messages
+      parameters:
+      - name: thread_id
+        in: path
+        description: Thread to list messages for
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: account_id
+        in: query
+        description: Account ID for the request
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: page_size
+        in: query
+        description: The number of items to return per page. Only used when page_token is not provided.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 100
+          maximum: 100
+          minimum: 1
+      - name: page_token
+        in: query
+        description: Token for retrieving the next or previous page of results. Contains encoded pagination state; when provided, page_size is ignored.
+        required: false
+        schema:
+          type: string
+          format: byte
+          description: Base64URL-encoded pagination token
+        example: eyJvZmZzZXQiOjEwMCwibGltaXQiOjEwMH0=
+      responses:
+        '200':
+          description: Paginated list of finalized messages; latest page by default, chronological within each page
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/MessageList'
+                type: object
+              examples:
+                ThreadMessages:
+                  summary: User and assistant finalized messages
+                  value:
+                    data:
+                    - content:
+                        parts:
+                        - text: How are the markets doing today?
+                          type: text
+                      created_at: 2026-04-16 09:20:17.274943+00:00
+                      id: 019d9597-5983-7691-8281-7ce264127740
+                      outcome: completed
+                      role: USER
+                      seq: 1
+                      thread_id: 019d9597-597c-7571-a0c9-a49c0e51f6eb
+                    - content:
+                        parts:
+                        - text: "**Pre-market as of 7:30 AM ET**\n\n ..."
+                          type: text
+                        - payload:
+                            actionButtons:
+                            - buttonId: btn_followup_0
+                              label: Check my positions
+                              prompt:
+                                prompt: What are my current positions?
+                          type: suggested_actions
+                      created_at: 2026-04-16 09:20:17.309212+00:00
+                      id: 019d9597-599c-7132-a7de-e5c21eaaab77
+                      outcome: completed
+                      role: ASSISTANT
+                      seq: 2
+                      thread_id: 019d9597-597c-7571-a0c9-a49c0e51f6eb
+                    metadata:
+                      request_id: 664c0f85-cdab-4fac-afe3-8ecc0148cd4a
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: e3e4df36-1c33-45b1-b06d-832c80adbbf6
+        '404':
+          description: Thread not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                ThreadNotFound:
+                  summary: Requested thread does not exist
+                  value:
+                    error:
+                      code: 404
+                      message: Thread not found
+                    metadata:
+                      request_id: a1c173e9-4fc0-44d0-b89f-4ac67ca45032
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+    post:
+      tags:
+      - Omni AI
+      summary: Create Message
+      description: 'Continue an existing conversation thread.
+
+
+        Appends a new user message to the thread and starts an assistant response.
+
+        Only one response may be active per thread at a time — if the previous turn
+
+        is still in progress, this endpoint returns **409 Conflict**. Wait for the
+
+        active response to reach a terminal status before submitting the next turn.
+
+
+        Poll the returned `response_id` via `GET /omni-ai/responses/{response_id}`
+
+        for assistant output.'
+      operationId: create_message
+      parameters:
+      - name: thread_id
+        in: path
+        description: Thread to continue
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMessageRequest'
+        required: true
+      responses:
+        '200':
+          description: Message accepted. Poll the returned `response_id` for assistant output.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/CreateMessageResponse'
+                type: object
+              examples:
+                MessageAccepted:
+                  summary: Thread message accepted successfully
+                  value:
+                    data:
+                      response_id: 019dbaec-8dd3-7fa3-89d0-5303609f125f
+                      thread_id: 019dbae9-73b3-7fe0-bd14-25fe57e91475
+                      user_message_id: 019dbaec-8dd4-7f91-bce2-3ec8fba79eb7
+                    metadata:
+                      request_id: 48775400-61f4-4c6c-bc6d-8f4996c571c7
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                MalformedJsonSyntax:
+                  summary: Malformed JSON payload
+                  value:
+                    error:
+                      code: 400
+                      message: 'Failed to parse the request body as JSON: EOF while parsing an object at line 3 column 0'
+                    metadata:
+                      request_id: 8cf61bb3-a8c6-4f3e-abe8-5a5327001b55
+        '409':
+          description: Thread already has an active response — wait for it to complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                ActiveResponseConflict:
+                  summary: Thread already has an active response
+                  value:
+                    error:
+                      code: 409
+                      message: thread already has an active response
+                    metadata:
+                      request_id: 7b34ad9b-e09a-40d1-aab8-2185a8df5a31
+        '422':
+          description: Malformed request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                PayloadMissingAccountId:
+                  summary: Missing required account_id field in JSON body
+                  value:
+                    error:
+                      code: 422
+                      message: 'Failed to deserialize the JSON body into the target type: missing field `account_id` at line 3 column 3'
+                    metadata:
+                      request_id: 9fbd975d-be1e-4710-9004-1f54d0d4dfb6
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /v1/omni-ai/threads/{thread_id}/response:
+    get:
+      tags:
+      - Omni AI
+      summary: Get Thread Response
+      description: 'Get the active response for a thread.
+
+
+        Convenience endpoint to look up the currently active response for a thread
+
+        without knowing the `response_id`. Useful when reloading a thread whose
+
+        last finalized message is a `USER` message — this indicates an assistant
+
+        turn is likely in progress.
+
+
+        Returns **404** if no active response exists (the thread is idle).'
+      operationId: get_thread_response
+      parameters:
+      - name: thread_id
+        in: path
+        description: Thread to check for active response
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: account_id
+        in: query
+        description: Account ID for the request
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Current response snapshot or idle thread
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/BaseResponse'
+                - type: object
+                  required:
+                  - data
+                  properties:
+                    data:
+                      oneOf:
+                      - $ref: '#/components/schemas/Response'
+                      - type: 'null'
+                type: object
+              examples:
+                ActiveThreadResponse:
+                  summary: Currently running response for a thread
+                  value:
+                    data:
+                      content:
+                        parts:
+                        - text: ''
+                          type: text
+                        - thoughts:
+                          - '[1/4] Running parallel analysis on AAPL -- fundamentals, technicals, sentiment, and macro...'
+                          type: thinking
+                      id: 019dbb03-cf23-74e1-9c31-ef0136ff7fed
+                      output_message_id: 019dbb03-cf32-74d1-906b-a148d4be3da9
+                      status: running
+                      thread_id: 019dbb03-cf22-7da0-a663-f51c756efa07
+                      user_message_id: 019dbb03-cf24-7b03-8286-5bfc2411b052
+                    metadata:
+                      request_id: 927a85a6-b11b-4cc5-a2cd-3f46ae64e85d
+                IdleThread:
+                  summary: Thread is idle
+                  value:
+                    data: null
+                    metadata:
+                      request_id: e0f1c3a2-5b6d-4f8e-9c1a-2d3e4f5b6c7d
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                Forbidden:
+                  summary: Caller does not have permission
+                  value:
+                    error:
+                      code: 403
+                      message: The caller does not have permission to execute the specified operation
+                    metadata:
+                      request_id: ef354353-f9ca-4d0c-a8ef-4566a5072434
+        '404':
+          description: Thread not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                ThreadNotFound:
+                  summary: Thread doesn't exist
+                  value:
+                    error:
+                      code: 404
+                      message: Thread not found
+                    metadata:
+                      request_id: dadd546f-eb7e-4b78-8d36-7d0a70b8a70d
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    EntitlementAgreementKey:
+      type: string
+      description: Stable entitlement agreement family key.
+      enum:
+      - omni_account_data_access
+    StructuredAction:
+      oneOf:
+      - type: object
+        title: PrefillOrder
+        description: Prefill an order ticket for user confirmation
+        required:
+        - prefill_order
+        properties:
+          prefill_order:
+            $ref: '#/components/schemas/PrefillOrderAction'
+            description: Prefill an order ticket for user confirmation
+      - type: object
+        title: OpenChart
+        description: Open a chart for a symbol
+        required:
+        - open_chart
+        properties:
+          open_chart:
+            $ref: '#/components/schemas/OpenChartAction'
+            description: Open a chart for a symbol
+      - type: object
+        title: OpenScreener
+        description: Open a stock screener with filters
+        required:
+        - open_screener
+        properties:
+          open_screener:
+            $ref: '#/components/schemas/OpenScreenerAction'
+            description: Open a stock screener with filters
+      - type: object
+        title: OpenEntitlementConsent
+        description: Open entitlement consent flow
+        required:
+        - open_entitlement_consent
+        properties:
+          open_entitlement_consent:
+            $ref: '#/components/schemas/OpenEntitlementConsentAction'
+            description: Open entitlement consent flow
+      description: 'Structured actions that Omni AI can return to clients.
+
+
+        These actions provide machine-readable instructions for the client to execute,
+
+        such as prefilling an order ticket, opening a chart, or navigating to a route.'
+    ContentPartSuggestedActionsPayload:
+      type: object
+      description: Suggested actions payload content part.
+      required:
+      - payload
+      properties:
+        payload:
+          $ref: '#/components/schemas/SuggestedActionsPayload'
+    TrailingOffsetType:
+      type: string
+      description: Trailing offset type for trailing stop orders.
+      enum:
+      - PRICE
+      - BPS
+    ResponseMetadata:
+      type: object
+      description: 'Metadata for the response. This will always contain a request ID which can be used to identify
+
+        the request to Clear Street for tracing, and optionally may include pagination data.'
+      required:
+      - request_id
+      properties:
+        next_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the next page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Pagination. Included if this was a GET (list) response
+          example: '1'
+          minimum: 0
+        previous_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the previous page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        request_id:
+          type: string
+          description: A unique ID for this request, generated upon ingestion of the request.
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of items available (not just in this page).
+          example: '42'
+          minimum: 0
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total number of pages available.
+          example: '5'
+          minimum: 0
+    ChartPoint:
+      type: object
+      description: Single chart coordinate.
+      required:
+      - x
+      - y
+      properties:
+        x:
+          type: string
+        y:
+          type: number
+          format: double
+    CreateThreadRequest:
+      type: object
+      description: Create-thread request body.
+      required:
+      - account_id
+      - type
+      properties:
+        account_id:
+          type: integer
+          format: int64
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Capability'
+        target:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/DeepInsightsTarget'
+        text:
+          type:
+          - string
+          - 'null'
+        thesis:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/ConversationMode'
+      example:
+        account_id: 19816
+        text: What changed in NVDA today?
+        type: instant
+    CreateEntitlementsRequest:
+      type: object
+      required:
+      - agreement_id
+      - entitlement_codes
+      - account_ids
+      properties:
+        account_ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+        agreement_id:
+          type: string
+        entitlement_codes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntitlementCode'
+      example:
+        account_ids:
+        - 100019
+        - 100021
+        agreement_id: 01JZ0000000000000000000000
+        entitlement_codes:
+        - omni.account_data
+    ErrorStatus:
+      type: object
+      description: Shared sanitized error payload.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+        details:
+          type:
+          - object
+          - 'null'
+          description: When a null/undefined value is observed, it indicates it does not apply.
+        message:
+          type: string
+    PromptButtonAction:
+      type: object
+      description: Prompt-style button behavior.
+      required:
+      - prompt
+      properties:
+        prompt:
+          type: string
+          description: Prompt text to submit as the next user turn.
+    PrefillModifyOrderAction:
+      type: object
+      description: Modify-order prefill action.
+      required:
+      - orders
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrefillModifyOrderRequest'
+          description: Modification targets and deltas needed to construct replace-order API requests.
+      example:
+        action_type: MODIFY
+        orders:
+        - account_id: 100019
+          limit_price: '178.00'
+          order_id: 019dfd73-8b49-7d21-8d62-a736fc4199d2
+    Side:
+      type: string
+      description: Side of an order
+      enum:
+      - BUY
+      - SELL
+      - SELL_SHORT
+      - OTHER
+    DataChart:
+      type: object
+      description: Chart represented by explicit data series.
+      properties:
+        series:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChartSeries'
+    CreateThreadResponse:
+      type: object
+      description: Response payload for thread creation.
+      required:
+      - response_id
+      - thread_id
+      - user_message_id
+      properties:
+        response_id:
+          type: string
+          format: uuid
+        thread_id:
+          type: string
+          format: uuid
+        user_message_id:
+          type: string
+          format: uuid
+    Capability:
+      type: string
+      description: 'Capability allowlist for structured actions.
+
+
+        Clients declare which capabilities they support when starting a run.
+
+        Omni AI will only emit structured actions that match the declared capabilities.'
+      enum:
+      - PREFILL_ORDER
+      - OPEN_CHART
+      - OPEN_SCREENER
+      - OPEN_ENTITLEMENT_CONSENT
+    ScreenerFilter:
+      type: object
+      description: A single filter criterion for the screener.
+      required:
+      - field
+      - operator
+      - value
+      properties:
+        field:
+          type: string
+          description: Field to filter on (e.g., "market_cap", "sector", "price")
+          example: market_cap
+        operator:
+          type: string
+          description: Comparison operator (e.g., "eq", "gte", "lte", "in")
+          example: gte
+        value:
+          type: object
+          description: Filter value
+      example:
+        field: market_cap
+        operator: gte
+        value: 10000000000
+    PrefillNewOrderAction:
+      type: object
+      description: New-order prefill action.
+      required:
+      - orders
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewOrderRequest'
+          description: Orders to prefill using the same shape accepted by the orders API.
+      example:
+        action_type: NEW
+        orders:
+        - limit_price: '150.00'
+          order_type: LIMIT
+          quantity: '100'
+          side: BUY
+          symbol: AAPL
+          time_in_force: DAY
+    StructuredActionButtonAction:
+      type: object
+      description: Structured-action button behavior.
+      properties:
+        actionId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'UUID of a `structured_action` content part in the same message.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+    ResponseContent:
+      type: object
+      description: Dynamic response content container. May include thinking parts.
+      required:
+      - parts
+      properties:
+        parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseContentPart'
+    DeepInsightsTargetType:
+      type: string
+      description: Deep-insights target type. Launch supports ticker-only.
+      enum:
+      - ticker
+    Response:
+      type: object
+      description: Dynamic pollable response.
+      required:
+      - id
+      - status
+      - thread_id
+      - user_message_id
+      properties:
+        content:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/ResponseContent'
+            description: When a null/undefined value is observed, it indicates that there is no available data.
+        error:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/ErrorStatus'
+            description: When a null/undefined value is observed, it indicates it does not apply.
+        id:
+          type: string
+          format: uuid
+        output_message_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: When a null/undefined value is observed, it indicates it does not apply.
+        status:
+          $ref: '#/components/schemas/ResponseStatus'
+        thread_id:
+          type: string
+          format: uuid
+        user_message_id:
+          type: string
+          format: uuid
+    ContentPartChartPayload:
+      type: object
+      description: Chart payload content part.
+      required:
+      - payload
+      properties:
+        payload:
+          $ref: '#/components/schemas/ChartPayload'
+    MessageOutcome:
+      type: string
+      description: Immutable terminal outcome for a finalized assistant message.
+      enum:
+      - completed
+      - errored
+      - canceled
+    OpenChartAction:
+      type: object
+      description: Action to open a chart for a symbol.
+      required:
+      - symbol
+      properties:
+        extras:
+          type: object
+          description: 'Additional chart configuration (indicators, overlays, etc.)
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+        symbol:
+          type: string
+          description: Trading symbol to chart
+          example: AAPL
+        timeframe:
+          type:
+          - string
+          - 'null'
+          description: 'Chart timeframe (e.g., "1D", "1W", "1M", "3M", "1Y", "5Y")
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: 1M
+      example:
+        symbol: AAPL
+        timeframe: 1M
+    ChartPayload:
+      type: object
+      description: Typed chart payload rendered inline in assistant content.
+      required:
+      - chartId
+      properties:
+        actionButtons:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionButton'
+          description: Buttons associated with this chart.
+        chartId:
+          type: string
+          description: Stable chart identifier scoped to the content part.
+        dataChart:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/DataChart'
+            description: 'Explicit series-driven chart definition.
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+      example:
+        actionButtons:
+        - buttonId: btn_compare_aapl_spy
+          label: Compare AAPL vs SPY
+          prompt:
+            prompt: Compare AAPL vs SPY over 1 year
+        chartId: chart_revenue_growth
+        dataChart:
+          series:
+          - name: Revenue
+            points:
+            - x: Q1
+              y: 100.0
+            - x: Q2
+              y: 150.0
+    EntitlementAgreementResource:
+      type: object
+      required:
+      - agreement_id
+      - agreement_key
+      - version
+      - title
+      - document_content
+      - document_sha256
+      - entitlement_codes
+      properties:
+        agreement_id:
+          type: string
+        agreement_key:
+          $ref: '#/components/schemas/EntitlementAgreementKey'
+        document_content:
+          type: string
+        document_sha256:
+          type: string
+        entitlement_codes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntitlementCode'
+        title:
+          type: string
+        version:
+          type: integer
+          format: int32
+    ResponseContentPart:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartTextPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - text
+        title: ContentPartText
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartThinkingPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - thinking
+        title: ContentPartThinking
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartStructuredActionPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - structured_action
+        title: ContentPartStructuredAction
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartChartPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - chart
+        title: ContentPartChart
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartSuggestedActionsPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - suggested_actions
+        title: ContentPartSuggestedActions
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartCustomPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - custom
+        title: ContentPartCustom
+      description: Dynamic content part visible on a pollable response.
+    NewOrderRequest:
+      type: object
+      description: Request to submit a new order (PlaceOrderRequest from spec)
+      required:
+      - side
+      - quantity
+      - order_type
+      - time_in_force
+      properties:
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The timestamp when the order should expire (UTC). Required when time_in_force is GOOD_TILL_DATE.
+          example: 2025-10-15 16:00:00+00:00
+        extended_hours:
+          type:
+          - boolean
+          - 'null'
+          description: Allow trading outside regular trading hours. Some brokers disallow options outside RTH.
+        id:
+          type:
+          - string
+          - 'null'
+          description: Optional client-provided unique ID (idempotency). Required to be unique per account.
+          example: my-ref-id-20251001-002
+          maxLength: 64
+        instrument_id:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/InstrumentIdOrSymbol'
+            description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol). Either `symbol` or `instrument_id` must be provided.
+        limit_offset:
+          type:
+          - string
+          - 'null'
+          description: Limit offset for trailing stop-limit orders (signed)
+          example: '0.50'
+        limit_price:
+          type:
+          - string
+          - 'null'
+          description: Limit price (required for LIMIT and STOP_LIMIT orders)
+          example: '48.00'
+        order_type:
+          $ref: '#/components/schemas/RequestOrderType'
+          description: Type of order
+        quantity:
+          type: string
+          description: 'Quantity to trade. For COMMON_STOCK: shares (may be fractional if supported).
+
+            For OPTION (single-leg): contracts (must be an integer)'
+          example: '1'
+        side:
+          $ref: '#/components/schemas/Side'
+          description: Side of the order
+        stop_price:
+          type:
+          - string
+          - 'null'
+          description: Stop price (required for STOP and STOP_LIMIT orders)
+          example: '52.00'
+        symbol:
+          type:
+          - string
+          - 'null'
+          description: 'Trading symbol. For equities, use the ticker symbol (e.g., "TSLA").
+
+            For options, use the OSI symbol (e.g., "TSLA  250117C00190000").
+
+            Either `symbol` or `instrument_id` must be provided.'
+          example: TSLA
+        time_in_force:
+          $ref: '#/components/schemas/RequestTimeInForce'
+          description: Time in force
+        trailing_offset:
+          type:
+          - string
+          - 'null'
+          description: Trailing offset amount (required for trailing orders)
+          example: '2.00'
+        trailing_offset_type:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/TrailingOffsetType'
+            description: Trailing offset type (PRICE or PERCENT_BPS)
+      example:
+        order_type: MARKET
+        quantity: '1'
+        side: BUY
+        symbol: TSLA
+        time_in_force: DAY
+    Thread:
+      type: object
+      description: Thread metadata returned by list/get thread endpoints.
+      required:
+      - id
+      - title
+      - created_at
+      - updated_at
+      properties:
+        created_at:
+          type: string
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        updated_at:
+          type: string
+    OpenScreenerAction:
+      type: object
+      description: Action to open a stock screener with filters.
+      required:
+      - filters
+      properties:
+        columns:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: 'Optional field/column selection for screener results.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScreenerFilter'
+          description: Filter criteria for the screener
+        page_size:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: 'Optional page size.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+        sort_by:
+          type:
+          - string
+          - 'null'
+          description: 'Optional sort field for screener rows.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+        sort_direction:
+          type:
+          - string
+          - 'null'
+          description: 'Optional sort direction (`ASC` or `DESC`).
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+      example:
+        filters:
+        - field: sector
+          operator: eq
+          value: Technology
+        - field: market_cap
+          operator: gte
+          value: 10000000000
+    RequestTimeInForce:
+      type: string
+      description: Strict time-in-force enum for order submission requests.
+      enum:
+      - DAY
+      - GOOD_TILL_CANCEL
+      - IMMEDIATE_OR_CANCEL
+      - FILL_OR_KILL
+      - GOOD_TILL_DATE
+      - AT_THE_OPENING
+      - AT_THE_CLOSE
+      - GOOD_TILL_CROSSING
+      - GOOD_THROUGH_CROSSING
+      - AT_CROSSING
+    EntitlementResourceList:
+      type: array
+      items:
+        $ref: '#/components/schemas/EntitlementResource'
+    ActionButton:
+      type: object
+      description: Button metadata shared by chart and suggested-actions payloads.
+      required:
+      - buttonId
+      - label
+      properties:
+        buttonId:
+          type: string
+          description: Stable button identifier within the content part.
+        label:
+          type: string
+          description: User-visible label.
+        prompt:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/PromptButtonAction'
+            description: 'Follow-up prompt to submit as the next user message.
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+        structuredAction:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/StructuredActionButtonAction'
+            description: 'Structured action in the same message to execute on click.
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+    ContentPartCustomPayload:
+      type: object
+      description: Escape-hatch custom payload content part.
+      required:
+      - payload
+      properties:
+        payload:
+          type: object
+    CreateFeedbackResponse:
+      type: object
+      required:
+      - created_at
+      properties:
+        created_at:
+          type: string
+        feedback_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: When a null/undefined value is observed, it indicates that there is no available data.
+    ChartSeries:
+      type: object
+      description: Named data series within a chart.
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        points:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChartPoint'
+    ConversationMode:
+      type: string
+      description: Thread creation mode.
+      enum:
+      - instant
+      - deep_insights
+    ApiError:
+      type: object
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
+
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
+    ContentPartTextPayload:
+      type: object
+      description: Text content part.
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    CreateMessageRequest:
+      type: object
+      description: Continue-thread message creation request body.
+      required:
+      - account_id
+      - text
+      properties:
+        account_id:
+          type: integer
+          format: int64
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Capability'
+        text:
+          type: string
+      example:
+        account_id: 19816
+        text: Compare that to AMD.
+    CancelResponsePayload:
+      type: object
+      required:
+      - canceled
+      properties:
+        canceled:
+          type: boolean
+    PrefillOrderAction:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/PrefillNewOrderAction'
+          description: Create one or more new orders.
+        - type: object
+          required:
+          - action_type
+          properties:
+            action_type:
+              type: string
+              enum:
+              - NEW
+        title: PrefillNewOrderAction
+        description: Create one or more new orders.
+      - allOf:
+        - $ref: '#/components/schemas/PrefillCancelOrderAction'
+          description: Cancel one or more existing orders.
+        - type: object
+          required:
+          - action_type
+          properties:
+            action_type:
+              type: string
+              enum:
+              - CANCEL
+        title: PrefillCancelOrderAction
+        description: Cancel one or more existing orders.
+      - allOf:
+        - $ref: '#/components/schemas/PrefillModifyOrderAction'
+          description: Modify one or more existing orders.
+        - type: object
+          required:
+          - action_type
+          properties:
+            action_type:
+              type: string
+              enum:
+              - MODIFY
+        title: PrefillModifyOrderAction
+        description: Modify one or more existing orders.
+      description: 'Action to prefill order details for user confirmation.
+
+
+        The user must review and authorize the order before submission to the trading API.
+
+        This action provides parsed order data that can be used to prefill an order ticket UI
+
+        or submitted directly via the orders API after user confirmation.'
+    EntitlementAgreementResourceList:
+      type: array
+      items:
+        $ref: '#/components/schemas/EntitlementAgreementResource'
+    PrefillModifyOrderRequest:
+      allOf:
+      - oneOf:
+        - type: object
+          description: 'Request to replace (modify) an existing order
+
+
+            At least one field must be provided.'
+          properties:
+            limit_price:
+              type:
+              - string
+              - 'null'
+              description: New limit price for the order
+              example: '49.00'
+            quantity:
+              type:
+              - string
+              - 'null'
+              description: New quantity for the order
+              example: '1'
+            stop_price:
+              type:
+              - string
+              - 'null'
+              description: New stop price for the order
+              example: '52.00'
+          example:
+            limit_price: '49.00'
+        description: Fields to replace, flattened to match the replace-order request body.
+      - type: object
+        required:
+        - order_id
+        - account_id
+        properties:
+          account_id:
+            $ref: '#/components/schemas/i64'
+            description: Account ID that owns the order.
+          order_id:
+            type: string
+            description: Order ID to modify.
+      description: 'One order modification emitted as part of an Omni prefill action.
+
+
+        The replace-order REST endpoint carries `account_id` and `order_id` in its
+
+        path and accepts `ReplaceOrderRequest` as its body. A structured action has
+
+        no request path, so this type combines the target identifiers with the body
+
+        fields the frontend needs to construct that request. `request` is flattened
+
+        so the deltas are not nested under a second `request` object in the emitted
+
+        structured-action JSON.'
+    CancelOrderRequest:
+      type: object
+      description: 'Request to cancel an existing order
+
+
+        Note: In the API, order cancellation is done via DELETE request without a body.
+
+        The order_id and account_id come from the URL path parameters.'
+      required:
+      - order_id
+      - account_id
+      properties:
+        account_id:
+          $ref: '#/components/schemas/i64'
+          description: Account ID (from path parameter)
+        order_id:
+          type: string
+          description: Order ID to cancel (from path parameter)
+    CreateMessageResponse:
+      type: object
+      description: Response payload for continuing a thread with a new message.
+      required:
+      - response_id
+      - thread_id
+      - user_message_id
+      properties:
+        response_id:
+          type: string
+          format: uuid
+        thread_id:
+          type: string
+          format: uuid
+        user_message_id:
+          type: string
+          format: uuid
+    Message:
+      type: object
+      description: Final immutable message.
+      required:
+      - id
+      - thread_id
+      - created_at
+      - seq
+      - role
+      - outcome
+      - content
+      properties:
+        content:
+          $ref: '#/components/schemas/MessageContent'
+        created_at:
+          type: string
+        error:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/ErrorStatus'
+            description: When a null/undefined value is observed, it indicates it does not apply.
+        id:
+          type: string
+          format: uuid
+        outcome:
+          $ref: '#/components/schemas/MessageOutcome'
+        role:
+          $ref: '#/components/schemas/MessageRole'
+        seq:
+          type: integer
+          format: int64
+        thread_id:
+          type: string
+          format: uuid
+    i64:
+      type: integer
+      format: int64
+    DeepInsightsTarget:
+      type: object
+      description: Deep-insights target payload.
+      required:
+      - type
+      - ticker
+      properties:
+        ticker:
+          type: string
+        type:
+          $ref: '#/components/schemas/DeepInsightsTargetType'
+    MessageRole:
+      type: string
+      description: Finalized message role in the public contract.
+      enum:
+      - USER
+      - ASSISTANT
+    SuggestedActionsPayload:
+      type: object
+      description: Suggested follow-up buttons rendered at the end of an assistant message.
+      properties:
+        actionButtons:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionButton'
+          description: Ordered message-level buttons.
+      example:
+        actionButtons:
+        - buttonId: btn_show_aapl_1y
+          label: Show AAPL over 1 year
+          prompt:
+            prompt: Show AAPL over the last year
+        - buttonId: btn_compare_aapl_spy
+          label: Compare AAPL vs SPY
+          prompt:
+            prompt: Compare AAPL vs SPY over 1 year
+    InstrumentIdOrSymbol:
+      type: string
+      description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
+      minLength: 1
+    BaseResponse:
+      type: object
+      required:
+      - metadata
+      properties:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
+    PrefillCancelOrderAction:
+      type: object
+      description: Cancel-order prefill action.
+      required:
+      - orders
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/CancelOrderRequest'
+          description: Orders to cancel using the same identifiers required by the cancel-order API.
+      example:
+        action_type: CANCEL
+        orders:
+        - account_id: 100019
+          order_id: 019dfd73-8b49-7d21-8d62-a736fc4199d2
+    ResponseStatus:
+      type: string
+      description: Dynamic lifecycle status for a pollable response.
+      enum:
+      - queued
+      - running
+      - succeeded
+      - failed
+      - canceled
+    ThreadList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Thread'
+    ContentPartStructuredActionPayload:
+      type: object
+      description: Structured action content part.
+      required:
+      - action_id
+      - action
+      properties:
+        action:
+          $ref: '#/components/schemas/StructuredAction'
+        action_id:
+          type: string
+          format: uuid
+    MessageList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Message'
+    MessageContent:
+      type: object
+      description: Finalized immutable message content container. Never includes thinking parts.
+      required:
+      - parts
+      properties:
+        parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageContentPart'
+    OpenEntitlementConsentAction:
+      type: object
+      description: Action to open entitlement consent flow for one or more accounts.
+      required:
+      - agreement_key
+      - account_ids
+      - entitlement_codes
+      - reason
+      properties:
+        account_ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+        agreement_key:
+          $ref: '#/components/schemas/EntitlementAgreementKey'
+        entitlement_codes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntitlementCode'
+        reason:
+          type: string
+      example:
+        account_ids:
+        - 100019
+        agreement_key: omni_account_data_access
+        entitlement_codes:
+        - omni.account_data
+        reason: Portfolio analysis requires Omni consent to access account data.
+    EntitlementResource:
+      type: object
+      required:
+      - entitlement_id
+      - account_id
+      - entitlement_code
+      - agreement_id
+      - granted_at
+      properties:
+        account_id:
+          type: integer
+          format: int64
+        agreement_id:
+          type: string
+        entitlement_code:
+          $ref: '#/components/schemas/EntitlementCode'
+        entitlement_id:
+          type: string
+        granted_at:
+          type: string
+    RequestOrderType:
+      type: string
+      description: Strict order-type enum for order submission/replacement requests.
+      enum:
+      - MARKET
+      - LIMIT
+      - STOP
+      - STOP_LIMIT
+      - TRAILING_STOP
+      - TRAILING_STOP_LIMIT
+    CreateFeedbackRequest:
+      type: object
+      required:
+      - account_id
+      - score
+      properties:
+        account_id:
+          type: integer
+          format: int64
+          description: Account ID for the request
+        comment:
+          type: string
+          description: Optional feedback comment
+        metadata:
+          type:
+          - object
+          - 'null'
+          description: Optional metadata
+        score:
+          type: integer
+          format: int32
+          description: Feedback score (-1, 0, +1 or 1-5)
+    DeleteEntitlementResponse:
+      type: object
+      required:
+      - entitlement_id
+      - revoked
+      properties:
+        entitlement_id:
+          type: string
+        revoked:
+          type: boolean
+    ContentPartThinkingPayload:
+      type: object
+      description: Thinking content part shown on dynamic response polling.
+      required:
+      - thoughts
+      properties:
+        thoughts:
+          type: array
+          items:
+            type: string
+    EntitlementCode:
+      type: string
+      description: Stable entitlement code granted by an agreement.
+      enum:
+      - omni.account_data
+    MessageContentPart:
+      oneOf:
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartTextPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - text
+        title: ContentPartText
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartStructuredActionPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - structured_action
+        title: ContentPartStructuredAction
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartChartPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - chart
+        title: ContentPartChart
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartSuggestedActionsPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - suggested_actions
+        title: ContentPartSuggestedActions
+      - allOf:
+        - $ref: '#/components/schemas/ContentPartCustomPayload'
+        - type: object
+          required:
+          - type
+          properties:
+            type:
+              type: string
+              enum:
+              - custom
+        title: ContentPartCustom
+      description: Final immutable content part visible on persisted messages.
+    ErrorDetails:
+      type: array
+      items:
+        type: object
+        additionalProperties: true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

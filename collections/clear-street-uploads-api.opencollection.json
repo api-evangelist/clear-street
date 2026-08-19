@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Uploads API",
+    "version": "0.0.3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Uploads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Insert Upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//api.clearstreet.io/v1/uploads/insert",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Upload the provided CSV file for processing asynchronously. Your file will be uploaded to our servers, and then subsequently processed.\n\nThe columns for a CSV file should match the JSON path dot-notation of the fields available in the <b><a href=\"#operation/trades_insert\">insert trades endpoint</a></b>. For example, the column `side.direction` would be the column header to set the direction of a trade, and the column `instrument.ticker` would set the trade's instrument ticker, etc.\n\nOur <b>[trad"
+        },
+        {
+          "info": {
+            "name": "Create Cancel Upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//api.clearstreet.io/v1/uploads/cancel",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Upload the provided CSV file for processing cancels asynchronously.\n\nExample column headers with associated example values&#58;\n<table>\n<tr><th>account</th><td>100001</td></tr>\n<tr><th>trade_id</th><td>12343</td></tr>\n<tr><th>by_client_id</th><td>false</td></tr>\n</table>\n"
+        },
+        {
+          "info": {
+            "name": "Get Upload By ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "//api.clearstreet.io/v1/uploads/:upload_id",
+            "params": [
+              {
+                "name": "upload_id",
+                "value": "",
+                "type": "path",
+                "description": "upload_id that identifies a previously created upload"
+              }
+            ]
+          },
+          "docs": "Get an existing upload. Use this endpoint when you want to the know the status of a previously created upload.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

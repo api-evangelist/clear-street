@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clear Street Trading Calendar API",
+    "version": "2025-10-31"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Calendar",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Market Hours Calendar.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/calendars/market-hours",
+            "params": [
+              {
+                "name": "date",
+                "value": "2025-10-15",
+                "type": "query",
+                "description": "The date to query market hours for (YYYY-MM-DD). Defaults to today."
+              },
+              {
+                "name": "market",
+                "value": "us_equities",
+                "type": "query",
+                "description": "Market type to query (us_equities, us_options). If omitted, returns all markets."
+              }
+            ]
+          },
+          "docs": "Retrieves comprehensive trading hours including pre-market, regular, and after-hours sessions.\nReturns market status, session times, and next session schedules."
+        },
+        {
+          "info": {
+            "name": "Get Clock",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.clearstreet.com/v1/clock"
+          },
+          "docs": "Returns the current server time in UTC."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
