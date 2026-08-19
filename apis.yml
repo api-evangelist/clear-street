@@ -15,7 +15,7 @@ image: https://clear-street.github.io/docs/assets/logo.png
 url: https://raw.githubusercontent.com/api-evangelist/clear-street/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-08-02'
 modified: '2026-08-02'
 tags:
