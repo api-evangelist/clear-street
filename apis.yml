@@ -20,6 +20,17 @@ created: '2026-08-02'
 modified: '2026-08-02'
 tags:
 - Company
+- Financial-Services
+- Capital Markets
+- Prime Brokerage
+- Trading
+- Brokerage
+- Clearing
+- Market Data
+- Fintech
+- Investing
+tags_raw:
+- Company
 - Financial Services
 - Capital Markets
 - Prime Brokerage
@@ -62,6 +73,10 @@ apis:
   humanURL: https://clear-street.github.io/docs/
   baseURL: https://api.clearstreet.io/v1
   tags:
+  - Post-Trade
+  - Trades
+  - Clearing
+  tags_raw:
   - Post Trade
   - Trades
   - Clearing
@@ -78,6 +93,8 @@ apis:
   humanURL: https://docs.clearstreet.com/
   baseURL: https://api.clearstreet.com
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -104,6 +121,8 @@ apis:
   humanURL: https://docs.clearstreet.com/
   baseURL: https://api.clearstreet.com
   tags:
+  - API Version
+  tags_raw:
   - API version
   properties:
   - type: OpenAPI
@@ -393,6 +412,8 @@ apis:
   humanURL: https://docs.clearstreet.com/
   baseURL: https://api.clearstreet.com
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
