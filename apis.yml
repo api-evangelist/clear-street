@@ -11,6 +11,18 @@ description: 'Clear Street is a New York–based financial technology firm build
   activity stream; and an OAuth-protected remote MCP server for AI agents. First-party SDKs
   ship for Python, TypeScript, Go and Kotlin/Java, alongside a Go CLI (clst) and a published
   set of open Agent Skills.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://clear-street.github.io/docs/assets/logo.png
 url: https://raw.githubusercontent.com/api-evangelist/clear-street/refs/heads/main/apis.yml
 x-type: company
