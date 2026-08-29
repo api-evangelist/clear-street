@@ -660,6 +660,9 @@ apis:
   - type: Webhooks
     url: asyncapi/clear-street-studio-events.yml
 common:
+- type: CapabilityMap
+  url: capabilities/clear-street-capability-edges.yml
+  name: Clear Street Business Capability Map
 - type: AgenticAccess
   url: agentic-access/clear-street-agentic-access.yml
 - type: Website

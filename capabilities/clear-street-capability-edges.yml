@@ -1,0 +1,84 @@
+slug: clear-street
+provider: Clear Street
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 7
+edges:
+- tag: Orders
+  spec_file: clear-street-orders-api-openapi.yml
+  capability_id: BC-1370.30
+  capability_id_l1: BC-1370
+  capability_name: Trading Order Management
+  confidence: 0.9
+  evidence: POST /accounts/{account_id}/orders createOrder Create order; DELETE .../orders/{order_id}
+    deleteOrder; GET /v1/accounts/{account_id}/executions get_executions; schemas SorStrategy, TimeInForce,
+    Destination
+  reason: Operations capture, submit, amend and cancel trading orders with routing strategies (SOR, POV,
+    dark) and executions — front-office trading order management, not generic order fulfilment.
+- tag: Locates
+  spec_file: clear-street-locates-api-openapi.yml
+  capability_id: BC-1380.80
+  capability_id_l1: BC-1380
+  capability_name: Securities Lending Management
+  confidence: 0.85
+  evidence: 'POST /accounts/{account_id}/locate-orders  createLocateOrder; schemas: LocateOrder, LocateOrderStatus,
+    Rate'
+  reason: Locate order lifecycle for short selling (borrow requests with rate and quantity) is squarely
+    securities lending/borrowing operations at a prime broker.
+- tag: Positions
+  spec_file: clear-street-positions-api-openapi.yml
+  capability_id: BC-1370.20
+  capability_id_l1: BC-1370
+  capability_name: Trading Position Management
+  confidence: 0.85
+  evidence: GET /accounts/{account_id}/positions listPositions; DELETE /v1/accounts/{account_id}/positions
+    close_positions; schemas PositionType, PositionInstruction, TrailingOffsetType
+  reason: Retrieval and closing of trading positions plus position instructions on a brokerage account
+    — trading position management.
+- tag: Inventories
+  spec_file: clear-street-inventories-api-openapi.yml
+  capability_id: BC-1380.80
+  capability_id_l1: BC-1380
+  capability_name: Securities Lending Management
+  confidence: 0.78
+  evidence: 'GET /accounts/{account_id}/inventories/{symbol}  getInventory; schema: LocateInventory'
+  reason: '''Inventory'' here is short-sale locate inventory of borrowable securities per symbol — securities
+    lending/borrowing availability, not physical stock.'
+- tag: Margin
+  spec_file: clear-street-margin-api-openapi.yml
+  capability_id: BC-1380.50
+  capability_id_l1: BC-1380
+  capability_name: Collateral Management
+  confidence: 0.78
+  evidence: GET /entities/{entity_id}/regt-margin  getRegTMargin; GET /entities/{entity_id}/portfolio-margin  getPortfolioMargin
+  reason: Reg-T and portfolio margin requirement calculation per client entity is margining, covered by
+    collateral/margin management in capital markets operations.
+- tag: Margin Simulations
+  spec_file: clear-street-margin-simulations-api-openapi.yml
+  capability_id: BC-1380.50
+  capability_id_l1: BC-1380
+  capability_name: Collateral Management
+  confidence: 0.72
+  evidence: 'POST /entities/{entity_id}/regt-margin-simulations  createRegTMarginSimulation; schemas:
+    SimulationTrade, RegTMargin'
+  reason: What-if computation of Reg-T margin requirements for hypothetical trades — margining capability;
+    could also be read as risk simulation, hence lower confidence.
+- tag: Trades
+  spec_file: clear-street-trades-api-openapi.yml
+  capability_id: BC-1380.10
+  capability_id_l1: BC-1380
+  capability_name: Trade Confirmation Management
+  confidence: 0.7
+  evidence: POST /trades trades_insert Insert Trades; DELETE /trades/{trade_id} trades_cancel Cancel Trade
+    By ID; schemas Trade, TradeSubmitted, Settlement
+  reason: Post-trade booking of executed trades into accounts with settlement details at a clearing broker
+    — trade capture/booking. Could arguably sit under trading order management, so not maximal confidence.
