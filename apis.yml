@@ -101,7 +101,7 @@ apis:
   baseURL: https://api.clearstreet.io/v1
   tags:
   - Post-Trade
-  - Trades
+  - Trade
   - Clearing
   tags_raw:
   - Post Trade
@@ -597,6 +597,8 @@ apis:
   humanURL: https://docs.clearstreet.com/
   baseURL: https://api.clearstreet.com
   tags:
+  - Trade
+  tags_raw:
   - Trades
   properties:
   - type: OpenAPI
