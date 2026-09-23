@@ -165,41 +165,23 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    AccountNumber:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: ACC0001
-      description: Account number for the account.
-    Timestamp:
-      type: integer
-      format: int64
-      minimum: 1710613560668
-      maximum: 2900000000000
-      description: Milliseconds since epoch.
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
-    Symbol:
-      type: string
-      minLength: 1
-      maxLength: 32
-      example: AAPL
     MpId:
       type: string
       minLength: 1
       maxLength: 12
       example: CLST
       description: Unique MPID assigned by us.
-    Rate:
+    LocateOrderStatus:
       type: string
-      minLength: 1
-      maxLength: 16
-      example: '0.23'
-      description: String representation of a rate.
+      enum:
+      - pending
+      - offered
+      - filled
+      - rejected
+      - declined
+      - expired
+      - cancelled
+      description: The status of the locate order.
     LocateOrder:
       type: object
       properties:
@@ -260,12 +242,17 @@ components:
       - symbol
       - status
       - requested_quantity
-    LocateOrderId:
+    Price:
       type: string
       minLength: 1
-      maxLength: 256
-      example: '12390213'
-      description: Unique locate ID assigned by us.
+      maxLength: 16
+      example: '123.99'
+      description: String representation of a price.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
     ProblemDetails:
       type: object
       properties:
@@ -290,41 +277,54 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
-    Price:
+    Rate:
       type: string
       minLength: 1
       maxLength: 16
-      example: '123.99'
-      description: String representation of a price.
+      example: '0.23'
+      description: String representation of a rate.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
     ReferenceId:
       type: string
       minLength: 1
       maxLength: 256
       example: my-order-id-123
       description: An ID that you provide.
-    LocateOrderStatus:
-      type: string
-      enum:
-      - pending
-      - offered
-      - filled
-      - rejected
-      - declined
-      - expired
-      - cancelled
-      description: The status of the locate order.
     LocateId:
       type: string
       minLength: 1
       maxLength: 256
       example: '12390213'
       description: Unique locate ID assigned by us.
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
     AccountId:
       type: string
       minLength: 1
       maxLength: 256
       example: '100000'
       description: Account ID for the account.
+    LocateOrderId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique locate ID assigned by us.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
   responses:
     error:
       description: Error response

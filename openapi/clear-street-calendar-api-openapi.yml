@@ -1,34 +1,7 @@
 openapi: 3.2.0
 info:
   title: Clear Street Trading Calendar API
-  description: 'A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.
-
-    This specification provides a single source of truth for the API surface, covering order management, trade execution, market data, and account services.
-
-
-    ### Authentication
-
-    All endpoints require authentication via a JWT Bearer token provided in the `Authorization` header.
-
-
-    ### Response Structure
-
-    All responses, both for success and error, adhere to a standard envelope structure:
-
-    - `data`: Contains the response payload on success, or `null` on error.
-
-    - `error`: Contains a structured error object on failure, or `null` on success.
-
-    - `metadata`: Contains the `request_id` and pagination information.
-
-
-    ### WebSockets
-
-    Real-time market data is available via WebSocket connections, which are not formally described in this OpenAPI specification. The following operations are available:
-
-    - `market-data-l1-subscribe`: To start receiving L1 market data updates for a set of symbols.
-
-    - `market-data-l1-unsubscribe`: To stop receiving L1 market data updates.'
+  description: A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.
   contact:
     name: Clear Street API Support
     url: https://clearstreet.io/contact
@@ -54,7 +27,7 @@ paths:
     get:
       tags:
       - Calendar
-      summary: Get Market Hours Calendar.
+      summary: Get Market Hours Calendar
       description: 'Retrieves comprehensive trading hours including pre-market, regular, and after-hours sessions.
 
         Returns market status, session times, and next session schedules.'
@@ -251,83 +224,81 @@ paths:
                       request_id: 1b2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e
 components:
   schemas:
-    SessionSchedule:
+    MarketHoursDetail:
       type: object
-      description: Session schedule with open and close timestamps
+      description: Comprehensive market hours information for a specific market and date
       required:
-      - open
-      - close
+      - market
+      - market_name
+      - date
+      - timezone
+      - current_time
+      - status
+      - today_sessions
+      - next_sessions
       properties:
-        close:
+        current_time:
           type: string
           format: date-time
-          description: Session close timestamp with timezone offset
-          example: 2025-10-15 16:00:00-04:00
-        open:
+          description: Current time in market timezone with offset
+          example: 2025-10-15 14:30:00-04:00
+        date:
           type: string
-          format: date-time
-          description: Session open timestamp with timezone offset
-          example: 2025-10-15 09:30:00-04:00
-        time_until_close:
-          type:
-          - string
-          - 'null'
-          format: duration
-          description: 'ISO 8601 duration until session closes. Null if session is not currently open.
-
-            When a null/undefined value is observed, it indicates it does not apply.'
-          example: PT1H30M
-        time_until_open:
-          type:
-          - string
-          - 'null'
-          format: duration
-          description: 'ISO 8601 duration until session opens. Null if session has already started or closed.
-
-            When a null/undefined value is observed, it indicates it does not apply.'
-          example: PT2H30M
+          format: date
+          description: The date for which market hours are provided
+          example: 2025-10-15
+        market:
+          $ref: '#/components/schemas/MarketType'
+          description: Market type identifier
+        market_name:
+          type: string
+          description: Human-readable market name
+          example: US Equities
+        next_sessions:
+          $ref: '#/components/schemas/TradingSessions'
+          description: Next trading day's session schedules (without time_until fields)
+        status:
+          $ref: '#/components/schemas/MarketStatus'
+          description: Market status information
+        timezone:
+          type: string
+          description: IANA timezone identifier for the market
+          example: America/New_York
+        today_sessions:
+          $ref: '#/components/schemas/TradingSessions'
+          description: Trading session schedules for the requested date with time_until fields
       example:
-        close: 2025-10-15 16:00:00-04:00
-        open: 2025-10-15 09:30:00-04:00
-        time_until_close: PT1H30M
-        time_until_open: null
-    ApiError:
-      type: object
-      description: A direct mapping of tonic::Status, for use in HTTP responses.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: 'The error code is used to identify the nature of the error. It corresponds
-
-            to an HTTP status code.'
-          example: 400
-          minimum: 0
-        details:
-          $ref: '#/components/schemas/ErrorDetails'
-          description: 'Additional error details, if any. This can include structured information
-
-            such as field violations or error metadata.'
-        message:
-          type: string
-          description: A human-readable message providing more details about the error.
-          example: Order quantity must be greater than zero
-    ClockDetail:
-      type: object
-      description: Current server time and market clock information
-      required:
-      - clock
-      properties:
-        clock:
-          type: string
-          format: date-time
-          description: Current server time in UTC
-          example: 2025-03-01 03:35:00+00:00
-      example:
-        clock: 2025-03-01 03:35:00+00:00
+        current_time: 2025-10-15 14:30:00-04:00
+        date: 2025-10-15
+        market: us_equities
+        market_name: US Equities
+        next_sessions:
+          after_hours:
+            close: 2025-10-16 20:00:00-04:00
+            open: 2025-10-16 16:00:00-04:00
+          pre_market:
+            close: 2025-10-16 09:30:00-04:00
+            open: 2025-10-16 04:00:00-04:00
+          regular:
+            close: 2025-10-16 16:00:00-04:00
+            open: 2025-10-16 09:30:00-04:00
+        status:
+          current_session: regular
+          day_type: TRADING_DAY
+          is_open: true
+        timezone: America/New_York
+        today_sessions:
+          after_hours:
+            close: 2025-10-15 20:00:00-04:00
+            open: 2025-10-15 16:00:00-04:00
+            time_until_open: PT1H30M
+          pre_market:
+            close: 2025-10-15 09:30:00-04:00
+            open: 2025-10-15 04:00:00-04:00
+          regular:
+            close: 2025-10-15 16:00:00-04:00
+            open: 2025-10-15 09:30:00-04:00
+            time_until_close: PT1H30M
     TradingSessions:
       type: object
       description: Trading sessions for a market day with full timestamps
@@ -420,113 +391,30 @@ components:
           description: Total number of pages available.
           example: '5'
           minimum: 0
-    DayType:
-      type: string
-      description: Day type for market hours - indicates the type of trading day
-      enum:
-      - TRADING_DAY
-      - EARLY_CLOSE
-      - HOLIDAY
-      - WEEKEND
-    MarketHoursDetailList:
-      type: array
-      items:
-        $ref: '#/components/schemas/MarketHoursDetail'
-    MarketHoursDetail:
+    ApiError:
       type: object
-      description: Comprehensive market hours information for a specific market and date
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
       required:
-      - market
-      - market_name
-      - date
-      - timezone
-      - current_time
-      - status
-      - today_sessions
-      - next_sessions
+      - code
+      - message
       properties:
-        current_time:
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
+
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
           type: string
-          format: date-time
-          description: Current time in market timezone with offset
-          example: 2025-10-15 14:30:00-04:00
-        date:
-          type: string
-          format: date
-          description: The date for which market hours are provided
-          example: 2025-10-15
-        market:
-          $ref: '#/components/schemas/MarketType'
-          description: Market type identifier
-        market_name:
-          type: string
-          description: Human-readable market name
-          example: US Equities
-        next_sessions:
-          $ref: '#/components/schemas/TradingSessions'
-          description: Next trading day's session schedules (without time_until fields)
-        status:
-          $ref: '#/components/schemas/MarketStatus'
-          description: Market status information
-        timezone:
-          type: string
-          description: IANA timezone identifier for the market
-          example: America/New_York
-        today_sessions:
-          $ref: '#/components/schemas/TradingSessions'
-          description: Trading session schedules for the requested date with time_until fields
-      example:
-        current_time: 2025-10-15 14:30:00-04:00
-        date: 2025-10-15
-        market: us_equities
-        market_name: US Equities
-        next_sessions:
-          after_hours:
-            close: 2025-10-16 20:00:00-04:00
-            open: 2025-10-16 16:00:00-04:00
-          pre_market:
-            close: 2025-10-16 09:30:00-04:00
-            open: 2025-10-16 04:00:00-04:00
-          regular:
-            close: 2025-10-16 16:00:00-04:00
-            open: 2025-10-16 09:30:00-04:00
-        status:
-          current_session: regular
-          day_type: TRADING_DAY
-          is_open: true
-        timezone: America/New_York
-        today_sessions:
-          after_hours:
-            close: 2025-10-15 20:00:00-04:00
-            open: 2025-10-15 16:00:00-04:00
-            time_until_open: PT1H30M
-          pre_market:
-            close: 2025-10-15 09:30:00-04:00
-            open: 2025-10-15 04:00:00-04:00
-          regular:
-            close: 2025-10-15 16:00:00-04:00
-            open: 2025-10-15 09:30:00-04:00
-            time_until_close: PT1H30M
-    MarketType:
-      type: string
-      description: Market type for market hours calendar endpoint
-      enum:
-      - us_equities
-      - us_options
-    BaseResponse:
-      type: object
-      required:
-      - metadata
-      properties:
-        error:
-          oneOf:
-          - oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/ApiError'
-              description: Structured error details when the request is unsuccessful.
-        metadata:
-          $ref: '#/components/schemas/ResponseMetadata'
-          description: Response metadata, including the request ID and optional pagination info.
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
     MarketSessionType:
       type: string
       description: Session type for market hours
@@ -534,6 +422,30 @@ components:
       - pre_market
       - regular
       - after_hours
+    MarketType:
+      type: string
+      description: Market type for market hours calendar endpoint
+      enum:
+      - us_equities
+      - us_options
+    ErrorDetails:
+      type: array
+      items:
+        type: object
+        additionalProperties: true
+    ClockDetail:
+      type: object
+      description: Current server time and market clock information
+      required:
+      - clock
+      properties:
+        clock:
+          type: string
+          format: date-time
+          description: Current server time in UTC
+          example: 2025-03-01 03:35:00+00:00
+      example:
+        clock: 2025-03-01 03:35:00+00:00
     MarketStatus:
       type: object
       description: Market status information
@@ -559,11 +471,72 @@ components:
         current_session: regular
         day_type: TRADING_DAY
         is_open: true
-    ErrorDetails:
+    BaseResponse:
+      type: object
+      required:
+      - metadata
+      properties:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
+    MarketHoursDetailList:
       type: array
       items:
-        type: object
-        additionalProperties: true
+        $ref: '#/components/schemas/MarketHoursDetail'
+    DayType:
+      type: string
+      description: Day type for market hours - indicates the type of trading day
+      enum:
+      - TRADING_DAY
+      - EARLY_CLOSE
+      - HOLIDAY
+      - WEEKEND
+    SessionSchedule:
+      type: object
+      description: Session schedule with open and close timestamps
+      required:
+      - open
+      - close
+      properties:
+        close:
+          type: string
+          format: date-time
+          description: Session close timestamp with timezone offset
+          example: 2025-10-15 16:00:00-04:00
+        open:
+          type: string
+          format: date-time
+          description: Session open timestamp with timezone offset
+          example: 2025-10-15 09:30:00-04:00
+        time_until_close:
+          type:
+          - string
+          - 'null'
+          format: duration
+          description: 'ISO 8601 duration until session closes. Null if session is not currently open.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: PT1H30M
+        time_until_open:
+          type:
+          - string
+          - 'null'
+          format: duration
+          description: 'ISO 8601 duration until session opens. Null if session has already started or closed.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: PT2H30M
+      example:
+        close: 2025-10-15 16:00:00-04:00
+        open: 2025-10-15 09:30:00-04:00
+        time_until_close: PT1H30M
+        time_until_open: null
   securitySchemes:
     BearerAuth:
       type: http

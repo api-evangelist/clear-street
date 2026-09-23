@@ -1,34 +1,7 @@
 openapi: 3.2.0
 info:
   title: Clear Street Trading Watchlist API
-  description: 'A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.
-
-    This specification provides a single source of truth for the API surface, covering order management, trade execution, market data, and account services.
-
-
-    ### Authentication
-
-    All endpoints require authentication via a JWT Bearer token provided in the `Authorization` header.
-
-
-    ### Response Structure
-
-    All responses, both for success and error, adhere to a standard envelope structure:
-
-    - `data`: Contains the response payload on success, or `null` on error.
-
-    - `error`: Contains a structured error object on failure, or `null` on success.
-
-    - `metadata`: Contains the `request_id` and pagination information.
-
-
-    ### WebSockets
-
-    Real-time market data is available via WebSocket connections, which are not formally described in this OpenAPI specification. The following operations are available:
-
-    - `market-data-l1-subscribe`: To start receiving L1 market data updates for a set of symbols.
-
-    - `market-data-l1-unsubscribe`: To stop receiving L1 market data updates.'
+  description: A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.
   contact:
     name: Clear Street API Support
     url: https://clearstreet.io/contact
@@ -512,30 +485,16 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    ApiError:
+    AddWatchlistItemData:
       type: object
-      description: A direct mapping of tonic::Status, for use in HTTP responses.
+      description: Response data for adding a watchlist item
       required:
-      - code
-      - message
+      - item_id
       properties:
-        code:
-          type: integer
-          format: int32
-          description: 'The error code is used to identify the nature of the error. It corresponds
-
-            to an HTTP status code.'
-          example: 400
-          minimum: 0
-        details:
-          $ref: '#/components/schemas/ErrorDetails'
-          description: 'Additional error details, if any. This can include structured information
-
-            such as field violations or error metadata.'
-        message:
+        item_id:
           type: string
-          description: A human-readable message providing more details about the error.
-          example: Order quantity must be greater than zero
+          format: uuid
+          description: ID of the created item
     AddWatchlistItemRequest:
       type: object
       description: Request to add an instrument to a watchlist
@@ -545,6 +504,15 @@ components:
         instrument_id:
           $ref: '#/components/schemas/InstrumentIdOrSymbol'
           description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol).
+    CreateWatchlistRequest:
+      type: object
+      description: Create watchlist request payload.
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: The desired watchlist name.
     ResponseMetadata:
       type: object
       description: 'Metadata for the response. This will always contain a request ID which can be used to identify
@@ -602,20 +570,30 @@ components:
           description: Total number of pages available.
           example: '5'
           minimum: 0
-    InstrumentIdOrSymbol:
-      type: string
-      description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
-      minLength: 1
-    AddWatchlistItemData:
+    ApiError:
       type: object
-      description: Response data for adding a watchlist item
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
       required:
-      - item_id
+      - code
+      - message
       properties:
-        item_id:
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
+
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
           type: string
-          format: uuid
-          description: ID of the created item
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
     SecurityType:
       type: string
       description: Security type
@@ -624,29 +602,6 @@ components:
       - INDEX
       - OPTION
       - CASH
-    CreateWatchlistRequest:
-      type: object
-      description: Create watchlist request payload.
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: The desired watchlist name.
-    BaseResponse:
-      type: object
-      required:
-      - metadata
-      properties:
-        error:
-          oneOf:
-          - oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/ApiError'
-              description: Structured error details when the request is unsuccessful.
-        metadata:
-          $ref: '#/components/schemas/ResponseMetadata'
-          description: Response metadata, including the request ID and optional pagination info.
     WatchlistDetail:
       type: object
       description: Detailed watchlist with all items
@@ -672,10 +627,40 @@ components:
         name:
           type: string
           description: Watchlist name
-    WatchlistEntryList:
+    WatchlistItemEntry:
+      type: object
+      description: A single item in a watchlist
+      required:
+      - id
+      - added_at
+      properties:
+        added_at:
+          type: string
+          format: date-time
+          description: When the item was added
+        added_price:
+          type:
+          - string
+          - 'null'
+          description: 'Price when the item was added
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+        id:
+          type: string
+          format: uuid
+          description: Item ID
+        instrument:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/Instrument'
+            description: 'Instrument details
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+    ErrorDetails:
       type: array
       items:
-        $ref: '#/components/schemas/WatchlistEntry'
+        type: object
+        additionalProperties: true
     Instrument:
       allOf:
       - type: object
@@ -855,35 +840,10 @@ components:
         short_margin_rate: '0.25'
         symbol: AAPL
         venue: XNMS
-    WatchlistItemEntry:
-      type: object
-      description: A single item in a watchlist
-      required:
-      - id
-      - added_at
-      properties:
-        added_at:
-          type: string
-          format: date-time
-          description: When the item was added
-        added_price:
-          type:
-          - string
-          - 'null'
-          description: 'Price when the item was added
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-        id:
-          type: string
-          format: uuid
-          description: Item ID
-        instrument:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/Instrument'
-            description: 'Instrument details
-
-              When a null/undefined value is observed, it indicates that there is no available data.'
+    InstrumentIdOrSymbol:
+      type: string
+      description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
+      minLength: 1
     WatchlistEntry:
       type: object
       description: Represents a user watchlist.
@@ -903,11 +863,24 @@ components:
         name:
           type: string
           description: The user-provided watchlist name.
-    ErrorDetails:
+    WatchlistEntryList:
       type: array
       items:
-        type: object
-        additionalProperties: true
+        $ref: '#/components/schemas/WatchlistEntry'
+    BaseResponse:
+      type: object
+      required:
+      - metadata
+      properties:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
   securitySchemes:
     BearerAuth:
       type: http

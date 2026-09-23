@@ -19,11 +19,6 @@ tags:
   x-displayName: Positions
 paths:
   /accounts/{account_id}/positions/{symbol}:
-    servers:
-    - url: https://api.clearstreet.io/studio/v2
-      description: Production environment
-    - url: https://sandbox-api.clearstreet.io/studio/v2
-      description: Sandbox environment
     get:
       operationId: getPosition
       summary: Get position
@@ -54,12 +49,12 @@ paths:
           $ref: '#/components/responses/error'
       security:
       - BearerAuth: []
-  /accounts/{account_id}/positions:
     servers:
     - url: https://api.clearstreet.io/studio/v2
       description: Production environment
     - url: https://sandbox-api.clearstreet.io/studio/v2
       description: Sandbox environment
+  /accounts/{account_id}/positions:
     get:
       operationId: listPositions
       summary: List positions
@@ -107,14 +102,12 @@ paths:
           $ref: '#/components/responses/error'
       security:
       - BearerAuth: []
-  /v1/accounts/{account_id}/positions:
     servers:
-    - url: https://api.clearstreet.com
-      description: Clear Street API
-    - url: https://api-dev.clearstreet.com
-      description: Clear Street Development API
-    - url: http://localhost:5001
-      description: Clear Street Local API
+    - url: https://api.clearstreet.io/studio/v2
+      description: Production environment
+    - url: https://sandbox-api.clearstreet.io/studio/v2
+      description: Sandbox environment
+  /v1/accounts/{account_id}/positions:
     get:
       tags:
       - Positions
@@ -382,7 +375,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       security:
       - BearerAuth: []
-  /v1/accounts/{account_id}/positions/instructions:
     servers:
     - url: https://api.clearstreet.com
       description: Clear Street API
@@ -390,6 +382,7 @@ paths:
       description: Clear Street Development API
     - url: http://localhost:5001
       description: Clear Street Local API
+  /v1/accounts/{account_id}/positions/instructions:
     get:
       tags:
       - Positions
@@ -469,7 +462,38 @@ paths:
       tags:
       - Positions
       summary: Submit Position Instructions
-      description: "Submit one or more position instructions (Exercise, Do-Not-Exercise,\nContrary Exercise Advice) against the account.\n\nBatch semantics:\n- **All rows accepted** → `200 OK`. Every row is in `data` with\n  `status = SENT`.\n- **Partial success** → `207 Multi-Status`. `data` contains every\n  row; rejected rows carry `status = REJECTED` and\n  `rejection_reason`. The top-level `error` summarizes the batch\n  failure.\n- **All rows rejected** → `4xx`/`5xx`. The HTTP status reflects\n  the aggregate cause: `409` when every row was a duplicate, `400`\n  for validation failures like DNE/CEA on a non-expiry day, `503`\n  if the clearing service is unavailable. `data` still contains\n  every row carrying `status = REJECTED` and `rejection_reason`\n  so callers can attribute failures by `instruction_id`; the\n  top-level `error` summarizes the batch."
+      description: 'Submit one or more position instructions (Exercise, Do-Not-Exercise,
+
+        Contrary Exercise Advice) against the account.
+
+
+        Batch semantics:
+
+        - **All rows accepted** → `200 OK`. Every row is in `data` with
+
+        `status = SENT`.
+
+        - **Partial success** → `207 Multi-Status`. `data` contains every
+
+        row; rejected rows carry `status = REJECTED` and
+
+        `rejection_reason`. The top-level `error` summarizes the batch
+
+        failure.
+
+        - **All rows rejected** → `4xx`/`5xx`. The HTTP status reflects
+
+        the aggregate cause: `409` when every row was a duplicate, `400`
+
+        for validation failures like DNE/CEA on a non-expiry day, `503`
+
+        if the clearing service is unavailable. `data` still contains
+
+        every row carrying `status = REJECTED` and `rejection_reason`
+
+        so callers can attribute failures by `instruction_id`; the
+
+        top-level `error` summarizes the batch.'
       operationId: submit_position_instructions
       parameters:
       - name: account_id
@@ -703,7 +727,6 @@ paths:
                       request_id: 0a5c9ebf-a9a7-4f2d-9c7e-f2b5f0b1bd06
       security:
       - BearerAuth: []
-  /v1/accounts/{account_id}/positions/instructions/{instruction_id}:
     servers:
     - url: https://api.clearstreet.com
       description: Clear Street API
@@ -711,6 +734,7 @@ paths:
       description: Clear Street Development API
     - url: http://localhost:5001
       description: Clear Street Local API
+  /v1/accounts/{account_id}/positions/instructions/{instruction_id}:
     delete:
       tags:
       - Positions
@@ -778,7 +802,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       security:
       - BearerAuth: []
-  /v1/accounts/{account_id}/positions/{instrument_id}:
     servers:
     - url: https://api.clearstreet.com
       description: Clear Street API
@@ -786,6 +809,7 @@ paths:
       description: Clear Street Development API
     - url: http://localhost:5001
       description: Clear Street Local API
+  /v1/accounts/{account_id}/positions/{instrument_id}:
     delete:
       tags:
       - Positions
@@ -895,14 +919,481 @@ paths:
                 $ref: '#/components/schemas/ApiError'
       security:
       - BearerAuth: []
+    servers:
+    - url: https://api.clearstreet.com
+      description: Clear Street API
+    - url: https://api-dev.clearstreet.com
+      description: Clear Street Development API
+    - url: http://localhost:5001
+      description: Clear Street Local API
 components:
   schemas:
-    TrailingOffsetType:
+    Position:
+      type: object
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+        average_cost:
+          type: number
+          format: double
+          description: The average cost of the position.
+      required:
+      - account_id
+      - account_number
+      - symbol
+      - quantity
+      - average_cost
+    Symbol:
       type: string
-      description: Trailing offset type for trailing stop orders.
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
+    OrderType:
+      type: string
+      description: Order type
       enum:
-      - PRICE
-      - BPS
+      - MARKET
+      - LIMIT
+      - STOP
+      - STOP_LIMIT
+      - TRAILING_STOP
+      - TRAILING_STOP_LIMIT
+      - OTHER
+    PositionInstructionStatus:
+      type: string
+      description: "Lifecycle status of a position instruction.\n\n- `SENT`: accepted and submitted to the clearing venue.\n- `ACCEPTED`: terminal — accepted by the clearing venue.\n- `REJECTED`: terminal rejection; `rejection_reason` carries the\n  detail. Covers both venue-reported rejections and rejections\n  raised before the instruction reached the clearing venue (e.g.\n  duplicate `instruction_id`, `DO_NOT_EXERCISE` / `CONTRARY_EXERCISE`\n  submitted on a non-expiry day, insufficient position, or an\n  instrument that does not resolve).\n- `CANCEL_REQUESTED`: cancel accepted; final cancel state pending.\n- `CANCELLED`: terminal — cancel completed.\n- `CANCEL_FAILED`: cancel could not be completed; operator\n  attention required. `rejection_reason` carries the detail.\n- `UNKNOWN`: status could not be determined."
+      enum:
+      - SENT
+      - ACCEPTED
+      - REJECTED
+      - CANCEL_REQUESTED
+      - CANCELLED
+      - CANCEL_FAILED
+      - UNKNOWN
+    BaseResponse:
+      type: object
+      required:
+      - metadata
+      properties:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
+    ApiError:
+      type: object
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
+
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
+    PositionList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Position_2'
+    PositionInstruction:
+      type: object
+      description: A position instruction and its current lifecycle state.
+      required:
+      - id
+      - instruction_id
+      - account_id
+      - instruction_type
+      - instrument_id
+      - symbol
+      - quantity
+      - status
+      properties:
+        accepted_quantity:
+          type:
+          - string
+          - 'null'
+          description: 'Number of contracts accepted by the clearing venue. Populated once
+
+            the instruction reaches `ACCEPTED`.
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+        account_id:
+          $ref: '#/components/schemas/i64'
+          description: Account the instruction belongs to.
+        created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'When the instruction was first accepted by the service.
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+        id:
+          type: string
+          format: uuid
+          description: Server-assigned id. Used as the path parameter on cancel.
+        instruction_id:
+          type: string
+          description: 'Caller-supplied idempotency key echoed from the submit request; the
+
+            server-assigned fallback when none was supplied.'
+        instruction_type:
+          $ref: '#/components/schemas/PositionInstructionType'
+          description: The action this instruction requests.
+        instrument_id:
+          type: string
+          format: uuid
+          description: Identifier of the options contract this instruction acts on.
+        quantity:
+          type: string
+          description: Number of contracts included in the instruction.
+          example: '1'
+        rejection_reason:
+          type:
+          - string
+          - 'null'
+          description: 'Human-readable explanation populated on any non-success terminal
+
+            status — `REJECTED` or `CANCEL_FAILED`. On a
+
+            `207 Multi-Status` batch submit the top-level `error` field
+
+            summarizes the batch; per-row detail continues to live here.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+        status:
+          $ref: '#/components/schemas/PositionInstructionStatus'
+          description: Current lifecycle status.
+        symbol:
+          type: string
+          description: Options symbol (OSI) for display.
+        updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'When the instruction''s lifecycle state last changed.
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+      example:
+        accepted_quantity: null
+        account_id: 122503
+        created_at: 2026-04-24 14:30:00+00:00
+        id: 0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02
+        instruction_id: ui-20260424-001
+        instruction_type: EXERCISE
+        instrument_id: 0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02
+        quantity: '1'
+        rejection_reason: null
+        status: SENT
+        symbol: AAPL  280121C00195000
+        updated_at: 2026-04-24 14:30:00+00:00
+    SecurityType:
+      type: string
+      description: Security type
+      enum:
+      - COMMON_STOCK
+      - INDEX
+      - OPTION
+      - CASH
+    PositionInstructionList:
+      type: array
+      items:
+        $ref: '#/components/schemas/PositionInstruction'
+    PositionInstructionType:
+      type: string
+      description: The action to take against an options position.
+      enum:
+      - EXERCISE
+      - DO_NOT_EXERCISE
+      - CONTRARY_EXERCISE
+    PositionType:
+      type: string
+      description: Position type classification
+      enum:
+      - LONG
+      - SHORT
+    QueueState:
+      type: string
+      description: Parent order queue or hold state.
+      enum:
+      - AWAITING_RELEASE
+      - RELEASED
+    i64:
+      type: integer
+      format: int64
+    ErrorDetails:
+      type: array
+      items:
+        type: object
+        additionalProperties: true
+    Position_2:
+      type: object
+      description: Represents a holding of a particular instrument in an account
+      required:
+      - account_id
+      - instrument_id
+      - symbol
+      - instrument_type
+      - quantity
+      - market_value
+      - position_type
+      - available_quantity
+      properties:
+        account_id:
+          type: integer
+          format: int64
+          description: The account this position belongs to
+          example: 19816
+        available_quantity:
+          type: string
+          description: The quantity of a position that is free to be operated on.
+          example: '100'
+        avg_price:
+          type:
+          - string
+          - 'null'
+          description: 'The average price paid per share or contract for this position
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '145.00'
+        closing_price:
+          type:
+          - string
+          - 'null'
+          description: 'The closing price used to value the position for the last trading day
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '150.50'
+        closing_price_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: 'The market date associated with `closing_price`
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: 2026-01-15
+        cost_basis:
+          type:
+          - string
+          - 'null'
+          description: 'The total cost basis for this position
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '14500.00'
+        daily_realized_pnl:
+          type:
+          - string
+          - 'null'
+          description: 'The realized profit or loss for this position for the current day
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '700.00'
+        daily_unrealized_pnl:
+          type:
+          - string
+          - 'null'
+          description: 'The unrealized profit or loss for this position relative to the previous close
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '550.00'
+        daily_unrealized_pnl_pct:
+          type:
+          - string
+          - 'null'
+          description: 'The unrealized profit/loss for the position for the current day, expressed as a percentage of the baseline value (range: 0-100).
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '3.65'
+        instrument_id:
+          type: string
+          format: uuid
+          description: Unique instrument identifier
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        instrument_price:
+          type:
+          - string
+          - 'null'
+          description: 'The current market price of the instrument
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '151.00'
+        instrument_type:
+          $ref: '#/components/schemas/SecurityType'
+          description: Type of security
+        market_value:
+          type: string
+          description: The current market value of the position
+          example: '15050.00'
+        position_type:
+          $ref: '#/components/schemas/PositionType'
+          description: The type of position
+        quantity:
+          type: string
+          description: The number of shares or contracts. Can be positive (long) or negative (short)
+          example: '100'
+        symbol:
+          type: string
+          description: The trading symbol for the instrument
+          example: AAPL
+        underlying_instrument_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'Identifier of the underlying instrument, when available
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: b6f4b5e2-94a8-4fe4-9a85-2b4a81d30cc5
+        unrealized_pnl:
+          type:
+          - string
+          - 'null'
+          description: 'The total unrealized profit or loss for this position based on current market value
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '550.00'
+        unrealized_pnl_pct:
+          type:
+          - string
+          - 'null'
+          description: 'The unrealized profit/loss for the position, expressed as a percentage of the position''s cost basis (range: 0-100).
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '3.79'
+      example:
+        account_id: 19816
+        avg_price: '145.00'
+        closing_price: '150.50'
+        closing_price_date: 2025-10-31
+        cost_basis: '14500.00'
+        daily_realized_pnl: '700.00'
+        daily_unrealized_pnl: '550.00'
+        daily_unrealized_pnl_pct: '3.65'
+        instrument_id: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        instrument_price: '151.00'
+        instrument_type: COMMON_STOCK
+        market_value: '15050.00'
+        position_type: LONG
+        quantity: '100'
+        symbol: AAPL
+        unrealized_pnl: '550.00'
+        unrealized_pnl_pct: '3.79'
+    PositionInstructionSubmissionRequest:
+      type: object
+      description: 'A position instruction to submit.
+
+
+        Use `DELETE /accounts/{account_id}/positions/instructions/{instruction_id}`
+
+        to cancel an outstanding instruction.'
+      required:
+      - instruction_type
+      - instrument_id
+      - quantity
+      properties:
+        instruction_id:
+          type:
+          - string
+          - 'null'
+          description: 'Caller-supplied idempotency key. Echoed on the response. The server
+
+            generates a unique id when omitted.'
+          example: ui-20260424-001
+        instruction_type:
+          $ref: '#/components/schemas/PositionInstructionType'
+          description: The action to take.
+        instrument_id:
+          type: string
+          format: uuid
+          description: Identifier of the options contract to act on. Unknown ids return 404.
+        quantity:
+          type: string
+          description: Number of contracts to include in the instruction.
+          example: '1'
+      example:
+        instruction_id: ui-20260424-001
+        instruction_type: EXERCISE
+        instrument_id: 0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02
+        quantity: '1'
+    Side:
+      type: string
+      description: Side of an order
+      enum:
+      - BUY
+      - SELL
+      - SELL_SHORT
+      - OTHER
+    OrderList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Order'
     ResponseMetadata:
       type: object
       description: 'Metadata for the response. This will always contain a request ID which can be used to identify
@@ -960,17 +1451,17 @@ components:
           description: Total number of pages available.
           example: '5'
           minimum: 0
-    PositionInstructionStatus:
-      type: string
-      description: "Lifecycle status of a position instruction.\n\n- `SENT`: accepted and submitted to the clearing venue.\n- `ACCEPTED`: terminal — accepted by the clearing venue.\n- `REJECTED`: terminal rejection; `rejection_reason` carries the\n  detail. Covers both venue-reported rejections and rejections\n  raised before the instruction reached the clearing venue (e.g.\n  duplicate `instruction_id`, `DO_NOT_EXERCISE` / `CONTRARY_EXERCISE`\n  submitted on a non-expiry day, insufficient position, or an\n  instrument that does not resolve).\n- `CANCEL_REQUESTED`: cancel accepted; final cancel state pending.\n- `CANCELLED`: terminal — cancel completed.\n- `CANCEL_FAILED`: cancel could not be completed; operator\n  attention required. `rejection_reason` carries the detail.\n- `UNKNOWN`: status could not be determined."
-      enum:
-      - SENT
-      - ACCEPTED
-      - REJECTED
-      - CANCEL_REQUESTED
-      - CANCELLED
-      - CANCEL_FAILED
-      - UNKNOWN
+    ClosePositionRequest:
+      type: object
+      properties:
+        cancel_orders:
+          type:
+          - boolean
+          - 'null'
+          description: Whether to cancel existing open orders for the position before submitting closing orders.
+          example: false
+      example:
+        cancel_orders: false
     Order:
       type: object
       description: 'A trading order with its current state and execution details.
@@ -1220,198 +1711,16 @@ components:
         time_in_force: DAY
         updated_at: 2025-10-31 13:30:00+00:00
         venue: XNAS
-    Side:
+    TrailingOffsetType:
       type: string
-      description: Side of an order
+      description: Trailing offset type for trailing stop orders.
       enum:
-      - BUY
-      - SELL
-      - SELL_SHORT
-      - OTHER
-    Position_2:
-      type: object
-      description: Represents a holding of a particular instrument in an account
-      required:
-      - account_id
-      - instrument_id
-      - symbol
-      - instrument_type
-      - quantity
-      - market_value
-      - position_type
-      - available_quantity
-      properties:
-        account_id:
-          type: integer
-          format: int64
-          description: The account this position belongs to
-          example: 19816
-        available_quantity:
-          type: string
-          description: The quantity of a position that is free to be operated on.
-          example: '100'
-        avg_price:
-          type:
-          - string
-          - 'null'
-          description: 'The average price paid per share or contract for this position
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: '145.00'
-        closing_price:
-          type:
-          - string
-          - 'null'
-          description: 'The closing price used to value the position for the last trading day
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: '150.50'
-        closing_price_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: 'The market date associated with `closing_price`
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: 2026-01-15
-        cost_basis:
-          type:
-          - string
-          - 'null'
-          description: 'The total cost basis for this position
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: '14500.00'
-        daily_realized_pnl:
-          type:
-          - string
-          - 'null'
-          description: 'The realized profit or loss for this position for the current day
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: '700.00'
-        daily_unrealized_pnl:
-          type:
-          - string
-          - 'null'
-          description: 'The unrealized profit or loss for this position relative to the previous close
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: '550.00'
-        daily_unrealized_pnl_pct:
-          type:
-          - string
-          - 'null'
-          description: 'The unrealized profit/loss for the position for the current day, expressed as a percentage of the baseline value (range: 0-100).
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: '3.65'
-        instrument_id:
-          type: string
-          format: uuid
-          description: Unique instrument identifier
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        instrument_price:
-          type:
-          - string
-          - 'null'
-          description: 'The current market price of the instrument
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: '151.00'
-        instrument_type:
-          $ref: '#/components/schemas/SecurityType'
-          description: Type of security
-        market_value:
-          type: string
-          description: The current market value of the position
-          example: '15050.00'
-        position_type:
-          $ref: '#/components/schemas/PositionType'
-          description: The type of position
-        quantity:
-          type: string
-          description: The number of shares or contracts. Can be positive (long) or negative (short)
-          example: '100'
-        symbol:
-          type: string
-          description: The trading symbol for the instrument
-          example: AAPL
-        underlying_instrument_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: 'Identifier of the underlying instrument, when available
-
-            When a null/undefined value is observed, it indicates it does not apply.'
-          example: b6f4b5e2-94a8-4fe4-9a85-2b4a81d30cc5
-        unrealized_pnl:
-          type:
-          - string
-          - 'null'
-          description: 'The total unrealized profit or loss for this position based on current market value
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: '550.00'
-        unrealized_pnl_pct:
-          type:
-          - string
-          - 'null'
-          description: 'The unrealized profit/loss for the position, expressed as a percentage of the position''s cost basis (range: 0-100).
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: '3.79'
-      example:
-        account_id: 19816
-        avg_price: '145.00'
-        closing_price: '150.50'
-        closing_price_date: 2025-10-31
-        cost_basis: '14500.00'
-        daily_realized_pnl: '700.00'
-        daily_unrealized_pnl: '550.00'
-        daily_unrealized_pnl_pct: '3.65'
-        instrument_id: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        instrument_price: '151.00'
-        instrument_type: COMMON_STOCK
-        market_value: '15050.00'
-        position_type: LONG
-        quantity: '100'
-        symbol: AAPL
-        unrealized_pnl: '550.00'
-        unrealized_pnl_pct: '3.79'
-    AccountId:
+      - PRICE
+      - BPS
+    InstrumentIdOrSymbol:
       type: string
+      description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
       minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Account ID for the account.
-    PositionType:
-      type: string
-      description: Position type classification
-      enum:
-      - LONG
-      - SHORT
-    AccountNumber:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: ACC0001
-      description: Account number for the account.
-    Symbol:
-      type: string
-      minLength: 1
-      maxLength: 32
-      example: AAPL
-    SecurityType:
-      type: string
-      description: Security type
-      enum:
-      - COMMON_STOCK
-      - INDEX
-      - OPTION
-      - CASH
     TimeInForce:
       type: string
       description: Time in force
@@ -1427,226 +1736,6 @@ components:
       - GOOD_THROUGH_CROSSING
       - AT_CROSSING
       - OTHER
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
-    ApiError:
-      type: object
-      description: A direct mapping of tonic::Status, for use in HTTP responses.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: 'The error code is used to identify the nature of the error. It corresponds
-
-            to an HTTP status code.'
-          example: 400
-          minimum: 0
-        details:
-          $ref: '#/components/schemas/ErrorDetails'
-          description: 'Additional error details, if any. This can include structured information
-
-            such as field violations or error metadata.'
-        message:
-          type: string
-          description: A human-readable message providing more details about the error.
-          example: Order quantity must be greater than zero
-    ClosePositionRequest:
-      type: object
-      properties:
-        cancel_orders:
-          type:
-          - boolean
-          - 'null'
-          description: Whether to cancel existing open orders for the position before submitting closing orders.
-          example: false
-      example:
-        cancel_orders: false
-    PositionInstructionType:
-      type: string
-      description: The action to take against an options position.
-      enum:
-      - EXERCISE
-      - DO_NOT_EXERCISE
-      - CONTRARY_EXERCISE
-    OrderList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Order'
-    i64:
-      type: integer
-      format: int64
-    PositionInstructionSubmissionRequest:
-      type: object
-      description: 'A position instruction to submit.
-
-
-        Use `DELETE /accounts/{account_id}/positions/instructions/{instruction_id}`
-
-        to cancel an outstanding instruction.'
-      required:
-      - instruction_type
-      - instrument_id
-      - quantity
-      properties:
-        instruction_id:
-          type:
-          - string
-          - 'null'
-          description: 'Caller-supplied idempotency key. Echoed on the response. The server
-
-            generates a unique id when omitted.'
-          example: ui-20260424-001
-        instruction_type:
-          $ref: '#/components/schemas/PositionInstructionType'
-          description: The action to take.
-        instrument_id:
-          type: string
-          format: uuid
-          description: Identifier of the options contract to act on. Unknown ids return 404.
-        quantity:
-          type: string
-          description: Number of contracts to include in the instruction.
-          example: '1'
-      example:
-        instruction_id: ui-20260424-001
-        instruction_type: EXERCISE
-        instrument_id: 0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02
-        quantity: '1'
-    OrderType:
-      type: string
-      description: Order type
-      enum:
-      - MARKET
-      - LIMIT
-      - STOP
-      - STOP_LIMIT
-      - TRAILING_STOP
-      - TRAILING_STOP_LIMIT
-      - OTHER
-    InstrumentIdOrSymbol:
-      type: string
-      description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
-      minLength: 1
-    BaseResponse:
-      type: object
-      required:
-      - metadata
-      properties:
-        error:
-          oneOf:
-          - oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/ApiError'
-              description: Structured error details when the request is unsuccessful.
-        metadata:
-          $ref: '#/components/schemas/ResponseMetadata'
-          description: Response metadata, including the request ID and optional pagination info.
-    QueueState:
-      type: string
-      description: Parent order queue or hold state.
-      enum:
-      - AWAITING_RELEASE
-      - RELEASED
-    PositionInstruction:
-      type: object
-      description: A position instruction and its current lifecycle state.
-      required:
-      - id
-      - instruction_id
-      - account_id
-      - instruction_type
-      - instrument_id
-      - symbol
-      - quantity
-      - status
-      properties:
-        accepted_quantity:
-          type:
-          - string
-          - 'null'
-          description: 'Number of contracts accepted by the clearing venue. Populated once
-
-            the instruction reaches `ACCEPTED`.
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-        account_id:
-          $ref: '#/components/schemas/i64'
-          description: Account the instruction belongs to.
-        created_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: 'When the instruction was first accepted by the service.
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-        id:
-          type: string
-          format: uuid
-          description: Server-assigned id. Used as the path parameter on cancel.
-        instruction_id:
-          type: string
-          description: 'Caller-supplied idempotency key echoed from the submit request; the
-
-            server-assigned fallback when none was supplied.'
-        instruction_type:
-          $ref: '#/components/schemas/PositionInstructionType'
-          description: The action this instruction requests.
-        instrument_id:
-          type: string
-          format: uuid
-          description: Identifier of the options contract this instruction acts on.
-        quantity:
-          type: string
-          description: Number of contracts included in the instruction.
-          example: '1'
-        rejection_reason:
-          type:
-          - string
-          - 'null'
-          description: 'Human-readable explanation populated on any non-success terminal
-
-            status — `REJECTED` or `CANCEL_FAILED`. On a
-
-            `207 Multi-Status` batch submit the top-level `error` field
-
-            summarizes the batch; per-row detail continues to live here.
-
-            When a null/undefined value is observed, it indicates it does not apply.'
-        status:
-          $ref: '#/components/schemas/PositionInstructionStatus'
-          description: Current lifecycle status.
-        symbol:
-          type: string
-          description: Options symbol (OSI) for display.
-        updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: 'When the instruction''s lifecycle state last changed.
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-      example:
-        accepted_quantity: null
-        account_id: 122503
-        created_at: 2026-04-24 14:30:00+00:00
-        id: 0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02
-        instruction_id: ui-20260424-001
-        instruction_type: EXERCISE
-        instrument_id: 0195f6d0-a1b2-7c3d-8e4f-5a6b7c8d9e02
-        quantity: '1'
-        rejection_reason: null
-        status: SENT
-        symbol: AAPL  280121C00195000
-        updated_at: 2026-04-24 14:30:00+00:00
     OrderStatus:
       type: string
       description: Order status
@@ -1666,64 +1755,6 @@ components:
       - SUSPENDED
       - CALCULATED
       - OTHER
-    Position:
-      type: object
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        account_number:
-          $ref: '#/components/schemas/AccountNumber'
-        symbol:
-          $ref: '#/components/schemas/Symbol'
-        quantity:
-          $ref: '#/components/schemas/Quantity'
-        average_cost:
-          type: number
-          format: double
-          description: The average cost of the position.
-      required:
-      - account_id
-      - account_number
-      - symbol
-      - quantity
-      - average_cost
-    PositionInstructionList:
-      type: array
-      items:
-        $ref: '#/components/schemas/PositionInstruction'
-    PositionList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Position_2'
-    ProblemDetails:
-      type: object
-      properties:
-        type:
-          type: string
-          format: uri
-          description: A URI reference that identifies the problem type.
-        title:
-          type: string
-          description: A short, human-readable summary of the problem type.
-        status:
-          type: number
-          minimum: 100
-          maximum: 599
-          description: The HTTP status code generated by the origin server for this occurrence of the problem.
-        detail:
-          type: string
-          description: A human-readable explanation specific to this occurrence of the problem.
-        instance:
-          type: string
-          format: uri
-          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
-      additionalProperties: false
-      description: A Problem Details object (RFC 9457)
-    ErrorDetails:
-      type: array
-      items:
-        type: object
-        additionalProperties: true
   responses:
     error:
       description: Error response

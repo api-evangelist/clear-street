@@ -45,13 +45,6 @@ paths:
       security:
       - BearerAuth: []
 components:
-  responses:
-    error:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
   schemas:
     Symbol:
       type: string
@@ -88,6 +81,13 @@ components:
       maxLength: 256
       example: '100000'
       description: Account ID for the account.
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   securitySchemes:
     BearerAuth:
       type: http

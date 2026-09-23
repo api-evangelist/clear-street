@@ -44,23 +44,6 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    AccountNumber:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: ACC0001
-      description: Account number for the account.
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
-    Symbol:
-      type: string
-      minLength: 1
-      maxLength: 32
-      example: AAPL
     LocateInventory:
       type: object
       properties:
@@ -76,6 +59,11 @@ components:
           $ref: '#/components/schemas/Quantity'
         used:
           $ref: '#/components/schemas/Quantity'
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
     ProblemDetails:
       type: object
       properties:
@@ -100,6 +88,18 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
     AccountId:
       type: string
       minLength: 1

@@ -95,18 +95,6 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    EntityId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Entity ID for the legal entity.
-    Timestamp:
-      type: integer
-      format: int64
-      minimum: 1710613560668
-      maximum: 2900000000000
-      description: Milliseconds since epoch.
     PnlSummary:
       type: object
       properties:
@@ -201,33 +189,22 @@ components:
       - total_pnl
       - net_pnl
       - total_fees
+    PnlSummaryForAccount:
+      allOf:
+      - $ref: '#/components/schemas/PnlSummary'
+      - properties:
+          account_id:
+            type: string
+          account_number:
+            type: string
+        required:
+        - account_id
+        - account_number
     Symbol:
       type: string
       minLength: 1
       maxLength: 32
       example: AAPL
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
-    AccountNumber:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: ACC0001
-      description: Account number for the account.
-    AssetClass:
-      type: string
-      enum:
-      - other
-      - currency
-      - equity
-      - option
-      - debt
-      - fund
-      description: The asset class of the symbol.
     ProblemDetails:
       type: object
       properties:
@@ -252,6 +229,40 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
+    EntityId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Entity ID for the legal entity.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
+    AssetClass:
+      type: string
+      enum:
+      - other
+      - currency
+      - equity
+      - option
+      - debt
+      - fund
+      description: The asset class of the symbol.
     PnlDetails:
       properties:
         timestamp:
@@ -366,23 +377,12 @@ components:
       - price
       - sod_price
       - underlier
-    PnlSummaryForAccount:
-      allOf:
-      - $ref: '#/components/schemas/PnlSummary'
-      - properties:
-          account_id:
-            type: string
-          account_number:
-            type: string
-        required:
-        - account_id
-        - account_number
-    AccountId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Account ID for the account.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
   responses:
     error:
       description: Error response

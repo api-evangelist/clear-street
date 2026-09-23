@@ -1,34 +1,7 @@
 openapi: 3.2.0
 info:
   title: Clear Street Trading API version API
-  description: 'A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.
-
-    This specification provides a single source of truth for the API surface, covering order management, trade execution, market data, and account services.
-
-
-    ### Authentication
-
-    All endpoints require authentication via a JWT Bearer token provided in the `Authorization` header.
-
-
-    ### Response Structure
-
-    All responses, both for success and error, adhere to a standard envelope structure:
-
-    - `data`: Contains the response payload on success, or `null` on error.
-
-    - `error`: Contains a structured error object on failure, or `null` on success.
-
-    - `metadata`: Contains the `request_id` and pagination information.
-
-
-    ### WebSockets
-
-    Real-time market data is available via WebSocket connections, which are not formally described in this OpenAPI specification. The following operations are available:
-
-    - `market-data-l1-subscribe`: To start receiving L1 market data updates for a set of symbols.
-
-    - `market-data-l1-unsubscribe`: To stop receiving L1 market data updates.'
+  description: A unified, secure, and high-performance RESTful API for all client interactions with the Active trading platform.
   contact:
     name: Clear Street API Support
     url: https://clearstreet.io/contact
@@ -47,14 +20,14 @@ servers:
 security:
 - BearerAuth: []
 tags:
-- name: API version
+- name: API Version
   description: Endpoints for API service metadata.
 paths:
   /v1/version:
     get:
       tags:
-      - API version
-      summary: Get the API version.
+      - API Version
+      summary: Get the API version
       description: Returns the current version string for this API endpoint.
       operationId: get_version
       responses:
@@ -170,15 +143,11 @@ components:
           description: Total number of pages available.
           example: '5'
           minimum: 0
-    Version:
-      type: object
-      description: API version information
-      required:
-      - version
-      properties:
-        version:
-          type: string
-          description: API version string
+    ErrorDetails:
+      type: array
+      items:
+        type: object
+        additionalProperties: true
     BaseResponse:
       type: object
       required:
@@ -193,11 +162,15 @@ components:
         metadata:
           $ref: '#/components/schemas/ResponseMetadata'
           description: Response metadata, including the request ID and optional pagination info.
-    ErrorDetails:
-      type: array
-      items:
-        type: object
-        additionalProperties: true
+    Version:
+      type: object
+      description: API version information
+      required:
+      - version
+      properties:
+        version:
+          type: string
+          description: API version string
   securitySchemes:
     BearerAuth:
       type: http
