@@ -733,6 +733,18 @@ paths:
       description: Clear Street Local API
 components:
   schemas:
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
     ProblemDetails:
       type: object
       properties:
@@ -757,24 +769,6 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
-    EntityId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Entity ID for the legal entity.
-    AccountNumber:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: ACC0001
-      description: Account number for the account.
-    AccountId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Account ID for the account.
     Account:
       type: object
       properties:
@@ -792,148 +786,57 @@ components:
       - account_number
       - entity_id
       - name
+    EntityId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Entity ID for the legal entity.
+    AccountStatus:
+      type: string
+      description: Account status
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - CLOSED
     AccountType:
       type: string
       description: Account type classification
       enum:
       - CUSTOMER
       - OTHER
-    AccountList:
+    ErrorDetails:
       type: array
       items:
-        $ref: '#/components/schemas/Account_2'
-    MarginTopContributor:
+        type: object
+        additionalProperties: true
+    PortfolioHistoryResponse:
       type: object
       required:
-      - underlying_instrument_id
-      - initial_margin_requirement
-      - maintenance_margin_requirement
-      - market_value
-      - day_trade_buying_power_usage
+      - segments
       properties:
-        day_trade_buying_power_usage:
-          type: string
-          description: 'Day-trade buying power consumed by fills against this underlying on the
-
-            current trade date. Populated only for pattern day trader accounts.'
-          deprecated: true
-          example: '5000.00'
-        initial_margin_requirement:
-          type: string
-          description: Initial margin requirement attributable to this underlying.
-          example: '25000.00'
-        maintenance_margin_requirement:
-          type: string
-          description: Maintenance margin requirement attributable to this underlying.
-          example: '15000.00'
-        market_value:
-          type: string
-          description: Net market value attributable to this underlying.
-          example: '50000.00'
-        underlying_instrument_id:
-          type: string
-          format: uuid
-          description: UUID of the underlying security contributing to margin requirement.
-          example: a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8
-    MarginDetails:
+        segments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioHistorySegment'
+    MarginSessionDetails:
       type: object
       required:
-      - pattern_day_trader
-      - day_trade_count
-      - intraday_details
-      - overnight_details
-      - maintenance_margin_requirement
-      - maintenance_margin_excess
-      - initial_margin_requirement
-      - initial_margin_excess
+      - buying_power
       properties:
-        day_trade_buying_power_usage:
+        buying_power:
+          type: string
+          description: Maximum buying power available in the account during the session.
+          example: '500000.00'
+        multiplier:
           type:
           - string
           - 'null'
-          description: 'The amount of day-trade buying power used during the current trading day.
-
-            When null/undefined, the value should be assumed to be zero. The field is omitted to simplify the response.'
-          deprecated: true
-          example: '50000.00'
-        day_trade_count:
-          type: integer
-          format: int32
-          description: The number of day trades executed over the 5 most recent trading days.
-          deprecated: true
-          minimum: 0
-        initial_margin_excess:
-          type: string
-          description: Initial margin excess for trade-date balances.
-          example: '50000.00'
-        initial_margin_requirement:
-          type: string
-          description: Initial margin requirement for trade-date balances.
-          example: '50000.00'
-        intraday_details:
-          $ref: '#/components/schemas/MarginSessionDetails'
-          description: Intraday session margin calculation details.
-        maintenance_margin_excess:
-          type: string
-          description: Maintenance margin excess for trade-date balances.
-          example: '75000.00'
-        maintenance_margin_requirement:
-          type: string
-          description: Maintenance margin requirement for trade-date balances.
-          example: '25000.00'
-        overnight_details:
-          $ref: '#/components/schemas/MarginSessionDetails'
-          description: Overnight session margin calculation details.
-        pattern_day_trader:
-          type: boolean
-          description: '`true` if the account is currently flagged as a PDT, otherwise `false`.'
-          deprecated: true
-        top_contributors:
-          type: array
-          items:
-            $ref: '#/components/schemas/MarginTopContributor'
-          description: Optional top margin contributors, returned only when explicitly requested.
-        usage:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/MarginDetailsUsage'
-            description: 'Current usage totals.
-
-              When a null/undefined value is observed, it indicates that there is no available data.'
-    UpdateAccountSettingsRequest:
-      type: object
-      description: Request to update account settings
-      properties:
-        risk:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/RiskSettings'
-            description: Risk settings for the account
-      additionalProperties: false
+          description: Effective multiplier for margin calculations during the session.
+          example: '2'
       example:
-        risk:
-          max_notional: '5000000.00'
-    AccountSubtype:
-      type: string
-      description: Account subtype classification providing more granular categorization
-      enum:
-      - CASH
-      - MARGIN
-      - OTHER
-    MarginDetailsUsage:
-      type: object
-      required:
-      - used
-      - total
-      properties:
-        total:
-          type: string
-          description: The total margin available in the current model.
-          example: '100000.00'
-        used:
-          type: string
-          description: The amount of margin that is currently being utilized.
-          example: '5000.00'
+        buying_power: '500000.00'
+        multiplier: '2'
     BaseResponse:
       type: object
       required:
@@ -948,6 +851,138 @@ components:
         metadata:
           $ref: '#/components/schemas/ResponseMetadata'
           description: Response metadata, including the request ID and optional pagination info.
+    Address:
+      type: object
+      description: A postal address.
+      required:
+      - line1
+      - city
+      - postal_code
+      - country
+      properties:
+        city:
+          type: string
+          description: City
+          example: New York
+        country:
+          type: string
+          description: Country
+          example: USA
+        line1:
+          type: string
+          description: First street address line
+          example: 4 World Trade Center
+        line2:
+          type:
+          - string
+          - 'null'
+          description: 'Second street address line
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: 150 Greenwich Street, Floor 45
+        postal_code:
+          type: string
+          description: Postal code
+          example: '10007'
+        state:
+          type:
+          - string
+          - 'null'
+          description: 'State or province
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: NY
+      example:
+        city: New York
+        country: USA
+        line1: 4 World Trade Center
+        line2: 150 Greenwich Street, Floor 45
+        postal_code: '10007'
+        state: NY
+    ResponseMetadata:
+      type: object
+      description: 'Metadata for the response. This will always contain a request ID which can be used to identify
+
+        the request to Clear Street for tracing, and optionally may include pagination data.'
+      required:
+      - request_id
+      properties:
+        next_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the next page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Pagination. Included if this was a GET (list) response
+          example: '1'
+          minimum: 0
+        previous_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the previous page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        request_id:
+          type: string
+          description: A unique ID for this request, generated upon ingestion of the request.
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of items available (not just in this page).
+          example: '42'
+          minimum: 0
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total number of pages available.
+          example: '5'
+          minimum: 0
+    i64:
+      type: integer
+      format: int64
+    ApiError:
+      type: object
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
+
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
     AccountBalancesSod:
       type: object
       required:
@@ -1014,245 +1049,6 @@ components:
 
             When a null/undefined value is observed, it indicates it does not apply.'
           example: '70000.00'
-    Address:
-      type: object
-      description: A postal address.
-      required:
-      - line1
-      - city
-      - postal_code
-      - country
-      properties:
-        city:
-          type: string
-          description: City
-          example: New York
-        country:
-          type: string
-          description: Country
-          example: USA
-        line1:
-          type: string
-          description: First street address line
-          example: 4 World Trade Center
-        line2:
-          type:
-          - string
-          - 'null'
-          description: 'Second street address line
-
-            When a null/undefined value is observed, it indicates it does not apply.'
-          example: 150 Greenwich Street, Floor 45
-        postal_code:
-          type: string
-          description: Postal code
-          example: '10007'
-        state:
-          type:
-          - string
-          - 'null'
-          description: 'State or province
-
-            When a null/undefined value is observed, it indicates it does not apply.'
-          example: NY
-      example:
-        city: New York
-        country: USA
-        line1: 4 World Trade Center
-        line2: 150 Greenwich Street, Floor 45
-        postal_code: '10007'
-        state: NY
-    MarginSessionDetails:
-      type: object
-      required:
-      - buying_power
-      properties:
-        buying_power:
-          type: string
-          description: Maximum buying power available in the account during the session.
-          example: '500000.00'
-        multiplier:
-          type:
-          - string
-          - 'null'
-          description: Effective multiplier for margin calculations during the session.
-          example: '2'
-      example:
-        buying_power: '500000.00'
-        multiplier: '2'
-    ApiError:
-      type: object
-      description: A direct mapping of tonic::Status, for use in HTTP responses.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: 'The error code is used to identify the nature of the error. It corresponds
-
-            to an HTTP status code.'
-          example: 400
-          minimum: 0
-        details:
-          $ref: '#/components/schemas/ErrorDetails'
-          description: 'Additional error details, if any. This can include structured information
-
-            such as field violations or error metadata.'
-        message:
-          type: string
-          description: A human-readable message providing more details about the error.
-          example: Order quantity must be greater than zero
-    AccountStatus:
-      type: string
-      description: Account status
-      enum:
-      - ACTIVE
-      - INACTIVE
-      - CLOSED
-    AccountWithPersonalDetails:
-      allOf:
-      - oneOf:
-        - type: object
-          description: Represents a trading account
-          required:
-          - id
-          - short_name
-          - full_name
-          - type
-          - subtype
-          - open_date
-          - account_holder_entity_id
-          - options_level
-          - status
-          properties:
-            account_holder_entity_id:
-              type: integer
-              format: int64
-              description: The account holder entity identifier
-              example: 987654321
-            close_date:
-              type:
-              - string
-              - 'null'
-              format: date
-              description: 'The date the account was closed, if applicable
-
-                When a null/undefined value is observed, it indicates it does not apply.'
-              example: 2026-01-15
-            full_name:
-              type: string
-              description: The full legal name of the account
-              example: Test Trading Account
-            id:
-              $ref: '#/components/schemas/i64'
-              description: The unique identifier for the account
-            open_date:
-              type: string
-              format: date
-              description: The date the account was opened
-              example: 2023-01-15
-            options_level:
-              $ref: '#/components/schemas/i64'
-              description: The options level of the account
-            short_name:
-              type: string
-              description: The short name of the account
-              example: TST-ACCOUNT-01
-            status:
-              $ref: '#/components/schemas/AccountStatus'
-              description: The current status of the account
-            subtype:
-              $ref: '#/components/schemas/AccountSubtype'
-              description: The sub-type of account
-            type:
-              $ref: '#/components/schemas/AccountType'
-              description: The type of account
-          example:
-            account_holder_entity_id: 987654321
-            close_date: null
-            full_name: Test Trading Account
-            id: 19816
-            open_date: 2023-01-15
-            options_level: 1
-            short_name: TST-ACCOUNT-01
-            status: ACTIVE
-            subtype: MARGIN
-            type: CUSTOMER
-        description: The core account details
-      - type: object
-        properties:
-          country_of_tax_residency:
-            type:
-            - string
-            - 'null'
-            description: 'The country of tax residency of the account-holder entity. `null`
-
-              when not on file or entity reference data is unavailable.
-
-              When a null/undefined value is observed, it indicates that there is no available data.'
-            example: US
-          date_of_birth:
-            type:
-            - string
-            - 'null'
-            format: date
-            description: 'The date of birth of the account holder''s primary contact. `null`
-
-              when not on file or entity reference data is unavailable.
-
-              When a null/undefined value is observed, it indicates that there is no available data.'
-            example: 1985-03-15
-          mailing_address:
-            oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/Address'
-              description: 'The mailing address of the account-holder entity. `null` when no
-
-                mailing address is on file or entity reference data is unavailable.
-
-                When a null/undefined value is observed, it indicates that there is no available data.'
-          phone_number:
-            type:
-            - string
-            - 'null'
-            description: 'The phone number of the account holder''s primary contact. `null`
-
-              when not on file or entity reference data is unavailable.
-
-              When a null/undefined value is observed, it indicates that there is no available data.'
-            example: '+12125550123'
-      description: A trading account enriched with details about the account-holder entity.
-      example:
-        account_holder_entity_id: 987654321
-        close_date: null
-        country_of_tax_residency: US
-        date_of_birth: 1985-03-15
-        full_name: Test Trading Account
-        id: 19816
-        mailing_address:
-          city: New York
-          country: USA
-          line1: 4 World Trade Center
-          line2: 150 Greenwich Street, Floor 45
-          postal_code: '10007'
-          state: NY
-        open_date: 2023-01-15
-        options_level: 1
-        phone_number: '+12125550123'
-        short_name: TST-ACCOUNT-01
-        status: ACTIVE
-        subtype: MARGIN
-        type: CUSTOMER
-    i64:
-      type: integer
-      format: int64
-    ErrorDetails:
-      type: array
-      items:
-        type: object
-        additionalProperties: true
     AccountBalances:
       type: object
       description: Represents the balance details for a trading account
@@ -1427,18 +1223,6 @@ components:
         unsettled_credits: '20000.00'
         unsettled_debits: '10000.00'
         withdrawable_cash: '75000.00'
-    RiskSettings:
-      type: object
-      description: Risk settings for an account
-      properties:
-        max_notional:
-          type:
-          - string
-          - 'null'
-          description: 'The maximum notional value available to the account
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-          example: '1000000.00'
     Account_2:
       type: object
       description: Represents a trading account
@@ -1519,6 +1303,46 @@ components:
       - CIRO
       - FUTURES_NLV
       - FUTURES_TOT_EQ
+    MarginTopContributor:
+      type: object
+      required:
+      - underlying_instrument_id
+      - initial_margin_requirement
+      - maintenance_margin_requirement
+      - market_value
+      - day_trade_buying_power_usage
+      properties:
+        day_trade_buying_power_usage:
+          type: string
+          description: 'Day-trade buying power consumed by fills against this underlying on the
+
+            current trade date. Populated only for pattern day trader accounts.'
+          deprecated: true
+          example: '5000.00'
+        initial_margin_requirement:
+          type: string
+          description: Initial margin requirement attributable to this underlying.
+          example: '25000.00'
+        maintenance_margin_requirement:
+          type: string
+          description: Maintenance margin requirement attributable to this underlying.
+          example: '15000.00'
+        market_value:
+          type: string
+          description: Net market value attributable to this underlying.
+          example: '50000.00'
+        underlying_instrument_id:
+          type: string
+          format: uuid
+          description: UUID of the underlying security contributing to margin requirement.
+          example: a1a2a3a4-b1b2-c1c2-d1d2-d3d4d5d6d7d8
+    AccountSubtype:
+      type: string
+      description: Account subtype classification providing more granular categorization
+      enum:
+      - CASH
+      - MARGIN
+      - OTHER
     PortfolioHistorySegment:
       type: object
       required:
@@ -1569,6 +1393,32 @@ components:
         unrealized_pnl:
           type: string
           description: Sum of the profit and loss from market changes.
+    MarginDetailsUsage:
+      type: object
+      required:
+      - used
+      - total
+      properties:
+        total:
+          type: string
+          description: The total margin available in the current model.
+          example: '100000.00'
+        used:
+          type: string
+          description: The amount of margin that is currently being utilized.
+          example: '5000.00'
+    RiskSettings:
+      type: object
+      description: Risk settings for an account
+      properties:
+        max_notional:
+          type:
+          - string
+          - 'null'
+          description: 'The maximum notional value available to the account
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+          example: '1000000.00'
     AccountSettings:
       type: object
       properties:
@@ -1582,72 +1432,222 @@ components:
       example:
         risk:
           max_notional: '5000000.00'
-    ResponseMetadata:
+    UpdateAccountSettingsRequest:
       type: object
-      description: 'Metadata for the response. This will always contain a request ID which can be used to identify
-
-        the request to Clear Street for tracing, and optionally may include pagination data.'
-      required:
-      - request_id
+      description: Request to update account settings
       properties:
-        next_page_token:
+        risk:
           oneOf:
           - type: 'null'
-          - type: string
-            format: byte
-            description: Base64URL-encoded pagination token
-          description: 'A token that can be used to retrieve the next page of results, if any.
+          - $ref: '#/components/schemas/RiskSettings'
+            description: Risk settings for the account
+      additionalProperties: false
+      example:
+        risk:
+          max_notional: '5000000.00'
+    AccountWithPersonalDetails:
+      allOf:
+      - oneOf:
+        - type: object
+          description: Represents a trading account
+          required:
+          - id
+          - short_name
+          - full_name
+          - type
+          - subtype
+          - open_date
+          - account_holder_entity_id
+          - options_level
+          - status
+          properties:
+            account_holder_entity_id:
+              type: integer
+              format: int64
+              description: The account holder entity identifier
+              example: 987654321
+            close_date:
+              type:
+              - string
+              - 'null'
+              format: date
+              description: 'The date the account was closed, if applicable
 
-            The token contains opaque pagination state.
+                When a null/undefined value is observed, it indicates it does not apply.'
+              example: 2026-01-15
+            full_name:
+              type: string
+              description: The full legal name of the account
+              example: Test Trading Account
+            id:
+              $ref: '#/components/schemas/i64'
+              description: The unique identifier for the account
+            open_date:
+              type: string
+              format: date
+              description: The date the account was opened
+              example: 2023-01-15
+            options_level:
+              $ref: '#/components/schemas/i64'
+              description: The options level of the account
+            short_name:
+              type: string
+              description: The short name of the account
+              example: TST-ACCOUNT-01
+            status:
+              $ref: '#/components/schemas/AccountStatus'
+              description: The current status of the account
+            subtype:
+              $ref: '#/components/schemas/AccountSubtype'
+              description: The sub-type of account
+            type:
+              $ref: '#/components/schemas/AccountType'
+              description: The type of account
+          example:
+            account_holder_entity_id: 987654321
+            close_date: null
+            full_name: Test Trading Account
+            id: 19816
+            open_date: 2023-01-15
+            options_level: 1
+            short_name: TST-ACCOUNT-01
+            status: ACTIVE
+            subtype: MARGIN
+            type: CUSTOMER
+        description: The core account details
+      - type: object
+        properties:
+          country_of_tax_residency:
+            type:
+            - string
+            - 'null'
+            description: 'The country of tax residency of the account-holder entity. `null`
 
-            Filtering and sorting parameters must be provided with each request.'
-        page_number:
+              when not on file or entity reference data is unavailable.
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+            example: US
+          date_of_birth:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: 'The date of birth of the account holder''s primary contact. `null`
+
+              when not on file or entity reference data is unavailable.
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+            example: 1985-03-15
+          mailing_address:
+            oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/Address'
+              description: 'The mailing address of the account-holder entity. `null` when no
+
+                mailing address is on file or entity reference data is unavailable.
+
+                When a null/undefined value is observed, it indicates that there is no available data.'
+          phone_number:
+            type:
+            - string
+            - 'null'
+            description: 'The phone number of the account holder''s primary contact. `null`
+
+              when not on file or entity reference data is unavailable.
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+            example: '+12125550123'
+      description: A trading account enriched with details about the account-holder entity.
+      example:
+        account_holder_entity_id: 987654321
+        close_date: null
+        country_of_tax_residency: US
+        date_of_birth: 1985-03-15
+        full_name: Test Trading Account
+        id: 19816
+        mailing_address:
+          city: New York
+          country: USA
+          line1: 4 World Trade Center
+          line2: 150 Greenwich Street, Floor 45
+          postal_code: '10007'
+          state: NY
+        open_date: 2023-01-15
+        options_level: 1
+        phone_number: '+12125550123'
+        short_name: TST-ACCOUNT-01
+        status: ACTIVE
+        subtype: MARGIN
+        type: CUSTOMER
+    AccountList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Account_2'
+    MarginDetails:
+      type: object
+      required:
+      - pattern_day_trader
+      - day_trade_count
+      - intraday_details
+      - overnight_details
+      - maintenance_margin_requirement
+      - maintenance_margin_excess
+      - initial_margin_requirement
+      - initial_margin_excess
+      properties:
+        day_trade_buying_power_usage:
           type:
-          - integer
+          - string
           - 'null'
+          description: 'The amount of day-trade buying power used during the current trading day.
+
+            When null/undefined, the value should be assumed to be zero. The field is omitted to simplify the response.'
+          deprecated: true
+          example: '50000.00'
+        day_trade_count:
+          type: integer
           format: int32
-          description: Pagination. Included if this was a GET (list) response
-          example: '1'
+          description: The number of day trades executed over the 5 most recent trading days.
+          deprecated: true
           minimum: 0
-        previous_page_token:
-          oneOf:
-          - type: 'null'
-          - type: string
-            format: byte
-            description: Base64URL-encoded pagination token
-          description: 'A token that can be used to retrieve the previous page of results, if any.
-
-            The token contains opaque pagination state.
-
-            Filtering and sorting parameters must be provided with each request.'
-        request_id:
+        initial_margin_excess:
           type: string
-          description: A unique ID for this request, generated upon ingestion of the request.
-        total_items:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Total number of items available (not just in this page).
-          example: '42'
-          minimum: 0
-        total_pages:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Total number of pages available.
-          example: '5'
-          minimum: 0
-    PortfolioHistoryResponse:
-      type: object
-      required:
-      - segments
-      properties:
-        segments:
+          description: Initial margin excess for trade-date balances.
+          example: '50000.00'
+        initial_margin_requirement:
+          type: string
+          description: Initial margin requirement for trade-date balances.
+          example: '50000.00'
+        intraday_details:
+          $ref: '#/components/schemas/MarginSessionDetails'
+          description: Intraday session margin calculation details.
+        maintenance_margin_excess:
+          type: string
+          description: Maintenance margin excess for trade-date balances.
+          example: '75000.00'
+        maintenance_margin_requirement:
+          type: string
+          description: Maintenance margin requirement for trade-date balances.
+          example: '25000.00'
+        overnight_details:
+          $ref: '#/components/schemas/MarginSessionDetails'
+          description: Overnight session margin calculation details.
+        pattern_day_trader:
+          type: boolean
+          description: '`true` if the account is currently flagged as a PDT, otherwise `false`.'
+          deprecated: true
+        top_contributors:
           type: array
           items:
-            $ref: '#/components/schemas/PortfolioHistorySegment'
+            $ref: '#/components/schemas/MarginTopContributor'
+          description: Optional top margin contributors, returned only when explicitly requested.
+        usage:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/MarginDetailsUsage'
+            description: 'Current usage totals.
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
   responses:
     error:
       description: Error response

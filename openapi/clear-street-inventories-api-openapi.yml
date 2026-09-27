@@ -44,26 +44,18 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    LocateInventory:
-      type: object
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        account_number:
-          $ref: '#/components/schemas/AccountNumber'
-        symbol:
-          $ref: '#/components/schemas/Symbol'
-        available:
-          $ref: '#/components/schemas/Quantity'
-        reserved:
-          $ref: '#/components/schemas/Quantity'
-        used:
-          $ref: '#/components/schemas/Quantity'
-    Symbol:
+    AccountId:
       type: string
       minLength: 1
-      maxLength: 32
-      example: AAPL
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
     ProblemDetails:
       type: object
       properties:
@@ -94,18 +86,26 @@ components:
       maxLength: 16
       example: '100'
       description: String representation of quantity.
-    AccountNumber:
+    LocateInventory:
+      type: object
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        available:
+          $ref: '#/components/schemas/Quantity'
+        reserved:
+          $ref: '#/components/schemas/Quantity'
+        used:
+          $ref: '#/components/schemas/Quantity'
+    Symbol:
       type: string
       minLength: 1
-      maxLength: 256
-      example: ACC0001
-      description: Account number for the account.
-    AccountId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Account ID for the account.
+      maxLength: 32
+      example: AAPL
   responses:
     error:
       description: Error response

@@ -485,25 +485,14 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    AddWatchlistItemData:
-      type: object
-      description: Response data for adding a watchlist item
-      required:
-      - item_id
-      properties:
-        item_id:
-          type: string
-          format: uuid
-          description: ID of the created item
-    AddWatchlistItemRequest:
-      type: object
-      description: Request to add an instrument to a watchlist
-      required:
-      - instrument_id
-      properties:
-        instrument_id:
-          $ref: '#/components/schemas/InstrumentIdOrSymbol'
-          description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol).
+    SecurityType:
+      type: string
+      description: Security type
+      enum:
+      - COMMON_STOCK
+      - INDEX
+      - OPTION
+      - CASH
     CreateWatchlistRequest:
       type: object
       description: Create watchlist request payload.
@@ -594,14 +583,6 @@ components:
           type: string
           description: A human-readable message providing more details about the error.
           example: Order quantity must be greater than zero
-    SecurityType:
-      type: string
-      description: Security type
-      enum:
-      - COMMON_STOCK
-      - INDEX
-      - OPTION
-      - CASH
     WatchlistDetail:
       type: object
       description: Detailed watchlist with all items
@@ -627,6 +608,43 @@ components:
         name:
           type: string
           description: Watchlist name
+    WatchlistEntry:
+      type: object
+      description: Represents a user watchlist.
+      required:
+      - id
+      - name
+      - created_at
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the watchlist was created.
+        id:
+          type: string
+          format: uuid
+          description: The unique identifier for the watchlist.
+        name:
+          type: string
+          description: The user-provided watchlist name.
+    ErrorDetails:
+      type: array
+      items:
+        type: object
+        additionalProperties: true
+    WatchlistEntryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/WatchlistEntry'
+    AddWatchlistItemRequest:
+      type: object
+      description: Request to add an instrument to a watchlist
+      required:
+      - instrument_id
+      properties:
+        instrument_id:
+          $ref: '#/components/schemas/InstrumentIdOrSymbol'
+          description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol).
     WatchlistItemEntry:
       type: object
       description: A single item in a watchlist
@@ -656,11 +674,34 @@ components:
             description: 'Instrument details
 
               When a null/undefined value is observed, it indicates that there is no available data.'
-    ErrorDetails:
-      type: array
-      items:
-        type: object
-        additionalProperties: true
+    AddWatchlistItemData:
+      type: object
+      description: Response data for adding a watchlist item
+      required:
+      - item_id
+      properties:
+        item_id:
+          type: string
+          format: uuid
+          description: ID of the created item
+    BaseResponse:
+      type: object
+      required:
+      - metadata
+      properties:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
+    InstrumentIdOrSymbol:
+      type: string
+      description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
+      minLength: 1
     Instrument:
       allOf:
       - type: object
@@ -840,47 +881,6 @@ components:
         short_margin_rate: '0.25'
         symbol: AAPL
         venue: XNMS
-    InstrumentIdOrSymbol:
-      type: string
-      description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
-      minLength: 1
-    WatchlistEntry:
-      type: object
-      description: Represents a user watchlist.
-      required:
-      - id
-      - name
-      - created_at
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the watchlist was created.
-        id:
-          type: string
-          format: uuid
-          description: The unique identifier for the watchlist.
-        name:
-          type: string
-          description: The user-provided watchlist name.
-    WatchlistEntryList:
-      type: array
-      items:
-        $ref: '#/components/schemas/WatchlistEntry'
-    BaseResponse:
-      type: object
-      required:
-      - metadata
-      properties:
-        error:
-          oneOf:
-          - oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/ApiError'
-              description: Structured error details when the request is unsuccessful.
-        metadata:
-          $ref: '#/components/schemas/ResponseMetadata'
-          description: Response metadata, including the request ID and optional pagination info.
   securitySchemes:
     BearerAuth:
       type: http

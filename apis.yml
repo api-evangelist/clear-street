@@ -47,7 +47,7 @@ created: '2026-08-02'
 modified: '2026-08-02'
 tags:
 - Company
-- Financial-Services
+- Financial Services
 - Capital Markets
 - Prime Brokerage
 - Trading
@@ -67,6 +67,7 @@ tags_raw:
 - Market Data
 - Fintech
 - Investing
+- Financial-Services
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

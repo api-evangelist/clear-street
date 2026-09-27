@@ -1375,39 +1375,36 @@ paths:
       description: Clear Street Local API
 components:
   schemas:
-    OrderType:
+    UpdateOrder:
+      type: object
+      properties:
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The maximum quantity to be executed.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The price to execute at-or-better for limit orders.
+        stop_price:
+          $ref: '#/components/schemas/Price'
+          description: The price at which stop orders become marketable.
+      required:
+      - quantity
+      additionalProperties: false
+    ApStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+      - type: object
+        properties:
+          min_percent:
+            $ref: '#/components/schemas/MinPercent'
+          max_percent:
+            $ref: '#/components/schemas/MaxPercent'
+    AccountId:
       type: string
-      enum:
-      - limit
-      - market
-      - stop
-      - stop-limit
-      description: 'The type of order, can be one of the following:
-
-        - `limit`: A limit order will execute at-or-better than the limit price you specify
-
-        - `market`: An order that will execute at the prevailing market prices
-
-        - `stop`: A stop order will result in a market order when the market price reaches the specified stop price
-
-        - `stop-limit`: A stop limit order will result in a limit order when the market price reaches the specified stop price
-
-        '
-    OrderState:
-      type: string
-      enum:
-      - open
-      - rejected
-      - closed
-      description: 'Simplified order state, which is inferred from `OrderStatus`. Makes it easier to determine whether an order can be executed against.
-
-        - `open`: Order *can* potentially be executed against.
-
-        - `rejected`: Order *cannot* be executed against because it was rejected. This is a terminal state.
-
-        - `closed`: Order *cannot* be executed against. This is a terminal state.
-
-        '
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
     CreateOrder:
       type: object
       properties:
@@ -1452,6 +1449,247 @@ components:
       - time_in_force
       - symbol
       additionalProperties: false
+    OrderId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique order ID assigned by us.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    DmaStrategy:
+      properties:
+        type:
+          $ref: '#/components/schemas/StrategyType'
+        destination:
+          $ref: '#/components/schemas/Destination'
+      required:
+      - type
+      - destination
+    DarkStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+      - type: object
+        properties:
+          max_percent:
+            $ref: '#/components/schemas/MaxPercent'
+    Urgency:
+      type: string
+      enum:
+      - super-passive
+      - passive
+      - moderate
+      - aggressive
+      - super-aggressive
+      description: The urgency associated with the execution strategy.
+      default: moderate
+    MinPercent:
+      type: integer
+      minimum: 0
+      maximum: 100
+      example: 1
+      description: The minimum percentage of market volume. Must be an integer between 0 and 100 (inclusive).
+    MaxPercent:
+      type: integer
+      minimum: 0
+      maximum: 100
+      example: 50
+      description: The maximum percentage of market volume. Must be an integer between 0 and 100 (inclusive).
+    MaxPercentVolume:
+      type: integer
+      minimum: 0
+      maximum: 50
+      example: 35
+      description: The maximum percentage of market volume. Must be an integer between 0 and 50 (inclusive).
+    TargetPercent:
+      type: integer
+      minimum: 0
+      maximum: 100
+      example: 50
+      description: The target percentage of market volume. Must be an integer between 0 and 100 (inclusive).
+    OpenCloseIndicator:
+      type: string
+      enum:
+      - open
+      - close
+    OrderStatus:
+      type: string
+      enum:
+      - new
+      - partially-filled
+      - filled
+      - canceled
+      - replaced
+      - pending-cancel
+      - stopped
+      - rejected
+      - suspended
+      - pending-new
+      - calculated
+      - expired
+      - accepted-for-bidding
+      - pending-replace
+      - done-for-day
+      description: Granular order status using [standard values come FIX tag 39](https://www.fixtrading.org/online-specification/order-state-changes).
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    VwapStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+      - type: object
+        properties:
+          min_percent:
+            $ref: '#/components/schemas/MinPercent'
+          max_percent:
+            $ref: '#/components/schemas/MaxPercentVolume'
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
+    PovStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+      - type: object
+        properties:
+          target_percent:
+            $ref: '#/components/schemas/TargetPercent'
+        required:
+        - target_percent
+    Strategy:
+      discriminator:
+        propertyName: type
+        mapping:
+          sor: '#/components/schemas/SorStrategy'
+          vwap: '#/components/schemas/VwapStrategy'
+          twap: '#/components/schemas/TwapStrategy'
+          ap: '#/components/schemas/ApStrategy'
+          pov: '#/components/schemas/PovStrategy'
+          dark: '#/components/schemas/DarkStrategy'
+          dma: '#/components/schemas/DmaStrategy'
+      anyOf:
+      - $ref: '#/components/schemas/SorStrategy'
+      - $ref: '#/components/schemas/VwapStrategy'
+      - $ref: '#/components/schemas/TwapStrategy'
+      - $ref: '#/components/schemas/ApStrategy'
+      - $ref: '#/components/schemas/PovStrategy'
+      - $ref: '#/components/schemas/DarkStrategy'
+      - $ref: '#/components/schemas/DmaStrategy'
+    ReferenceId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: my-order-id-123
+      description: An ID that you provide.
+    Order:
+      type: object
+      properties:
+        created_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: When the order was created in milliseconds since epoch.
+        updated_at:
+          $ref: '#/components/schemas/Timestamp'
+          description: When the order was updated in milliseconds since epoch.
+        order_id:
+          $ref: '#/components/schemas/OrderId'
+          description: An internally generated unique ID for this order.
+        reference_id:
+          $ref: '#/components/schemas/ReferenceId'
+          description: The ID you provided when creating this order.
+        version:
+          type: integer
+          example: 1
+          description: A monotonically increasing number indicating the version of this order. A higher number indicates a more recent version of the order.
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        state:
+          $ref: '#/components/schemas/OrderState'
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        order_type:
+          $ref: '#/components/schemas/OrderType'
+        side:
+          $ref: '#/components/schemas/OrderSide'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The requested quantity on this order.
+        price:
+          $ref: '#/components/schemas/Price'
+          description: The requested limit price on this order.
+        stop_price:
+          $ref: '#/components/schemas/Price'
+          description: The requested stop price on this order.
+        time_in_force:
+          $ref: '#/components/schemas/TimeInForce'
+        average_price:
+          type: number
+          format: double
+          description: Calculated average price of all fills on this order.
+        filled_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity that has been filled.
+        order_update_reason:
+          $ref: '#/components/schemas/OrderUpdateReason'
+          description: The last reason why this order was updated
+        text:
+          type: string
+          description: Free form text typically contains reasons for a reject.
+        strategy:
+          $ref: '#/components/schemas/Strategy'
+          description: The execution strategy used for this order.
+        running_position:
+          $ref: '#/components/schemas/Quantity'
+          description: The position quantity at the time of this order.
+        open_close_indicator:
+          $ref: '#/components/schemas/OpenCloseIndicator'
+          description: Open/Close indicator for option orders.
+      required:
+      - created_at
+      - updated_at
+      - order_id
+      - version
+      - account_id
+      - account_number
+      - state
+      - status
+      - symbol
+      - order_type
+      - side
+      - quantity
+      - time_in_force
+      - filled_quantity
+      - running_position
     Destination:
       type: string
       enum:
@@ -1589,85 +1827,6 @@ components:
         </tbody></table>
 
         '
-    ProblemDetails:
-      type: object
-      properties:
-        type:
-          type: string
-          format: uri
-          description: A URI reference that identifies the problem type.
-        title:
-          type: string
-          description: A short, human-readable summary of the problem type.
-        status:
-          type: number
-          minimum: 100
-          maximum: 599
-          description: The HTTP status code generated by the origin server for this occurrence of the problem.
-        detail:
-          type: string
-          description: A human-readable explanation specific to this occurrence of the problem.
-        instance:
-          type: string
-          format: uri
-          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
-      additionalProperties: false
-      description: A Problem Details object (RFC 9457)
-    VwapStrategy:
-      allOf:
-      - $ref: '#/components/schemas/BaseStrategy'
-      - type: object
-        properties:
-          min_percent:
-            $ref: '#/components/schemas/MinPercent'
-          max_percent:
-            $ref: '#/components/schemas/MaxPercentVolume'
-    Strategy:
-      discriminator:
-        propertyName: type
-        mapping:
-          sor: '#/components/schemas/SorStrategy'
-          vwap: '#/components/schemas/VwapStrategy'
-          twap: '#/components/schemas/TwapStrategy'
-          ap: '#/components/schemas/ApStrategy'
-          pov: '#/components/schemas/PovStrategy'
-          dark: '#/components/schemas/DarkStrategy'
-          dma: '#/components/schemas/DmaStrategy'
-      anyOf:
-      - $ref: '#/components/schemas/SorStrategy'
-      - $ref: '#/components/schemas/VwapStrategy'
-      - $ref: '#/components/schemas/TwapStrategy'
-      - $ref: '#/components/schemas/ApStrategy'
-      - $ref: '#/components/schemas/PovStrategy'
-      - $ref: '#/components/schemas/DarkStrategy'
-      - $ref: '#/components/schemas/DmaStrategy'
-    SorStrategy:
-      allOf:
-      - $ref: '#/components/schemas/BaseStrategy'
-    OrderSide:
-      type: string
-      enum:
-      - buy
-      - sell
-      - sell-short
-      description: Buy, sell, sell-short indicator.
-    MinPercent:
-      type: integer
-      minimum: 0
-      maximum: 100
-      example: 1
-      description: The minimum percentage of market volume. Must be an integer between 0 and 100 (inclusive).
-    MaxPercent:
-      type: integer
-      minimum: 0
-      maximum: 100
-      example: 50
-      description: The maximum percentage of market volume. Must be an integer between 0 and 100 (inclusive).
-    Symbol:
-      type: string
-      minLength: 1
-      maxLength: 32
-      example: AAPL
     OrderUpdateReason:
       type: string
       enum:
@@ -1677,97 +1836,6 @@ components:
       - execution-report
       - cancel-reject
       - reject
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
-    MaxPercentVolume:
-      type: integer
-      minimum: 0
-      maximum: 50
-      example: 35
-      description: The maximum percentage of market volume. Must be an integer between 0 and 50 (inclusive).
-    PovStrategy:
-      allOf:
-      - $ref: '#/components/schemas/BaseStrategy'
-      - type: object
-        properties:
-          target_percent:
-            $ref: '#/components/schemas/TargetPercent'
-        required:
-        - target_percent
-    AccountNumber:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: ACC0001
-      description: Account number for the account.
-    TwapStrategy:
-      allOf:
-      - $ref: '#/components/schemas/BaseStrategy'
-      - type: object
-        properties:
-          min_percent:
-            $ref: '#/components/schemas/MinPercent'
-          max_percent:
-            $ref: '#/components/schemas/MaxPercentVolume'
-    DmaStrategy:
-      properties:
-        type:
-          $ref: '#/components/schemas/StrategyType'
-        destination:
-          $ref: '#/components/schemas/Destination'
-      required:
-      - type
-      - destination
-    UpdateOrder:
-      type: object
-      properties:
-        quantity:
-          $ref: '#/components/schemas/Quantity'
-          description: The maximum quantity to be executed.
-        price:
-          $ref: '#/components/schemas/Price'
-          description: The price to execute at-or-better for limit orders.
-        stop_price:
-          $ref: '#/components/schemas/Price'
-          description: The price at which stop orders become marketable.
-      required:
-      - quantity
-      additionalProperties: false
-    Timestamp:
-      type: integer
-      format: int64
-      minimum: 1710613560668
-      maximum: 2900000000000
-      description: Milliseconds since epoch.
-    ApStrategy:
-      allOf:
-      - $ref: '#/components/schemas/BaseStrategy'
-      - type: object
-        properties:
-          min_percent:
-            $ref: '#/components/schemas/MinPercent'
-          max_percent:
-            $ref: '#/components/schemas/MaxPercent'
-    Urgency:
-      type: string
-      enum:
-      - super-passive
-      - passive
-      - moderate
-      - aggressive
-      - super-aggressive
-      description: The urgency associated with the execution strategy.
-      default: moderate
-    Price:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '123.99'
-      description: String representation of a price.
     BaseStrategy:
       type: object
       properties:
@@ -1784,42 +1852,28 @@ components:
           $ref: '#/components/schemas/Urgency'
       required:
       - type
-    TargetPercent:
-      type: integer
-      minimum: 0
-      maximum: 100
-      example: 50
-      description: The target percentage of market volume. Must be an integer between 0 and 100 (inclusive).
-    DarkStrategy:
+    SorStrategy:
       allOf:
       - $ref: '#/components/schemas/BaseStrategy'
-      - type: object
-        properties:
-          max_percent:
-            $ref: '#/components/schemas/MaxPercent'
     SymbolFormat:
       type: string
       enum:
       - cms
       - osi
       description: Denotes the format of the provided `symbol` field.
-    OpenCloseIndicator:
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
+    OrderSide:
       type: string
       enum:
-      - open
-      - close
-    AccountId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Account ID for the account.
-    OrderId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '12390213'
-      description: Unique order ID assigned by us.
+      - buy
+      - sell
+      - sell-short
+      description: Buy, sell, sell-short indicator.
     StrategyType:
       type: string
       enum:
@@ -1851,94 +1905,36 @@ components:
 
         '
       default: sor
-    ReferenceId:
+    Price:
       type: string
       minLength: 1
-      maxLength: 256
-      example: my-order-id-123
-      description: An ID that you provide.
-    Order:
-      type: object
-      properties:
-        created_at:
-          $ref: '#/components/schemas/Timestamp'
-          description: When the order was created in milliseconds since epoch.
-        updated_at:
-          $ref: '#/components/schemas/Timestamp'
-          description: When the order was updated in milliseconds since epoch.
-        order_id:
-          $ref: '#/components/schemas/OrderId'
-          description: An internally generated unique ID for this order.
-        reference_id:
-          $ref: '#/components/schemas/ReferenceId'
-          description: The ID you provided when creating this order.
-        version:
-          type: integer
-          example: 1
-          description: A monotonically increasing number indicating the version of this order. A higher number indicates a more recent version of the order.
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        account_number:
-          $ref: '#/components/schemas/AccountNumber'
-        state:
-          $ref: '#/components/schemas/OrderState'
-        status:
-          $ref: '#/components/schemas/OrderStatus'
-        symbol:
-          $ref: '#/components/schemas/Symbol'
-        order_type:
-          $ref: '#/components/schemas/OrderType'
-        side:
-          $ref: '#/components/schemas/OrderSide'
-        quantity:
-          $ref: '#/components/schemas/Quantity'
-          description: The requested quantity on this order.
-        price:
-          $ref: '#/components/schemas/Price'
-          description: The requested limit price on this order.
-        stop_price:
-          $ref: '#/components/schemas/Price'
-          description: The requested stop price on this order.
-        time_in_force:
-          $ref: '#/components/schemas/TimeInForce'
-        average_price:
-          type: number
-          format: double
-          description: Calculated average price of all fills on this order.
-        filled_quantity:
-          $ref: '#/components/schemas/Quantity'
-          description: The quantity that has been filled.
-        order_update_reason:
-          $ref: '#/components/schemas/OrderUpdateReason'
-          description: The last reason why this order was updated
-        text:
-          type: string
-          description: Free form text typically contains reasons for a reject.
-        strategy:
-          $ref: '#/components/schemas/Strategy'
-          description: The execution strategy used for this order.
-        running_position:
-          $ref: '#/components/schemas/Quantity'
-          description: The position quantity at the time of this order.
-        open_close_indicator:
-          $ref: '#/components/schemas/OpenCloseIndicator'
-          description: Open/Close indicator for option orders.
-      required:
-      - created_at
-      - updated_at
-      - order_id
-      - version
-      - account_id
-      - account_number
-      - state
-      - status
-      - symbol
-      - order_type
-      - side
-      - quantity
-      - time_in_force
-      - filled_quantity
-      - running_position
+      maxLength: 16
+      example: '123.99'
+      description: String representation of a price.
+    TwapStrategy:
+      allOf:
+      - $ref: '#/components/schemas/BaseStrategy'
+      - type: object
+        properties:
+          min_percent:
+            $ref: '#/components/schemas/MinPercent'
+          max_percent:
+            $ref: '#/components/schemas/MaxPercentVolume'
+    OrderState:
+      type: string
+      enum:
+      - open
+      - rejected
+      - closed
+      description: 'Simplified order state, which is inferred from `OrderStatus`. Makes it easier to determine whether an order can be executed against.
+
+        - `open`: Order *can* potentially be executed against.
+
+        - `rejected`: Order *cannot* be executed against because it was rejected. This is a terminal state.
+
+        - `closed`: Order *cannot* be executed against. This is a terminal state.
+
+        '
     TimeInForce:
       type: string
       enum:
@@ -1960,25 +1956,50 @@ components:
         - `at-close`: The order will exist only for the closing auction of the current session
 
         '
-    OrderStatus:
+    OrderType:
       type: string
       enum:
-      - new
-      - partially-filled
-      - filled
-      - canceled
-      - replaced
-      - pending-cancel
-      - stopped
-      - rejected
-      - suspended
-      - pending-new
-      - calculated
-      - expired
-      - accepted-for-bidding
-      - pending-replace
-      - done-for-day
-      description: Granular order status using [standard values come FIX tag 39](https://www.fixtrading.org/online-specification/order-state-changes).
+      - limit
+      - market
+      - stop
+      - stop-limit
+      description: 'The type of order, can be one of the following:
+
+        - `limit`: A limit order will execute at-or-better than the limit price you specify
+
+        - `market`: An order that will execute at the prevailing market prices
+
+        - `stop`: A stop order will result in a market order when the market price reaches the specified stop price
+
+        - `stop-limit`: A stop limit order will result in a limit order when the market price reaches the specified stop price
+
+        '
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    QueueState:
+      type: string
+      description: Parent order queue or hold state.
+      enum:
+      - AWAITING_RELEASE
+      - RELEASED
+    ErrorDetails:
+      type: array
+      items:
+        type: object
+        additionalProperties: true
+    RequestOrderType:
+      type: string
+      description: Strict order-type enum for order submission/replacement requests.
+      enum:
+      - MARKET
+      - LIMIT
+      - STOP
+      - STOP_LIMIT
+      - TRAILING_STOP
+      - TRAILING_STOP_LIMIT
     OrderType_2:
       type: string
       description: Order type
@@ -1990,43 +2011,6 @@ components:
       - TRAILING_STOP
       - TRAILING_STOP_LIMIT
       - OTHER
-    RequestOrderType:
-      type: string
-      description: Strict order-type enum for order submission/replacement requests.
-      enum:
-      - MARKET
-      - LIMIT
-      - STOP
-      - STOP_LIMIT
-      - TRAILING_STOP
-      - TRAILING_STOP_LIMIT
-    ReplaceOrderRequest:
-      type: object
-      description: 'Request to replace (modify) an existing order
-
-
-        At least one field must be provided.'
-      properties:
-        limit_price:
-          type:
-          - string
-          - 'null'
-          description: New limit price for the order
-          example: '49.00'
-        quantity:
-          type:
-          - string
-          - 'null'
-          description: New quantity for the order
-          example: '1'
-        stop_price:
-          type:
-          - string
-          - 'null'
-          description: New stop price for the order
-          example: '52.00'
-      example:
-        limit_price: '49.00'
     BaseResponse:
       type: object
       required:
@@ -2041,6 +2025,89 @@ components:
         metadata:
           $ref: '#/components/schemas/ResponseMetadata'
           description: Response metadata, including the request ID and optional pagination info.
+    OrderStatus_2:
+      type: string
+      description: Order status
+      enum:
+      - PENDING_NEW
+      - NEW
+      - PARTIALLY_FILLED
+      - FILLED
+      - CANCELED
+      - REJECTED
+      - EXPIRED
+      - PENDING_CANCEL
+      - PENDING_REPLACE
+      - REPLACED
+      - DONE_FOR_DAY
+      - STOPPED
+      - SUSPENDED
+      - CALCULATED
+      - OTHER
+    ExecutionList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Execution'
+    ResponseMetadata:
+      type: object
+      description: 'Metadata for the response. This will always contain a request ID which can be used to identify
+
+        the request to Clear Street for tracing, and optionally may include pagination data.'
+      required:
+      - request_id
+      properties:
+        next_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the next page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Pagination. Included if this was a GET (list) response
+          example: '1'
+          minimum: 0
+        previous_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the previous page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        request_id:
+          type: string
+          description: A unique ID for this request, generated upon ingestion of the request.
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of items available (not just in this page).
+          example: '42'
+          minimum: 0
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total number of pages available.
+          example: '5'
+          minimum: 0
+    i64:
+      type: integer
+      format: int64
     ApiError:
       type: object
       description: A direct mapping of tonic::Status, for use in HTTP responses.
@@ -2065,28 +2132,6 @@ components:
           type: string
           description: A human-readable message providing more details about the error.
           example: Order quantity must be greater than zero
-    SecurityType:
-      type: string
-      description: Security type
-      enum:
-      - COMMON_STOCK
-      - INDEX
-      - OPTION
-      - CASH
-    QueueState:
-      type: string
-      description: Parent order queue or hold state.
-      enum:
-      - AWAITING_RELEASE
-      - RELEASED
-    i64:
-      type: integer
-      format: int64
-    ErrorDetails:
-      type: array
-      items:
-        type: object
-        additionalProperties: true
     Execution:
       type: object
       description: Represents a single fill of an order for an account.
@@ -2155,11 +2200,33 @@ components:
         side: BUY
         symbol: AAPL
         transaction_time: 2026-03-24 19:58:43.798000+00:00
-    OrderSubmissionRequest:
-      oneOf:
-      - $ref: '#/components/schemas/NewOrderRequest'
-        description: Single-leg order request
-      description: Request to submit an order.
+    ReplaceOrderRequest:
+      type: object
+      description: 'Request to replace (modify) an existing order
+
+
+        At least one field must be provided.'
+      properties:
+        limit_price:
+          type:
+          - string
+          - 'null'
+          description: New limit price for the order
+          example: '49.00'
+        quantity:
+          type:
+          - string
+          - 'null'
+          description: New quantity for the order
+          example: '1'
+        stop_price:
+          type:
+          - string
+          - 'null'
+          description: New stop price for the order
+          example: '52.00'
+      example:
+        limit_price: '49.00'
     RequestTimeInForce:
       type: string
       description: Strict time-in-force enum for order submission requests.
@@ -2174,10 +2241,6 @@ components:
       - GOOD_TILL_CROSSING
       - GOOD_THROUGH_CROSSING
       - AT_CROSSING
-    ExecutionList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Execution'
     Side:
       type: string
       description: Side of an order
@@ -2186,160 +2249,6 @@ components:
       - SELL
       - SELL_SHORT
       - OTHER
-    NewOrderRequest:
-      type: object
-      description: Request to submit a new order (PlaceOrderRequest from spec)
-      required:
-      - side
-      - quantity
-      - order_type
-      - time_in_force
-      properties:
-        expires_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The timestamp when the order should expire (UTC). Required when time_in_force is GOOD_TILL_DATE.
-          example: 2025-10-15 16:00:00+00:00
-        extended_hours:
-          type:
-          - boolean
-          - 'null'
-          description: Allow trading outside regular trading hours. Some brokers disallow options outside RTH.
-        id:
-          type:
-          - string
-          - 'null'
-          description: Optional client-provided unique ID (idempotency). Required to be unique per account.
-          example: my-ref-id-20251001-002
-          maxLength: 64
-        instrument_id:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/InstrumentIdOrSymbol'
-            description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol). Either `symbol` or `instrument_id` must be provided.
-        limit_offset:
-          type:
-          - string
-          - 'null'
-          description: Limit offset for trailing stop-limit orders (signed)
-          example: '0.50'
-        limit_price:
-          type:
-          - string
-          - 'null'
-          description: Limit price (required for LIMIT and STOP_LIMIT orders)
-          example: '48.00'
-        order_type:
-          $ref: '#/components/schemas/RequestOrderType'
-          description: Type of order
-        quantity:
-          type: string
-          description: 'Quantity to trade. For COMMON_STOCK: shares (may be fractional if supported).
-
-            For OPTION (single-leg): contracts (must be an integer)'
-          example: '1'
-        side:
-          $ref: '#/components/schemas/Side'
-          description: Side of the order
-        stop_price:
-          type:
-          - string
-          - 'null'
-          description: Stop price (required for STOP and STOP_LIMIT orders)
-          example: '52.00'
-        symbol:
-          type:
-          - string
-          - 'null'
-          description: 'Trading symbol. For equities, use the ticker symbol (e.g., "TSLA").
-
-            For options, use the OSI symbol (e.g., "TSLA  250117C00190000").
-
-            Either `symbol` or `instrument_id` must be provided.'
-          example: TSLA
-        time_in_force:
-          $ref: '#/components/schemas/RequestTimeInForce'
-          description: Time in force
-        trailing_offset:
-          type:
-          - string
-          - 'null'
-          description: Trailing offset amount (required for trailing orders)
-          example: '2.00'
-        trailing_offset_type:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/TrailingOffsetType'
-            description: Trailing offset type (PRICE or PERCENT_BPS)
-      example:
-        order_type: MARKET
-        quantity: '1'
-        side: BUY
-        symbol: TSLA
-        time_in_force: DAY
-    OrderList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Order_2'
-    ResponseMetadata:
-      type: object
-      description: 'Metadata for the response. This will always contain a request ID which can be used to identify
-
-        the request to Clear Street for tracing, and optionally may include pagination data.'
-      required:
-      - request_id
-      properties:
-        next_page_token:
-          oneOf:
-          - type: 'null'
-          - type: string
-            format: byte
-            description: Base64URL-encoded pagination token
-          description: 'A token that can be used to retrieve the next page of results, if any.
-
-            The token contains opaque pagination state.
-
-            Filtering and sorting parameters must be provided with each request.'
-        page_number:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Pagination. Included if this was a GET (list) response
-          example: '1'
-          minimum: 0
-        previous_page_token:
-          oneOf:
-          - type: 'null'
-          - type: string
-            format: byte
-            description: Base64URL-encoded pagination token
-          description: 'A token that can be used to retrieve the previous page of results, if any.
-
-            The token contains opaque pagination state.
-
-            Filtering and sorting parameters must be provided with each request.'
-        request_id:
-          type: string
-          description: A unique ID for this request, generated upon ingestion of the request.
-        total_items:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Total number of items available (not just in this page).
-          example: '42'
-          minimum: 0
-        total_pages:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Total number of pages available.
-          example: '5'
-          minimum: 0
     Order_2:
       type: object
       description: 'A trading order with its current state and execution details.
@@ -2589,16 +2498,116 @@ components:
         time_in_force: DAY
         updated_at: 2025-10-31 13:30:00+00:00
         venue: XNAS
-    TrailingOffsetType:
-      type: string
-      description: Trailing offset type for trailing stop orders.
-      enum:
-      - PRICE
-      - BPS
     InstrumentIdOrSymbol:
       type: string
       description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
       minLength: 1
+    SecurityType:
+      type: string
+      description: Security type
+      enum:
+      - COMMON_STOCK
+      - INDEX
+      - OPTION
+      - CASH
+    NewOrderRequest:
+      type: object
+      description: Request to submit a new order (PlaceOrderRequest from spec)
+      required:
+      - side
+      - quantity
+      - order_type
+      - time_in_force
+      properties:
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The timestamp when the order should expire (UTC). Required when time_in_force is GOOD_TILL_DATE.
+          example: 2025-10-15 16:00:00+00:00
+        extended_hours:
+          type:
+          - boolean
+          - 'null'
+          description: Allow trading outside regular trading hours. Some brokers disallow options outside RTH.
+        id:
+          type:
+          - string
+          - 'null'
+          description: Optional client-provided unique ID (idempotency). Required to be unique per account.
+          example: my-ref-id-20251001-002
+          maxLength: 64
+        instrument_id:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/InstrumentIdOrSymbol'
+            description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol). Either `symbol` or `instrument_id` must be provided.
+        limit_offset:
+          type:
+          - string
+          - 'null'
+          description: Limit offset for trailing stop-limit orders (signed)
+          example: '0.50'
+        limit_price:
+          type:
+          - string
+          - 'null'
+          description: Limit price (required for LIMIT and STOP_LIMIT orders)
+          example: '48.00'
+        order_type:
+          $ref: '#/components/schemas/RequestOrderType'
+          description: Type of order
+        quantity:
+          type: string
+          description: 'Quantity to trade. For COMMON_STOCK: shares (may be fractional if supported).
+
+            For OPTION (single-leg): contracts (must be an integer)'
+          example: '1'
+        side:
+          $ref: '#/components/schemas/Side'
+          description: Side of the order
+        stop_price:
+          type:
+          - string
+          - 'null'
+          description: Stop price (required for STOP and STOP_LIMIT orders)
+          example: '52.00'
+        symbol:
+          type:
+          - string
+          - 'null'
+          description: 'Trading symbol. For equities, use the ticker symbol (e.g., "TSLA").
+
+            For options, use the OSI symbol (e.g., "TSLA  250117C00190000").
+
+            Either `symbol` or `instrument_id` must be provided.'
+          example: TSLA
+        time_in_force:
+          $ref: '#/components/schemas/RequestTimeInForce'
+          description: Time in force
+        trailing_offset:
+          type:
+          - string
+          - 'null'
+          description: Trailing offset amount (required for trailing orders)
+          example: '2.00'
+        trailing_offset_type:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/TrailingOffsetType'
+            description: Trailing offset type (PRICE or PERCENT_BPS)
+      example:
+        order_type: MARKET
+        quantity: '1'
+        side: BUY
+        symbol: TSLA
+        time_in_force: DAY
+    OrderSubmissionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/NewOrderRequest'
+        description: Single-leg order request
+      description: Request to submit an order.
     TimeInForce_2:
       type: string
       description: Time in force
@@ -2614,25 +2623,16 @@ components:
       - GOOD_THROUGH_CROSSING
       - AT_CROSSING
       - OTHER
-    OrderStatus_2:
+    OrderList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Order_2'
+    TrailingOffsetType:
       type: string
-      description: Order status
+      description: Trailing offset type for trailing stop orders.
       enum:
-      - PENDING_NEW
-      - NEW
-      - PARTIALLY_FILLED
-      - FILLED
-      - CANCELED
-      - REJECTED
-      - EXPIRED
-      - PENDING_CANCEL
-      - PENDING_REPLACE
-      - REPLACED
-      - DONE_FOR_DAY
-      - STOPPED
-      - SUSPENDED
-      - CALCULATED
-      - OTHER
+      - PRICE
+      - BPS
   responses:
     error:
       description: Error response

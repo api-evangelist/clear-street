@@ -61,13 +61,6 @@ paths:
       security:
       - BearerAuth: []
 components:
-  responses:
-    error:
-      description: Error response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
   schemas:
     ProblemDetails:
       type: object
@@ -114,6 +107,13 @@ components:
       - entity_id
       - name
       - client_code
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   securitySchemes:
     BearerAuth:
       type: http

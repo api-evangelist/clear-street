@@ -157,14 +157,51 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ErrorBase:
+    UploadStatus:
       type: object
+      allOf:
+      - $ref: '#/components/schemas/Upload'
+      description: Represents an upload's status
+      required:
+      - trades_processed
+      - trades_skipped
+      - status
+      - completed
       properties:
-        message: null
-        type: string
-        description: Error details, if any
-      example:
-        message: <error-details>
+        updated_at:
+          type: integer
+          description: Timestamp when the upload was last updated; milliseconds since unix epoch
+        trades_processed:
+          type: integer
+          description: The number of trades processed from this upload
+        trades_skipped:
+          type: integer
+          description: The number of trades skipped from this upload
+        status:
+          type: string
+          description: The status of this upload
+        completed:
+          type: boolean
+          description: True if this upload has finished processing
+    Error:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ErrorBase'
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - internal
+          - malformed_trade
+          - too_many_trades
+          - file_exists
+          - empty_file
+          - unsupported_file
+          - upload_not_found
+          - trade_already_canceled
+          - missing_account_id
     Upload:
       type: object
       description: Represents an upload's details
@@ -199,48 +236,11 @@ components:
         s3_key:
           type: string
           description: AWS S3 key
-    Error:
+    ErrorBase:
       type: object
-      allOf:
-      - $ref: '#/components/schemas/ErrorBase'
-      required:
-      - type
       properties:
-        type:
-          type: string
-          enum:
-          - internal
-          - malformed_trade
-          - too_many_trades
-          - file_exists
-          - empty_file
-          - unsupported_file
-          - upload_not_found
-          - trade_already_canceled
-          - missing_account_id
-    UploadStatus:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Upload'
-      description: Represents an upload's status
-      required:
-      - trades_processed
-      - trades_skipped
-      - status
-      - completed
-      properties:
-        updated_at:
-          type: integer
-          description: Timestamp when the upload was last updated; milliseconds since unix epoch
-        trades_processed:
-          type: integer
-          description: The number of trades processed from this upload
-        trades_skipped:
-          type: integer
-          description: The number of trades skipped from this upload
-        status:
-          type: string
-          description: The status of this upload
-        completed:
-          type: boolean
-          description: True if this upload has finished processing
+        message: null
+        type: string
+        description: Error details, if any
+      example:
+        message: <error-details>

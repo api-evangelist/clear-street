@@ -224,6 +224,54 @@ paths:
                       request_id: 1b2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e
 components:
   schemas:
+    SessionSchedule:
+      type: object
+      description: Session schedule with open and close timestamps
+      required:
+      - open
+      - close
+      properties:
+        close:
+          type: string
+          format: date-time
+          description: Session close timestamp with timezone offset
+          example: 2025-10-15 16:00:00-04:00
+        open:
+          type: string
+          format: date-time
+          description: Session open timestamp with timezone offset
+          example: 2025-10-15 09:30:00-04:00
+        time_until_close:
+          type:
+          - string
+          - 'null'
+          format: duration
+          description: 'ISO 8601 duration until session closes. Null if session is not currently open.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: PT1H30M
+        time_until_open:
+          type:
+          - string
+          - 'null'
+          format: duration
+          description: 'ISO 8601 duration until session opens. Null if session has already started or closed.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+          example: PT2H30M
+      example:
+        close: 2025-10-15 16:00:00-04:00
+        open: 2025-10-15 09:30:00-04:00
+        time_until_close: PT1H30M
+        time_until_open: null
+    DayType:
+      type: string
+      description: Day type for market hours - indicates the type of trading day
+      enum:
+      - TRADING_DAY
+      - EARLY_CLOSE
+      - HOLIDAY
+      - WEEKEND
     MarketHoursDetail:
       type: object
       description: Comprehensive market hours information for a specific market and date
@@ -299,41 +347,6 @@ components:
             close: 2025-10-15 16:00:00-04:00
             open: 2025-10-15 09:30:00-04:00
             time_until_close: PT1H30M
-    TradingSessions:
-      type: object
-      description: Trading sessions for a market day with full timestamps
-      properties:
-        after_hours:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/SessionSchedule'
-            description: 'After-hours session schedule, null if not available
-
-              When a null/undefined value is observed, it indicates it does not apply.'
-        pre_market:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/SessionSchedule'
-            description: 'Pre-market session schedule, null if not available
-
-              When a null/undefined value is observed, it indicates it does not apply.'
-        regular:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/SessionSchedule'
-            description: 'Regular trading session schedule, null if holiday/weekend
-
-              When a null/undefined value is observed, it indicates it does not apply.'
-      example:
-        after_hours:
-          close: 2025-10-15 20:00:00-04:00
-          open: 2025-10-15 16:00:00-04:00
-        pre_market:
-          close: 2025-10-15 09:30:00-04:00
-          open: 2025-10-15 04:00:00-04:00
-        regular:
-          close: 2025-10-15 16:00:00-04:00
-          open: 2025-10-15 09:30:00-04:00
     ResponseMetadata:
       type: object
       description: 'Metadata for the response. This will always contain a request ID which can be used to identify
@@ -391,6 +404,41 @@ components:
           description: Total number of pages available.
           example: '5'
           minimum: 0
+    TradingSessions:
+      type: object
+      description: Trading sessions for a market day with full timestamps
+      properties:
+        after_hours:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/SessionSchedule'
+            description: 'After-hours session schedule, null if not available
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+        pre_market:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/SessionSchedule'
+            description: 'Pre-market session schedule, null if not available
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+        regular:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/SessionSchedule'
+            description: 'Regular trading session schedule, null if holiday/weekend
+
+              When a null/undefined value is observed, it indicates it does not apply.'
+      example:
+        after_hours:
+          close: 2025-10-15 20:00:00-04:00
+          open: 2025-10-15 16:00:00-04:00
+        pre_market:
+          close: 2025-10-15 09:30:00-04:00
+          open: 2025-10-15 04:00:00-04:00
+        regular:
+          close: 2025-10-15 16:00:00-04:00
+          open: 2025-10-15 09:30:00-04:00
     ApiError:
       type: object
       description: A direct mapping of tonic::Status, for use in HTTP responses.
@@ -415,37 +463,6 @@ components:
           type: string
           description: A human-readable message providing more details about the error.
           example: Order quantity must be greater than zero
-    MarketSessionType:
-      type: string
-      description: Session type for market hours
-      enum:
-      - pre_market
-      - regular
-      - after_hours
-    MarketType:
-      type: string
-      description: Market type for market hours calendar endpoint
-      enum:
-      - us_equities
-      - us_options
-    ErrorDetails:
-      type: array
-      items:
-        type: object
-        additionalProperties: true
-    ClockDetail:
-      type: object
-      description: Current server time and market clock information
-      required:
-      - clock
-      properties:
-        clock:
-          type: string
-          format: date-time
-          description: Current server time in UTC
-          example: 2025-03-01 03:35:00+00:00
-      example:
-        clock: 2025-03-01 03:35:00+00:00
     MarketStatus:
       type: object
       description: Market status information
@@ -471,6 +488,22 @@ components:
         current_session: regular
         day_type: TRADING_DAY
         is_open: true
+    ErrorDetails:
+      type: array
+      items:
+        type: object
+        additionalProperties: true
+    MarketHoursDetailList:
+      type: array
+      items:
+        $ref: '#/components/schemas/MarketHoursDetail'
+    MarketSessionType:
+      type: string
+      description: Session type for market hours
+      enum:
+      - pre_market
+      - regular
+      - after_hours
     BaseResponse:
       type: object
       required:
@@ -485,58 +518,25 @@ components:
         metadata:
           $ref: '#/components/schemas/ResponseMetadata'
           description: Response metadata, including the request ID and optional pagination info.
-    MarketHoursDetailList:
-      type: array
-      items:
-        $ref: '#/components/schemas/MarketHoursDetail'
-    DayType:
+    MarketType:
       type: string
-      description: Day type for market hours - indicates the type of trading day
+      description: Market type for market hours calendar endpoint
       enum:
-      - TRADING_DAY
-      - EARLY_CLOSE
-      - HOLIDAY
-      - WEEKEND
-    SessionSchedule:
+      - us_equities
+      - us_options
+    ClockDetail:
       type: object
-      description: Session schedule with open and close timestamps
+      description: Current server time and market clock information
       required:
-      - open
-      - close
+      - clock
       properties:
-        close:
+        clock:
           type: string
           format: date-time
-          description: Session close timestamp with timezone offset
-          example: 2025-10-15 16:00:00-04:00
-        open:
-          type: string
-          format: date-time
-          description: Session open timestamp with timezone offset
-          example: 2025-10-15 09:30:00-04:00
-        time_until_close:
-          type:
-          - string
-          - 'null'
-          format: duration
-          description: 'ISO 8601 duration until session closes. Null if session is not currently open.
-
-            When a null/undefined value is observed, it indicates it does not apply.'
-          example: PT1H30M
-        time_until_open:
-          type:
-          - string
-          - 'null'
-          format: duration
-          description: 'ISO 8601 duration until session opens. Null if session has already started or closed.
-
-            When a null/undefined value is observed, it indicates it does not apply.'
-          example: PT2H30M
+          description: Current server time in UTC
+          example: 2025-03-01 03:35:00+00:00
       example:
-        close: 2025-10-15 16:00:00-04:00
-        open: 2025-10-15 09:30:00-04:00
-        time_until_close: PT1H30M
-        time_until_open: null
+        clock: 2025-03-01 03:35:00+00:00
   securitySchemes:
     BearerAuth:
       type: http

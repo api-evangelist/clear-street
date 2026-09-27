@@ -62,30 +62,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    ApiError:
-      type: object
-      description: A direct mapping of tonic::Status, for use in HTTP responses.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: 'The error code is used to identify the nature of the error. It corresponds
-
-            to an HTTP status code.'
-          example: 400
-          minimum: 0
-        details:
-          $ref: '#/components/schemas/ErrorDetails'
-          description: 'Additional error details, if any. This can include structured information
-
-            such as field violations or error metadata.'
-        message:
-          type: string
-          description: A human-readable message providing more details about the error.
-          example: Order quantity must be greater than zero
     ResponseMetadata:
       type: object
       description: 'Metadata for the response. This will always contain a request ID which can be used to identify
@@ -143,11 +119,44 @@ components:
           description: Total number of pages available.
           example: '5'
           minimum: 0
+    ApiError:
+      type: object
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
+
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
     ErrorDetails:
       type: array
       items:
         type: object
         additionalProperties: true
+    Version:
+      type: object
+      description: API version information
+      required:
+      - version
+      properties:
+        version:
+          type: string
+          description: API version string
     BaseResponse:
       type: object
       required:
@@ -162,15 +171,6 @@ components:
         metadata:
           $ref: '#/components/schemas/ResponseMetadata'
           description: Response metadata, including the request ID and optional pagination info.
-    Version:
-      type: object
-      description: API version information
-      required:
-      - version
-      properties:
-        version:
-          type: string
-          description: API version string
   securitySchemes:
     BearerAuth:
       type: http
