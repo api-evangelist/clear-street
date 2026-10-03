@@ -485,195 +485,15 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    SecurityType:
-      type: string
-      description: Security type
-      enum:
-      - COMMON_STOCK
-      - INDEX
-      - OPTION
-      - CASH
-    CreateWatchlistRequest:
-      type: object
-      description: Create watchlist request payload.
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: The desired watchlist name.
-    ResponseMetadata:
-      type: object
-      description: 'Metadata for the response. This will always contain a request ID which can be used to identify
-
-        the request to Clear Street for tracing, and optionally may include pagination data.'
-      required:
-      - request_id
-      properties:
-        next_page_token:
-          oneOf:
-          - type: 'null'
-          - type: string
-            format: byte
-            description: Base64URL-encoded pagination token
-          description: 'A token that can be used to retrieve the next page of results, if any.
-
-            The token contains opaque pagination state.
-
-            Filtering and sorting parameters must be provided with each request.'
-        page_number:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Pagination. Included if this was a GET (list) response
-          example: '1'
-          minimum: 0
-        previous_page_token:
-          oneOf:
-          - type: 'null'
-          - type: string
-            format: byte
-            description: Base64URL-encoded pagination token
-          description: 'A token that can be used to retrieve the previous page of results, if any.
-
-            The token contains opaque pagination state.
-
-            Filtering and sorting parameters must be provided with each request.'
-        request_id:
-          type: string
-          description: A unique ID for this request, generated upon ingestion of the request.
-        total_items:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Total number of items available (not just in this page).
-          example: '42'
-          minimum: 0
-        total_pages:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Total number of pages available.
-          example: '5'
-          minimum: 0
-    ApiError:
-      type: object
-      description: A direct mapping of tonic::Status, for use in HTTP responses.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: 'The error code is used to identify the nature of the error. It corresponds
-
-            to an HTTP status code.'
-          example: 400
-          minimum: 0
-        details:
-          $ref: '#/components/schemas/ErrorDetails'
-          description: 'Additional error details, if any. This can include structured information
-
-            such as field violations or error metadata.'
-        message:
-          type: string
-          description: A human-readable message providing more details about the error.
-          example: Order quantity must be greater than zero
-    WatchlistDetail:
-      type: object
-      description: Detailed watchlist with all items
-      required:
-      - id
-      - name
-      - created_at
-      - items
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: Creation timestamp
-        id:
-          type: string
-          format: uuid
-          description: Watchlist ID
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/WatchlistItemEntry'
-          description: Items in the watchlist
-        name:
-          type: string
-          description: Watchlist name
-    WatchlistEntry:
-      type: object
-      description: Represents a user watchlist.
-      required:
-      - id
-      - name
-      - created_at
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the watchlist was created.
-        id:
-          type: string
-          format: uuid
-          description: The unique identifier for the watchlist.
-        name:
-          type: string
-          description: The user-provided watchlist name.
+    WatchlistEntryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/WatchlistEntry'
     ErrorDetails:
       type: array
       items:
         type: object
         additionalProperties: true
-    WatchlistEntryList:
-      type: array
-      items:
-        $ref: '#/components/schemas/WatchlistEntry'
-    AddWatchlistItemRequest:
-      type: object
-      description: Request to add an instrument to a watchlist
-      required:
-      - instrument_id
-      properties:
-        instrument_id:
-          $ref: '#/components/schemas/InstrumentIdOrSymbol'
-          description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol).
-    WatchlistItemEntry:
-      type: object
-      description: A single item in a watchlist
-      required:
-      - id
-      - added_at
-      properties:
-        added_at:
-          type: string
-          format: date-time
-          description: When the item was added
-        added_price:
-          type:
-          - string
-          - 'null'
-          description: 'Price when the item was added
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-        id:
-          type: string
-          format: uuid
-          description: Item ID
-        instrument:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/Instrument'
-            description: 'Instrument details
-
-              When a null/undefined value is observed, it indicates that there is no available data.'
     AddWatchlistItemData:
       type: object
       description: Response data for adding a watchlist item
@@ -684,24 +504,15 @@ components:
           type: string
           format: uuid
           description: ID of the created item
-    BaseResponse:
+    CreateWatchlistRequest:
       type: object
+      description: Create watchlist request payload.
       required:
-      - metadata
+      - name
       properties:
-        error:
-          oneOf:
-          - oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/ApiError'
-              description: Structured error details when the request is unsuccessful.
-        metadata:
-          $ref: '#/components/schemas/ResponseMetadata'
-          description: Response metadata, including the request ID and optional pagination info.
-    InstrumentIdOrSymbol:
-      type: string
-      description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
-      minLength: 1
+        name:
+          type: string
+          description: The desired watchlist name.
     Instrument:
       allOf:
       - type: object
@@ -881,6 +692,195 @@ components:
         short_margin_rate: '0.25'
         symbol: AAPL
         venue: XNMS
+    BaseResponse:
+      type: object
+      required:
+      - metadata
+      properties:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
+    WatchlistDetail:
+      type: object
+      description: Detailed watchlist with all items
+      required:
+      - id
+      - name
+      - created_at
+      - items
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        id:
+          type: string
+          format: uuid
+          description: Watchlist ID
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/WatchlistItemEntry'
+          description: Items in the watchlist
+        name:
+          type: string
+          description: Watchlist name
+    AddWatchlistItemRequest:
+      type: object
+      description: Request to add an instrument to a watchlist
+      required:
+      - instrument_id
+      properties:
+        instrument_id:
+          $ref: '#/components/schemas/InstrumentIdOrSymbol'
+          description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol).
+    ApiError:
+      type: object
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
+
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
+    InstrumentIdOrSymbol:
+      type: string
+      description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
+      minLength: 1
+    WatchlistEntry:
+      type: object
+      description: Represents a user watchlist.
+      required:
+      - id
+      - name
+      - created_at
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the watchlist was created.
+        id:
+          type: string
+          format: uuid
+          description: The unique identifier for the watchlist.
+        name:
+          type: string
+          description: The user-provided watchlist name.
+    WatchlistItemEntry:
+      type: object
+      description: A single item in a watchlist
+      required:
+      - id
+      - added_at
+      properties:
+        added_at:
+          type: string
+          format: date-time
+          description: When the item was added
+        added_price:
+          type:
+          - string
+          - 'null'
+          description: 'Price when the item was added
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+        id:
+          type: string
+          format: uuid
+          description: Item ID
+        instrument:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/Instrument'
+            description: 'Instrument details
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
+    ResponseMetadata:
+      type: object
+      description: 'Metadata for the response. This will always contain a request ID which can be used to identify
+
+        the request to Clear Street for tracing, and optionally may include pagination data.'
+      required:
+      - request_id
+      properties:
+        next_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the next page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Pagination. Included if this was a GET (list) response
+          example: '1'
+          minimum: 0
+        previous_page_token:
+          oneOf:
+          - type: 'null'
+          - type: string
+            format: byte
+            description: Base64URL-encoded pagination token
+          description: 'A token that can be used to retrieve the previous page of results, if any.
+
+            The token contains opaque pagination state.
+
+            Filtering and sorting parameters must be provided with each request.'
+        request_id:
+          type: string
+          description: A unique ID for this request, generated upon ingestion of the request.
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of items available (not just in this page).
+          example: '42'
+          minimum: 0
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Total number of pages available.
+          example: '5'
+          minimum: 0
+    SecurityType:
+      type: string
+      description: Security type
+      enum:
+      - COMMON_STOCK
+      - INDEX
+      - OPTION
+      - CASH
   securitySchemes:
     BearerAuth:
       type: http

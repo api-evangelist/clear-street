@@ -157,6 +157,33 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    ErrorBase:
+      type: object
+      properties:
+        message: null
+        type: string
+        description: Error details, if any
+      example:
+        message: <error-details>
+    Error:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ErrorBase'
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - internal
+          - malformed_trade
+          - too_many_trades
+          - file_exists
+          - empty_file
+          - unsupported_file
+          - upload_not_found
+          - trade_already_canceled
+          - missing_account_id
     UploadStatus:
       type: object
       allOf:
@@ -183,25 +210,6 @@ components:
         completed:
           type: boolean
           description: True if this upload has finished processing
-    Error:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ErrorBase'
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - internal
-          - malformed_trade
-          - too_many_trades
-          - file_exists
-          - empty_file
-          - unsupported_file
-          - upload_not_found
-          - trade_already_canceled
-          - missing_account_id
     Upload:
       type: object
       description: Represents an upload's details
@@ -236,11 +244,3 @@ components:
         s3_key:
           type: string
           description: AWS S3 key
-    ErrorBase:
-      type: object
-      properties:
-        message: null
-        type: string
-        description: Error details, if any
-      example:
-        message: <error-details>

@@ -62,6 +62,12 @@ paths:
       - BearerAuth: []
 components:
   schemas:
+    EntityId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Entity ID for the legal entity.
     ProblemDetails:
       type: object
       properties:
@@ -86,12 +92,6 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
-    EntityId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Entity ID for the legal entity.
     Entity:
       type: object
       properties:

@@ -242,6 +242,76 @@ components:
           - upload_not_found
           - trade_already_canceled
           - missing_account_id
+    Settlement:
+      type: object
+      description: Settlement details. Required typically for special settlement situations.
+      properties:
+        currency:
+          type:
+          - string
+          - 'null'
+          minLength: 3
+          maxLength: 3
+          description: Settlement currency for the trade if different than the issue currency of the security. This should be a 3-letter ISO 4217 code.
+          example: USD
+          default: null
+        date:
+          type:
+          - integer
+          - 'null'
+          minimum: 20190101
+          maximum: 21000101
+          description: Only provide for irregular-way, i.e. you've negotiated a special settlement arrangement for this trade; represents settlement date in YYYYMMDD format
+          default: null
+    Instrument:
+      type: object
+      description: Instrument details.
+      required:
+      - identifier
+      - identifier_type
+      - country
+      - currency
+      properties:
+        identifier:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Official identifier. If you use `ticker`, then ensure you use a common ticker (e.g. `AAPL` for Apple Inc. on NASDAQ)
+          example: AAPL
+        identifier_type:
+          type: string
+          enum:
+          - ticker
+          - cusip
+          - isin
+          - sedol
+          description: Identifier type.
+        country:
+          type: string
+          minLength: 1
+          maxLength: 4
+          description: ISO 3166 Alpha-3 Country Code of where the instrument was traded
+          example: USA
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 4
+          description: ISO 4217 Alpha-3 Currency Code of the currency in which the instrument is traded in
+          example: USD
+    TradeSubmitted:
+      type: object
+      description: Submitted trade details
+      properties:
+        client_trade_id:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Unique ID for this trade that you defined.
+          example: T-50264430-bc41
+        trade_id:
+          type: string
+          description: Unique ID for this trade provided by Clear Street.
+          example: 1893
     Side:
       type: object
       description: Trade direction, either buy or sell with qualifiers
@@ -272,6 +342,14 @@ components:
           - close
           description: Trade position, if any
           default: null
+    ErrorBase:
+      type: object
+      properties:
+        message: null
+        type: string
+        description: Error details, if any
+      example:
+        message: <error-details>
     Trade:
       type: object
       discriminator:
@@ -377,90 +455,78 @@ components:
           - 'null'
           description: The original trade id that is being canceled, if any
           default: null
-    TradeSubmitted:
-      type: object
-      description: Submitted trade details
-      properties:
-        client_trade_id:
-          type: string
-          minLength: 1
-          maxLength: 256
-          description: Unique ID for this trade that you defined.
-          example: T-50264430-bc41
-        trade_id:
-          type: string
-          description: Unique ID for this trade provided by Clear Street.
-          example: 1893
-    Settlement:
-      type: object
-      description: Settlement details. Required typically for special settlement situations.
-      properties:
-        currency:
-          type:
-          - string
-          - 'null'
-          minLength: 3
-          maxLength: 3
-          description: Settlement currency for the trade if different than the issue currency of the security. This should be a 3-letter ISO 4217 code.
-          example: USD
-          default: null
-        date:
-          type:
-          - integer
-          - 'null'
-          minimum: 20190101
-          maximum: 21000101
-          description: Only provide for irregular-way, i.e. you've negotiated a special settlement arrangement for this trade; represents settlement date in YYYYMMDD format
-          default: null
-    ErrorBase:
-      type: object
-      properties:
-        message: null
-        type: string
-        description: Error details, if any
-      example:
-        message: <error-details>
-    Instrument:
-      type: object
-      description: Instrument details.
-      required:
-      - identifier
-      - identifier_type
-      - country
-      - currency
-      properties:
-        identifier:
-          type: string
-          minLength: 1
-          maxLength: 256
-          description: Official identifier. If you use `ticker`, then ensure you use a common ticker (e.g. `AAPL` for Apple Inc. on NASDAQ)
-          example: AAPL
-        identifier_type:
-          type: string
-          enum:
-          - ticker
-          - cusip
-          - isin
-          - sedol
-          description: Identifier type.
-        country:
-          type: string
-          minLength: 1
-          maxLength: 4
-          description: ISO 3166 Alpha-3 Country Code of where the instrument was traded
-          example: USA
-        currency:
-          type: string
-          minLength: 1
-          maxLength: 4
-          description: ISO 4217 Alpha-3 Currency Code of the currency in which the instrument is traded in
-          example: USD
-    AccountId:
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    OrderId:
       type: string
       minLength: 1
       maxLength: 256
-      example: '100000'
-      description: Account ID for the account.
+      example: '12390213'
+      description: Unique order ID assigned by us.
+    AccountNumber:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: ACC0001
+      description: Account number for the account.
+    Price:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '123.99'
+      description: String representation of a price.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: number
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
+      additionalProperties: false
+      description: A Problem Details object (RFC 9457)
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
+    TradeId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique trade ID assigned by us.
+    OrderSide:
+      type: string
+      enum:
+      - buy
+      - sell
+      - sell-short
+      description: Buy, sell, sell-short indicator.
     Trade_2:
       type: object
       properties:
@@ -499,78 +565,12 @@ components:
       - quantity
       - price
       - running_position
-    OrderSide:
-      type: string
-      enum:
-      - buy
-      - sell
-      - sell-short
-      description: Buy, sell, sell-short indicator.
-    AccountNumber:
+    AccountId:
       type: string
       minLength: 1
       maxLength: 256
-      example: ACC0001
-      description: Account number for the account.
-    Price:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '123.99'
-      description: String representation of a price.
-    ProblemDetails:
-      type: object
-      properties:
-        type:
-          type: string
-          format: uri
-          description: A URI reference that identifies the problem type.
-        title:
-          type: string
-          description: A short, human-readable summary of the problem type.
-        status:
-          type: number
-          minimum: 100
-          maximum: 599
-          description: The HTTP status code generated by the origin server for this occurrence of the problem.
-        detail:
-          type: string
-          description: A human-readable explanation specific to this occurrence of the problem.
-        instance:
-          type: string
-          format: uri
-          description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
-      additionalProperties: false
-      description: A Problem Details object (RFC 9457)
-    OrderId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '12390213'
-      description: Unique order ID assigned by us.
-    Timestamp:
-      type: integer
-      format: int64
-      minimum: 1710613560668
-      maximum: 2900000000000
-      description: Milliseconds since epoch.
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
-    TradeId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '12390213'
-      description: Unique trade ID assigned by us.
-    Symbol:
-      type: string
-      minLength: 1
-      maxLength: 32
-      example: AAPL
+      example: '100000'
+      description: Account ID for the account.
   responses:
     error:
       description: Error response

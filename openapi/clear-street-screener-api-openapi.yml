@@ -554,66 +554,6 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    Modifier:
-      type: object
-      description: Arithmetic modifier applied to a variable value.
-      required:
-      - name
-      - args
-      properties:
-        args:
-          type: array
-          items:
-            oneOf:
-            - type: number
-            - type: string
-        name:
-          $ref: '#/components/schemas/ModifierOp'
-          description: The modifier operation.
-      example:
-        args:
-        - 30
-        - DAY
-        name: SUBTRACT
-    OperatorArg:
-      type: string
-      description: Argument that modifies operator behavior.
-      enum:
-      - LEFT_INCLUSIVE
-      - RIGHT_INCLUSIVE
-      - LEFT_EXCLUSIVE
-      - RIGHT_EXCLUSIVE
-      - CASE_INSENSITIVE
-    FieldType:
-      type: string
-      description: The data type of a screener field value.
-      enum:
-      - DECIMAL
-      - INTEGER
-      - STRING
-      - ANALYST_RATING
-      - DATE
-    ErrorDetails:
-      type: array
-      items:
-        type: object
-        additionalProperties: true
-    FilterValue:
-      type: object
-      description: 'A filter value: either a literal or a variable reference.'
-      properties:
-        value:
-          oneOf:
-          - type: number
-          - type: string
-          - type: 'null'
-        variable:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/Variable'
-            description: A variable reference.
-      example:
-        value: 1000000000.0
     PaginationParams:
       type: object
       description: 'Pagination parameters for list endpoints
@@ -636,26 +576,64 @@ components:
             description: 'Token for retrieving the next page of results. Contains encoded pagination state (limit + offset).
 
               When provided, page_size is ignored.'
-    BaseResponse:
-      type: object
-      required:
-      - metadata
-      properties:
-        error:
-          oneOf:
-          - oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/ApiError'
-              description: Structured error details when the request is unsuccessful.
-        metadata:
-          $ref: '#/components/schemas/ResponseMetadata'
-          description: Response metadata, including the request ID and optional pagination info.
+    FieldPeriod:
+      type: string
+      description: Reporting period for financial data fields.
+      enum:
+      - QUARTER
+      - TRAILING_TWELVE_MONTHS
+      - ANNUAL
     ModifierOp:
       type: string
       description: Modifier operation applied to a variable.
       enum:
       - ADD
       - SUBTRACT
+    ScreenerRowList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ScreenerRow'
+    ScreenerRow:
+      type: array
+      items:
+        $ref: '#/components/schemas/ScreenerColumn'
+      description: A single row of screener columns for one instrument.
+    SortDirection:
+      type: string
+      description: Sort direction sorted results
+      enum:
+      - ASC
+      - DESC
+    CreateScreenerRequest:
+      type: object
+      description: Request body for creating or updating a saved screener configuration
+      properties:
+        columns:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/FieldRef'
+          description: Structured field references to include when running this screener
+        filters:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SearchFilter'
+          description: Structured search filter criteria
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name for this screener configuration
+        sorts:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SortSpec'
+          description: Multi-field sort specifications
     ScreenerEntry:
       type: object
       description: A saved screener configuration entry
@@ -694,38 +672,66 @@ components:
         updated_at:
           type: string
           format: date-time
-    FilterOpSpec:
+    SearchFilter:
       type: object
-      description: Operator specification with optional behavioral arguments.
+      description: 'A single filter condition.
+
+
+        When `op` and `right` are both absent, the filter is "unenabled":
+
+        it persists a `left` field reference without applying any predicate.
+
+        Unenabled filters are skipped during search execution but still
+
+        round-trip through save/load so callers can preserve draft state.'
       required:
-      - name
+      - left
       properties:
-        args:
-          type: array
-          items:
-            $ref: '#/components/schemas/OperatorArg'
-          description: Optional arguments that modify operator behavior.
-        name:
-          $ref: '#/components/schemas/FilterOperator'
-          description: The operator to apply.
-      example:
-        name: GREATER_OR_EQUAL
-    SortSpec:
-      type: object
-      description: A sort specification pairing a field with a direction.
-      required:
-      - field
-      properties:
-        direction:
-          $ref: '#/components/schemas/SortDirection'
-          description: Sort direction (defaults to DESC).
-        field:
+        left:
           $ref: '#/components/schemas/FieldRef'
-          description: The field to sort by.
+          description: The field to filter on.
+        op:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/FilterOpSpec'
+            description: The operator and optional arguments. Omit together with `right` for an unenabled filter.
+        right:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/FilterValue'
+          description: The value(s) to compare against. Omit together with `op` for an unenabled filter.
       example:
-        direction: DESC
-        field:
+        left:
           name: market_cap
+        op:
+          name: GREATER_OR_EQUAL
+        right:
+        - value: 1000000000.0
+    FieldType:
+      type: string
+      description: The data type of a screener field value.
+      enum:
+      - DECIMAL
+      - INTEGER
+      - STRING
+      - ANALYST_RATING
+      - DATE
+    BaseResponse:
+      type: object
+      required:
+      - metadata
+      properties:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
     ResponseMetadata:
       type: object
       description: 'Metadata for the response. This will always contain a request ID which can be used to identify
@@ -783,71 +789,31 @@ components:
           description: Total number of pages available.
           example: '5'
           minimum: 0
-    ScreenerEntryList:
+    OperatorArg:
+      type: string
+      description: Argument that modifies operator behavior.
+      enum:
+      - LEFT_INCLUSIVE
+      - RIGHT_INCLUSIVE
+      - LEFT_EXCLUSIVE
+      - RIGHT_EXCLUSIVE
+      - CASE_INSENSITIVE
+    FieldLookback:
+      type: string
+      description: Historical lookback window for price/change fields.
+      enum:
+      - ONE_DAY
+      - ONE_WEEK
+      - ONE_MONTH
+      - THREE_MONTHS
+      - SIX_MONTHS
+      - YEAR_TO_DATE
+      - ONE_YEAR
+    ErrorDetails:
       type: array
       items:
-        $ref: '#/components/schemas/ScreenerEntry'
-    ApiError:
-      type: object
-      description: A direct mapping of tonic::Status, for use in HTTP responses.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: 'The error code is used to identify the nature of the error. It corresponds
-
-            to an HTTP status code.'
-          example: 400
-          minimum: 0
-        details:
-          $ref: '#/components/schemas/ErrorDetails'
-          description: 'Additional error details, if any. This can include structured information
-
-            such as field violations or error metadata.'
-        message:
-          type: string
-          description: A human-readable message providing more details about the error.
-          example: Order quantity must be greater than zero
-    SearchFilter:
-      type: object
-      description: 'A single filter condition.
-
-
-        When `op` and `right` are both absent, the filter is "unenabled":
-
-        it persists a `left` field reference without applying any predicate.
-
-        Unenabled filters are skipped during search execution but still
-
-        round-trip through save/load so callers can preserve draft state.'
-      required:
-      - left
-      properties:
-        left:
-          $ref: '#/components/schemas/FieldRef'
-          description: The field to filter on.
-        op:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/FilterOpSpec'
-            description: The operator and optional arguments. Omit together with `right` for an unenabled filter.
-        right:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/FilterValue'
-          description: The value(s) to compare against. Omit together with `op` for an unenabled filter.
-      example:
-        left:
-          name: market_cap
-        op:
-          name: GREATER_OR_EQUAL
-        right:
-        - value: 1000000000.0
+        type: object
+        additionalProperties: true
     FieldRef:
       type: object
       description: A reference to a screener field.
@@ -875,86 +841,103 @@ components:
             description: The data type of the field value. Present only in responses.
       example:
         name: market_cap
-    SortDirection:
-      type: string
-      description: Sort direction sorted results
-      enum:
-      - ASC
-      - DESC
-    Pagination:
-      type: string
-      format: byte
-      description: Base64URL-encoded pagination token
-    ScreenerColumn:
+    ApiError:
       type: object
-      description: A single column in the screener search response.
+      description: A direct mapping of tonic::Status, for use in HTTP responses.
       required:
-      - name
-      - field
-      - value
+      - code
+      - message
       properties:
-        field:
-          $ref: '#/components/schemas/FieldRef'
-          description: Field reference (same shape as filter/sort field references)
-        name:
-          type: string
-          description: Human-readable display name for this field
-          example: Market Cap
-        type:
-          type:
-          - string
-          - 'null'
-          description: 'Value format hint: "CURR_USD", "PERCENT", etc. Omitted when not applicable.
+        code:
+          type: integer
+          format: int32
+          description: 'The error code is used to identify the nature of the error. It corresponds
 
-            When a null/undefined value is observed, it indicates it does not apply.'
+            to an HTTP status code.'
+          example: 400
+          minimum: 0
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+          description: 'Additional error details, if any. This can include structured information
+
+            such as field violations or error metadata.'
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Order quantity must be greater than zero
+    FilterValue:
+      type: object
+      description: 'A filter value: either a literal or a variable reference.'
+      properties:
         value:
           oneOf:
           - type: number
           - type: string
           - type: 'null'
+        variable:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/Variable'
+            description: A variable reference.
       example:
+        value: 1000000000.0
+    FilterOpSpec:
+      type: object
+      description: Operator specification with optional behavioral arguments.
+      required:
+      - name
+      properties:
+        args:
+          type: array
+          items:
+            $ref: '#/components/schemas/OperatorArg'
+          description: Optional arguments that modify operator behavior.
+        name:
+          $ref: '#/components/schemas/FilterOperator'
+          description: The operator to apply.
+      example:
+        name: GREATER_OR_EQUAL
+    Modifier:
+      type: object
+      description: Arithmetic modifier applied to a variable value.
+      required:
+      - name
+      - args
+      properties:
+        args:
+          type: array
+          items:
+            oneOf:
+            - type: number
+            - type: string
+        name:
+          $ref: '#/components/schemas/ModifierOp'
+          description: The modifier operation.
+      example:
+        args:
+        - 30
+        - DAY
+        name: SUBTRACT
+    Pagination:
+      type: string
+      format: byte
+      description: Base64URL-encoded pagination token
+    SortSpec:
+      type: object
+      description: A sort specification pairing a field with a direction.
+      required:
+      - field
+      properties:
+        direction:
+          $ref: '#/components/schemas/SortDirection'
+          description: Sort direction (defaults to DESC).
+        field:
+          $ref: '#/components/schemas/FieldRef'
+          description: The field to sort by.
+      example:
+        direction: DESC
         field:
           name: market_cap
-          value_type: DECIMAL
-        name: Market Cap
-        type: CURR_USD
-        value: 2890000000000.0
-    FilterOperator:
-      type: string
-      description: 'Filter operators supported by the screener.
-
-
-        Abbreviated and lowercase forms are accepted as serde aliases for backward
-
-        compatibility with earlier API revisions; the canonical wire form is the
-
-        SCREAMING_SNAKE_CASE rendering.'
-      enum:
-      - LESS_THAN
-      - LESS_OR_EQUAL
-      - GREATER_THAN
-      - GREATER_OR_EQUAL
-      - EQUAL
-      - BETWEEN
-      - NOT_BETWEEN
-      - ONE_OF
-      - REGEX
-      - BEGINS_WITH
-      - ENDS_WITH
-      - CONTAINS
-      - IS_NULL
-      - IS_NOT_NULL
-    FieldLookback:
-      type: string
-      description: Historical lookback window for price/change fields.
-      enum:
-      - ONE_DAY
-      - ONE_WEEK
-      - ONE_MONTH
-      - THREE_MONTHS
-      - SIX_MONTHS
-      - YEAR_TO_DATE
-      - ONE_YEAR
     ScreenerSearchRequest:
       allOf:
       - $ref: '#/components/schemas/PaginationParams'
@@ -1004,48 +987,6 @@ components:
         - direction: DESC
           field:
             name: market_cap
-    ScreenerRow:
-      type: array
-      items:
-        $ref: '#/components/schemas/ScreenerColumn'
-      description: A single row of screener columns for one instrument.
-    FieldPeriod:
-      type: string
-      description: Reporting period for financial data fields.
-      enum:
-      - QUARTER
-      - TRAILING_TWELVE_MONTHS
-      - ANNUAL
-    CreateScreenerRequest:
-      type: object
-      description: Request body for creating or updating a saved screener configuration
-      properties:
-        columns:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/FieldRef'
-          description: Structured field references to include when running this screener
-        filters:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/SearchFilter'
-          description: Structured search filter criteria
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name for this screener configuration
-        sorts:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/SortSpec'
-          description: Multi-field sort specifications
     Variable:
       type: object
       description: A variable reference (field or built-in like `today`).
@@ -1078,10 +1019,69 @@ components:
           - DAY
           name: SUBTRACT
         name: today
-    ScreenerRowList:
+    ScreenerColumn:
+      type: object
+      description: A single column in the screener search response.
+      required:
+      - name
+      - field
+      - value
+      properties:
+        field:
+          $ref: '#/components/schemas/FieldRef'
+          description: Field reference (same shape as filter/sort field references)
+        name:
+          type: string
+          description: Human-readable display name for this field
+          example: Market Cap
+        type:
+          type:
+          - string
+          - 'null'
+          description: 'Value format hint: "CURR_USD", "PERCENT", etc. Omitted when not applicable.
+
+            When a null/undefined value is observed, it indicates it does not apply.'
+        value:
+          oneOf:
+          - type: number
+          - type: string
+          - type: 'null'
+      example:
+        field:
+          name: market_cap
+          value_type: DECIMAL
+        name: Market Cap
+        type: CURR_USD
+        value: 2890000000000.0
+    ScreenerEntryList:
       type: array
       items:
-        $ref: '#/components/schemas/ScreenerRow'
+        $ref: '#/components/schemas/ScreenerEntry'
+    FilterOperator:
+      type: string
+      description: 'Filter operators supported by the screener.
+
+
+        Abbreviated and lowercase forms are accepted as serde aliases for backward
+
+        compatibility with earlier API revisions; the canonical wire form is the
+
+        SCREAMING_SNAKE_CASE rendering.'
+      enum:
+      - LESS_THAN
+      - LESS_OR_EQUAL
+      - GREATER_THAN
+      - GREATER_OR_EQUAL
+      - EQUAL
+      - BETWEEN
+      - NOT_BETWEEN
+      - ONE_OF
+      - REGEX
+      - BEGINS_WITH
+      - ENDS_WITH
+      - CONTAINS
+      - IS_NULL
+      - IS_NOT_NULL
   securitySchemes:
     BearerAuth:
       type: http
