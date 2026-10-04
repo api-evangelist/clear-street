@@ -72,41 +72,12 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
     AccountNumber:
       type: string
       minLength: 1
       maxLength: 256
       example: ACC0001
       description: Account number for the account.
-    Date:
-      type: integer
-      format: int32
-      minimum: 20150101
-      maximum: 29999999
-      example: 20240101
-      description: Integer in YYYYMMDD representing a date.
-    AssetClass:
-      type: string
-      enum:
-      - other
-      - currency
-      - equity
-      - option
-      - debt
-      - fund
-      description: The asset class of the symbol.
-    Timestamp:
-      type: integer
-      format: int64
-      minimum: 1710613560668
-      maximum: 2900000000000
-      description: Milliseconds since epoch.
     ProblemDetails:
       type: object
       properties:
@@ -131,11 +102,6 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
-    Symbol:
-      type: string
-      minLength: 1
-      maxLength: 32
-      example: AAPL
     Holding:
       type: object
       properties:
@@ -157,12 +123,46 @@ components:
       - asset_class
       - quantity
       - sod_quantity
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    AssetClass:
+      type: string
+      enum:
+      - other
+      - currency
+      - equity
+      - option
+      - debt
+      - fund
+      description: The asset class of the symbol.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
     AccountId:
       type: string
       minLength: 1
       maxLength: 256
       example: '100000'
       description: Account ID for the account.
+    Date:
+      type: integer
+      format: int32
+      minimum: 20150101
+      maximum: 29999999
+      example: 20240101
+      description: Integer in YYYYMMDD representing a date.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
   responses:
     error:
       description: Error response

@@ -485,34 +485,36 @@ paths:
                 $ref: '#/components/schemas/ApiError'
 components:
   schemas:
-    WatchlistEntryList:
-      type: array
-      items:
-        $ref: '#/components/schemas/WatchlistEntry'
     ErrorDetails:
       type: array
       items:
         type: object
         additionalProperties: true
-    AddWatchlistItemData:
+    WatchlistDetail:
       type: object
-      description: Response data for adding a watchlist item
+      description: Detailed watchlist with all items
       required:
-      - item_id
+      - id
+      - name
+      - created_at
+      - items
       properties:
-        item_id:
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        id:
           type: string
           format: uuid
-          description: ID of the created item
-    CreateWatchlistRequest:
-      type: object
-      description: Create watchlist request payload.
-      required:
-      - name
-      properties:
+          description: Watchlist ID
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/WatchlistItemEntry'
+          description: Items in the watchlist
         name:
           type: string
-          description: The desired watchlist name.
+          description: Watchlist name
     Instrument:
       allOf:
       - type: object
@@ -692,54 +694,6 @@ components:
         short_margin_rate: '0.25'
         symbol: AAPL
         venue: XNMS
-    BaseResponse:
-      type: object
-      required:
-      - metadata
-      properties:
-        error:
-          oneOf:
-          - oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/ApiError'
-              description: Structured error details when the request is unsuccessful.
-        metadata:
-          $ref: '#/components/schemas/ResponseMetadata'
-          description: Response metadata, including the request ID and optional pagination info.
-    WatchlistDetail:
-      type: object
-      description: Detailed watchlist with all items
-      required:
-      - id
-      - name
-      - created_at
-      - items
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: Creation timestamp
-        id:
-          type: string
-          format: uuid
-          description: Watchlist ID
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/WatchlistItemEntry'
-          description: Items in the watchlist
-        name:
-          type: string
-          description: Watchlist name
-    AddWatchlistItemRequest:
-      type: object
-      description: Request to add an instrument to a watchlist
-      required:
-      - instrument_id
-      properties:
-        instrument_id:
-          $ref: '#/components/schemas/InstrumentIdOrSymbol'
-          description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol).
     ApiError:
       type: object
       description: A direct mapping of tonic::Status, for use in HTTP responses.
@@ -764,58 +718,56 @@ components:
           type: string
           description: A human-readable message providing more details about the error.
           example: Order quantity must be greater than zero
+    WatchlistEntryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/WatchlistEntry'
     InstrumentIdOrSymbol:
       type: string
       description: 'Instrument identifier: either an instrument UUID or a symbol (symbol for equities, OSI for options). Non-UUID inputs are resolved server-side.'
       minLength: 1
-    WatchlistEntry:
+    CreateWatchlistRequest:
       type: object
-      description: Represents a user watchlist.
+      description: Create watchlist request payload.
       required:
-      - id
       - name
-      - created_at
       properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the watchlist was created.
-        id:
-          type: string
-          format: uuid
-          description: The unique identifier for the watchlist.
         name:
           type: string
-          description: The user-provided watchlist name.
-    WatchlistItemEntry:
+          description: The desired watchlist name.
+    BaseResponse:
       type: object
-      description: A single item in a watchlist
       required:
-      - id
-      - added_at
+      - metadata
       properties:
-        added_at:
-          type: string
-          format: date-time
-          description: When the item was added
-        added_price:
-          type:
-          - string
-          - 'null'
-          description: 'Price when the item was added
-
-            When a null/undefined value is observed, it indicates that there is no available data.'
-        id:
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
+    AddWatchlistItemRequest:
+      type: object
+      description: Request to add an instrument to a watchlist
+      required:
+      - instrument_id
+      properties:
+        instrument_id:
+          $ref: '#/components/schemas/InstrumentIdOrSymbol'
+          description: Instrument ID (UUID) or symbol (equity ticker or OSI option symbol).
+    AddWatchlistItemData:
+      type: object
+      description: Response data for adding a watchlist item
+      required:
+      - item_id
+      properties:
+        item_id:
           type: string
           format: uuid
-          description: Item ID
-        instrument:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/Instrument'
-            description: 'Instrument details
-
-              When a null/undefined value is observed, it indicates that there is no available data.'
+          description: ID of the created item
     ResponseMetadata:
       type: object
       description: 'Metadata for the response. This will always contain a request ID which can be used to identify
@@ -881,6 +833,54 @@ components:
       - INDEX
       - OPTION
       - CASH
+    WatchlistEntry:
+      type: object
+      description: Represents a user watchlist.
+      required:
+      - id
+      - name
+      - created_at
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the watchlist was created.
+        id:
+          type: string
+          format: uuid
+          description: The unique identifier for the watchlist.
+        name:
+          type: string
+          description: The user-provided watchlist name.
+    WatchlistItemEntry:
+      type: object
+      description: A single item in a watchlist
+      required:
+      - id
+      - added_at
+      properties:
+        added_at:
+          type: string
+          format: date-time
+          description: When the item was added
+        added_price:
+          type:
+          - string
+          - 'null'
+          description: 'Price when the item was added
+
+            When a null/undefined value is observed, it indicates that there is no available data.'
+        id:
+          type: string
+          format: uuid
+          description: Item ID
+        instrument:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/Instrument'
+            description: 'Instrument details
+
+              When a null/undefined value is observed, it indicates that there is no available data.'
   securitySchemes:
     BearerAuth:
       type: http

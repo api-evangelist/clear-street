@@ -91,20 +91,15 @@ components:
           type: string
           description: A human-readable message providing more details about the error.
           example: Order quantity must be greater than zero
-    BaseResponse:
+    Version:
       type: object
+      description: API version information
       required:
-      - metadata
+      - version
       properties:
-        error:
-          oneOf:
-          - oneOf:
-            - type: 'null'
-            - $ref: '#/components/schemas/ApiError'
-              description: Structured error details when the request is unsuccessful.
-        metadata:
-          $ref: '#/components/schemas/ResponseMetadata'
-          description: Response metadata, including the request ID and optional pagination info.
+        version:
+          type: string
+          description: API version string
     ResponseMetadata:
       type: object
       description: 'Metadata for the response. This will always contain a request ID which can be used to identify
@@ -162,15 +157,20 @@ components:
           description: Total number of pages available.
           example: '5'
           minimum: 0
-    Version:
+    BaseResponse:
       type: object
-      description: API version information
       required:
-      - version
+      - metadata
       properties:
-        version:
-          type: string
-          description: API version string
+        error:
+          oneOf:
+          - oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/ApiError'
+              description: Structured error details when the request is unsuccessful.
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+          description: Response metadata, including the request ID and optional pagination info.
   securitySchemes:
     BearerAuth:
       type: http

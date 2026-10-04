@@ -223,46 +223,28 @@ paths:
       description: Sandbox environment
 components:
   schemas:
-    Error:
+    ErrorBase:
       type: object
-      allOf:
-      - $ref: '#/components/schemas/ErrorBase'
-      required:
-      - type
       properties:
-        type:
+        message: null
+        type: string
+        description: Error details, if any
+      example:
+        message: <error-details>
+    TradeSubmitted:
+      type: object
+      description: Submitted trade details
+      properties:
+        client_trade_id:
           type: string
-          enum:
-          - internal
-          - malformed_trade
-          - too_many_trades
-          - file_exists
-          - empty_file
-          - unsupported_file
-          - upload_not_found
-          - trade_already_canceled
-          - missing_account_id
-    Settlement:
-      type: object
-      description: Settlement details. Required typically for special settlement situations.
-      properties:
-        currency:
-          type:
-          - string
-          - 'null'
-          minLength: 3
-          maxLength: 3
-          description: Settlement currency for the trade if different than the issue currency of the security. This should be a 3-letter ISO 4217 code.
-          example: USD
-          default: null
-        date:
-          type:
-          - integer
-          - 'null'
-          minimum: 20190101
-          maximum: 21000101
-          description: Only provide for irregular-way, i.e. you've negotiated a special settlement arrangement for this trade; represents settlement date in YYYYMMDD format
-          default: null
+          minLength: 1
+          maxLength: 256
+          description: Unique ID for this trade that you defined.
+          example: T-50264430-bc41
+        trade_id:
+          type: string
+          description: Unique ID for this trade provided by Clear Street.
+          example: 1893
     Instrument:
       type: object
       description: Instrument details.
@@ -298,58 +280,6 @@ components:
           maxLength: 4
           description: ISO 4217 Alpha-3 Currency Code of the currency in which the instrument is traded in
           example: USD
-    TradeSubmitted:
-      type: object
-      description: Submitted trade details
-      properties:
-        client_trade_id:
-          type: string
-          minLength: 1
-          maxLength: 256
-          description: Unique ID for this trade that you defined.
-          example: T-50264430-bc41
-        trade_id:
-          type: string
-          description: Unique ID for this trade provided by Clear Street.
-          example: 1893
-    Side:
-      type: object
-      description: Trade direction, either buy or sell with qualifiers
-      required:
-      - direction
-      properties:
-        direction:
-          type: string
-          enum:
-          - buy
-          - sell
-          description: Trade direction
-          example: sell
-        qualifier:
-          type:
-          - string
-          - 'null'
-          enum:
-          - short
-          description: Trade qualifier, if any
-          default: null
-        position:
-          type:
-          - string
-          - 'null'
-          enum:
-          - open
-          - close
-          description: Trade position, if any
-          default: null
-    ErrorBase:
-      type: object
-      properties:
-        message: null
-        type: string
-        description: Error details, if any
-      example:
-        message: <error-details>
     Trade:
       type: object
       discriminator:
@@ -455,36 +385,88 @@ components:
           - 'null'
           description: The original trade id that is being canceled, if any
           default: null
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
-    OrderId:
+    Side:
+      type: object
+      description: Trade direction, either buy or sell with qualifiers
+      required:
+      - direction
+      properties:
+        direction:
+          type: string
+          enum:
+          - buy
+          - sell
+          description: Trade direction
+          example: sell
+        qualifier:
+          type:
+          - string
+          - 'null'
+          enum:
+          - short
+          description: Trade qualifier, if any
+          default: null
+        position:
+          type:
+          - string
+          - 'null'
+          enum:
+          - open
+          - close
+          description: Trade position, if any
+          default: null
+    Settlement:
+      type: object
+      description: Settlement details. Required typically for special settlement situations.
+      properties:
+        currency:
+          type:
+          - string
+          - 'null'
+          minLength: 3
+          maxLength: 3
+          description: Settlement currency for the trade if different than the issue currency of the security. This should be a 3-letter ISO 4217 code.
+          example: USD
+          default: null
+        date:
+          type:
+          - integer
+          - 'null'
+          minimum: 20190101
+          maximum: 21000101
+          description: Only provide for irregular-way, i.e. you've negotiated a special settlement arrangement for this trade; represents settlement date in YYYYMMDD format
+          default: null
+    Error:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ErrorBase'
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - internal
+          - malformed_trade
+          - too_many_trades
+          - file_exists
+          - empty_file
+          - unsupported_file
+          - upload_not_found
+          - trade_already_canceled
+          - missing_account_id
+    TradeId:
       type: string
       minLength: 1
       maxLength: 256
       example: '12390213'
-      description: Unique order ID assigned by us.
+      description: Unique trade ID assigned by us.
     AccountNumber:
       type: string
       minLength: 1
       maxLength: 256
       example: ACC0001
       description: Account number for the account.
-    Price:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '123.99'
-      description: String representation of a price.
-    Timestamp:
-      type: integer
-      format: int64
-      minimum: 1710613560668
-      maximum: 2900000000000
-      description: Milliseconds since epoch.
     ProblemDetails:
       type: object
       properties:
@@ -509,24 +491,6 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
-    Symbol:
-      type: string
-      minLength: 1
-      maxLength: 32
-      example: AAPL
-    TradeId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '12390213'
-      description: Unique trade ID assigned by us.
-    OrderSide:
-      type: string
-      enum:
-      - buy
-      - sell
-      - sell-short
-      description: Buy, sell, sell-short indicator.
     Trade_2:
       type: object
       properties:
@@ -565,12 +529,48 @@ components:
       - quantity
       - price
       - running_position
+    Price:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '123.99'
+      description: String representation of a price.
+    OrderSide:
+      type: string
+      enum:
+      - buy
+      - sell
+      - sell-short
+      description: Buy, sell, sell-short indicator.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
     AccountId:
       type: string
       minLength: 1
       maxLength: 256
       example: '100000'
       description: Account ID for the account.
+    OrderId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '12390213'
+      description: Unique order ID assigned by us.
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
   responses:
     error:
       description: Error response

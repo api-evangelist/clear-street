@@ -68,6 +68,21 @@ components:
       maxLength: 256
       example: '100000'
       description: Entity ID for the legal entity.
+    Entity:
+      type: object
+      properties:
+        entity_id:
+          $ref: '#/components/schemas/EntityId'
+        legal_name:
+          type: string
+          example: Clear Street
+        client_code:
+          type: string
+          example: CLST
+      required:
+      - entity_id
+      - name
+      - client_code
     ProblemDetails:
       type: object
       properties:
@@ -92,21 +107,6 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
-    Entity:
-      type: object
-      properties:
-        entity_id:
-          $ref: '#/components/schemas/EntityId'
-        legal_name:
-          type: string
-          example: Clear Street
-        client_code:
-          type: string
-          example: CLST
-      required:
-      - entity_id
-      - name
-      - client_code
   responses:
     error:
       description: Error response

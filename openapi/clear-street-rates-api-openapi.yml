@@ -51,12 +51,6 @@ components:
       minLength: 1
       maxLength: 32
       example: AAPL
-    AccountId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Account ID for the account.
     ProblemDetails:
       type: object
       properties:
@@ -81,6 +75,12 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
   responses:
     error:
       description: Error response

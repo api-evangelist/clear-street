@@ -44,23 +44,12 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
     AccountNumber:
       type: string
       minLength: 1
       maxLength: 256
       example: ACC0001
       description: Account number for the account.
-    Symbol:
-      type: string
-      minLength: 1
-      maxLength: 32
-      example: AAPL
     ProblemDetails:
       type: object
       properties:
@@ -100,6 +89,17 @@ components:
           $ref: '#/components/schemas/Quantity'
         used:
           $ref: '#/components/schemas/Quantity'
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    Symbol:
+      type: string
+      minLength: 1
+      maxLength: 32
+      example: AAPL
     AccountId:
       type: string
       minLength: 1
