@@ -1,0 +1,12 @@
+{
+ "url": "https://clear-street.github.io/docs/api_0.0.4.yaml",
+ "requested_url": "https://clear-street.github.io/docs/api_0.0.4.yaml",
+ "status": 200,
+ "content_type": "text/yaml",
+ "bytes": 26109,
+ "sha256": "df76b8004b929906ef16acdf60514a2d86ade1d7fc4050352bb848ac8ad30ddc",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
