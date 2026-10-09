@@ -75,3 +75,20 @@ deployment:
   probe: gated
   checked: '2026-08-12'
   source: catalog MCP census
+rfc9728:
+  endpoint: https://api.clearstreet.com/v1/mcp
+  metadata_url: https://api.clearstreet.com/.well-known/oauth-protected-resource/v1/mcp
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://api.clearstreet.com/v1/mcp
+    authorization_servers:
+    - https://api.clearstreet.com/oauth/mcp
+    scopes_supported:
+    - openid
+    - offline_access
+    bearer_methods_supported:
+    - header
+    resource_name: Clear Street MCP

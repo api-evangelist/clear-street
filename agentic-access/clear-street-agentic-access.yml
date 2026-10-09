@@ -1,365 +1,30 @@
-generated: '2026-08-02'
+generated: '2026-09-23'
 method: generated
-source: openapi/clear-street-legacy-api-swagger.yml, openapi/clear-street-studio-openapi.yml,
-  openapi/clear-street-trading-api-openapi.yml
+source: openapi/clear-street-accounts-api-openapi.yml, openapi/clear-street-api-version-api-openapi.yml,
+  openapi/clear-street-calendar-api-openapi.yml, openapi/clear-street-entities-api-openapi.yml,
+  openapi/clear-street-holdings-api-openapi.yml, openapi/clear-street-instrument-data-api-openapi.yml,
+  openapi/clear-street-instruments-api-openapi.yml, openapi/clear-street-inventories-api-openapi.yml,
+  openapi/clear-street-locates-api-openapi.yml, openapi/clear-street-margin-api-openapi.yml,
+  openapi/clear-street-margin-simulations-api-openapi.yml, openapi/clear-street-omni-ai-api-openapi.yml,
+  openapi/clear-street-orders-api-openapi.yml, openapi/clear-street-performance-api-openapi.yml,
+  openapi/clear-street-pnl-api-openapi.yml, openapi/clear-street-positions-api-openapi.yml,
+  openapi/clear-street-rates-api-openapi.yml, openapi/clear-street-screener-api-openapi.yml,
+  openapi/clear-street-trades-api-openapi.yml, openapi/clear-street-uploads-api-openapi.yml,
+  openapi/clear-street-watchlist-api-openapi.yml
 description: Recommended x-agentic-access execution contracts, classified heuristically from
   the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
   audience per deployment. See research/curity/agentic-governance/.
 summary:
   operations: 98
   by_action_class:
-    acting: 35
-    connected: 63
+    connected: 64
+    acting: 34
   by_consequence:
+    read: 64
+    write: 21
     physical: 13
-    write: 22
-    read: 63
   human_in_the_loop_required: 0
 operations:
-- path: /trades
-  method: post
-  operationId: trades_insert
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /trades/{trade_id}
-  method: delete
-  operationId: trades_cancel
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /uploads/insert
-  method: post
-  operationId: uploads_insert_create
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /uploads/cancel
-  method: post
-  operationId: uploads_cancel_create
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /uploads/{upload_id}
-  method: get
-  operationId: uploads_get_by_id
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/pnl-sums
-  method: get
-  operationId: listPNLSums
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/holdings
-  method: get
-  operationId: listHoldings
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/bulk-orders
-  method: post
-  operationId: createBulkOrders
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /accounts/{account_id}/orders
-  method: post
-  operationId: createOrder
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /accounts/{account_id}/orders
-  method: get
-  operationId: listOrders
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/orders
-  method: delete
-  operationId: deleteAllOrders
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /accounts/{account_id}/orders/{order_id}
-  method: get
-  operationId: getOrder
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/orders/{order_id}
-  method: delete
-  operationId: deleteOrder
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /accounts/{account_id}/orders/{order_id}
-  method: patch
-  operationId: updateOrder
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /accounts/{account_id}/trades/{trade_id}
-  method: get
-  operationId: getTrade
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/trades
-  method: get
-  operationId: listTrades
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/positions/{symbol}
-  method: get
-  operationId: getPosition
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/positions
-  method: get
-  operationId: listPositions
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/locate-orders
-  method: post
-  operationId: createLocateOrder
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /accounts/{account_id}/locate-orders
-  method: get
-  operationId: listLocateOrders
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/locate-orders/{locate_order_id}
-  method: get
-  operationId: getLocateOrder
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/locate-orders/{locate_order_id}
-  method: patch
-  operationId: updateLocateOrder
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /accounts/{account_id}/easy-borrows
-  method: get
-  operationId: listEasyBorrows
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/inventories/{symbol}
-  method: get
-  operationId: getInventory
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /entities
-  method: get
-  operationId: listEntities
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /entities/{entity_id}
-  method: get
-  operationId: getEntity
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
 - path: /accounts
   method: get
   operationId: listAccounts
@@ -373,102 +38,6 @@ operations:
 - path: /accounts/{account_id}
   method: get
   operationId: getAccount
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /instruments
-  method: get
-  operationId: listInstruments
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /instruments/{symbol}
-  method: get
-  operationId: getInstrument
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /entities/{entity_id}/pnl-summary
-  method: get
-  operationId: getEntityPnlSummary
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/pnl-summary
-  method: get
-  operationId: getAccountPnlSummary
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /accounts/{account_id}/pnl-details
-  method: get
-  operationId: listPnlDetails
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /entities/{entity_id}/regt-margin
-  method: get
-  operationId: getRegTMargin
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /entities/{entity_id}/portfolio-margin
-  method: get
-  operationId: getPortfolioMargin
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /entities/{entity_id}/regt-margin-simulations
-  method: post
-  operationId: createRegTMarginSimulation
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /entities/{entity_id}/regt-margin-simulations/{simulation_id}
-  method: get
-  operationId: getRegTMarginSimulation
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -522,108 +91,6 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /v1/accounts/{account_id}/executions
-  method: get
-  operationId: get_executions
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /v1/accounts/{account_id}/orders
-  method: get
-  operationId: get_orders
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /v1/accounts/{account_id}/orders
-  method: post
-  operationId: submit_orders
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v1/accounts/{account_id}/orders
-  method: delete
-  operationId: cancel_all_open_orders
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v1/accounts/{account_id}/orders/{order_id}
-  method: get
-  operationId: get_order_by_id
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /v1/accounts/{account_id}/orders/{order_id}
-  method: delete
-  operationId: cancel_open_order
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v1/accounts/{account_id}/orders/{order_id}
-  method: patch
-  operationId: replace_order
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
 - path: /v1/accounts/{account_id}/portfolio-history
   method: get
   operationId: get_portfolio_history
@@ -634,9 +101,9 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /v1/accounts/{account_id}/positions
+- path: /v1/version
   method: get
-  operationId: get_positions
+  operationId: get_version
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -644,80 +111,6 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /v1/accounts/{account_id}/positions
-  method: delete
-  operationId: close_positions
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v1/accounts/{account_id}/positions/instructions
-  method: get
-  operationId: get_position_instructions
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /v1/accounts/{account_id}/positions/instructions
-  method: post
-  operationId: submit_position_instructions
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v1/accounts/{account_id}/positions/instructions/{instruction_id}
-  method: delete
-  operationId: cancel_position_instruction
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /v1/accounts/{account_id}/positions/{instrument_id}
-  method: delete
-  operationId: close_position
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
 - path: /v1/calendars/market-hours
   method: get
   operationId: get_market_hours_calendar
@@ -738,9 +131,29 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /v1/instruments
+- path: /entities
   method: get
-  operationId: get_instruments
+  operationId: listEntities
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /entities/{entity_id}
+  method: get
+  operationId: getEntity
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/holdings
+  method: get
+  operationId: listHoldings
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -751,36 +164,6 @@ operations:
 - path: /v1/instruments/events
   method: get
   operationId: get_all_instrument_events
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /v1/instruments/options/contracts
-  method: get
-  operationId: get_option_contracts
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /v1/instruments/search
-  method: get
-  operationId: search_instruments
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /v1/instruments/{instrument_id}
-  method: get
-  operationId: get_instrument_by_id
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -871,6 +254,178 @@ operations:
 - path: /v1/news
   method: get
   operationId: get_news
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /instruments
+  method: get
+  operationId: listInstruments
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /instruments/{symbol}
+  method: get
+  operationId: getInstrument
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/instruments
+  method: get
+  operationId: get_instruments
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/instruments/options/contracts
+  method: get
+  operationId: get_option_contracts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/instruments/search
+  method: get
+  operationId: search_instruments
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/instruments/{instrument_id}
+  method: get
+  operationId: get_instrument_by_id
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/inventories/{symbol}
+  method: get
+  operationId: getInventory
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/locate-orders
+  method: post
+  operationId: createLocateOrder
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /accounts/{account_id}/locate-orders
+  method: get
+  operationId: listLocateOrders
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/locate-orders/{locate_order_id}
+  method: get
+  operationId: getLocateOrder
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/locate-orders/{locate_order_id}
+  method: patch
+  operationId: updateLocateOrder
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /entities/{entity_id}/regt-margin
+  method: get
+  operationId: getRegTMargin
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /entities/{entity_id}/portfolio-margin
+  method: get
+  operationId: getPortfolioMargin
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /entities/{entity_id}/regt-margin-simulations
+  method: post
+  operationId: createRegTMarginSimulation
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /entities/{entity_id}/regt-margin-simulations/{simulation_id}
+  method: get
+  operationId: getRegTMarginSimulation
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -1054,6 +609,372 @@ operations:
     token:
       max-ttl: 3600
     audit: none
+- path: /accounts/{account_id}/bulk-orders
+  method: post
+  operationId: createBulkOrders
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /accounts/{account_id}/orders
+  method: post
+  operationId: createOrder
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /accounts/{account_id}/orders
+  method: get
+  operationId: listOrders
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/orders
+  method: delete
+  operationId: deleteAllOrders
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /accounts/{account_id}/orders/{order_id}
+  method: get
+  operationId: getOrder
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/orders/{order_id}
+  method: delete
+  operationId: deleteOrder
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /accounts/{account_id}/orders/{order_id}
+  method: patch
+  operationId: updateOrder
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/accounts/{account_id}/executions
+  method: get
+  operationId: get_executions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/accounts/{account_id}/orders
+  method: get
+  operationId: get_orders
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/accounts/{account_id}/orders
+  method: post
+  operationId: submit_orders
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/accounts/{account_id}/orders
+  method: delete
+  operationId: cancel_all_open_orders
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/accounts/{account_id}/orders/{order_id}
+  method: get
+  operationId: get_order_by_id
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/accounts/{account_id}/orders/{order_id}
+  method: delete
+  operationId: cancel_open_order
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/accounts/{account_id}/orders/{order_id}
+  method: patch
+  operationId: replace_order
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /accounts/{account_id}/pnl-sums
+  method: get
+  operationId: listPNLSums
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /entities/{entity_id}/pnl-summary
+  method: get
+  operationId: getEntityPnlSummary
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/pnl-summary
+  method: get
+  operationId: getAccountPnlSummary
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/pnl-details
+  method: get
+  operationId: listPnlDetails
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/positions/{symbol}
+  method: get
+  operationId: getPosition
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/positions
+  method: get
+  operationId: listPositions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/accounts/{account_id}/positions
+  method: get
+  operationId: get_positions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/accounts/{account_id}/positions
+  method: delete
+  operationId: close_positions
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/accounts/{account_id}/positions/instructions
+  method: get
+  operationId: get_position_instructions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/accounts/{account_id}/positions/instructions
+  method: post
+  operationId: submit_position_instructions
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/accounts/{account_id}/positions/instructions/{instruction_id}
+  method: delete
+  operationId: cancel_position_instruction
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/accounts/{account_id}/positions/{instrument_id}
+  method: delete
+  operationId: close_position
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /accounts/{account_id}/easy-borrows
+  method: get
+  operationId: listEasyBorrows
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
 - path: /v1/saved-screeners
   method: get
   operationId: get_screeners
@@ -1126,6 +1047,72 @@ operations:
   method: post
   operationId: search_screener
   x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /trades
+  method: post
+  operationId: trades_insert
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /trades/{trade_id}
+  method: delete
+  operationId: trades_cancel
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /accounts/{account_id}/trades/{trade_id}
+  method: get
+  operationId: getTrade
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /accounts/{account_id}/trades
+  method: get
+  operationId: listTrades
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /uploads/insert
+  method: post
+  operationId: uploads_insert_create
+  x-agentic-access:
     action-class: acting
     consequence: write
     subject: required
@@ -1138,9 +1125,25 @@ operations:
       - abnormal
       - high-value
     audit: required
-- path: /v1/version
+- path: /uploads/cancel
+  method: post
+  operationId: uploads_cancel_create
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /uploads/{upload_id}
   method: get
-  operationId: get_version
+  operationId: uploads_get_by_id
   x-agentic-access:
     action-class: connected
     consequence: read
