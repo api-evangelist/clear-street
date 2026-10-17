@@ -64,6 +64,74 @@ paths:
       - BearerAuth: []
 components:
   schemas:
+    RegTGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name of the group, typically the symbol of the underlier.
+        market_value:
+          type: number
+          format: double
+          description: The aggregated market value of all instruments for the symbol group.
+        market_value_percent:
+          type: number
+          format: double
+          description: 'The percentage market value of the symbol group in terms of the total net_market_value of all positions.
+
+            Formula: `(market_value / net_market_value)`
+
+            '
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect for the symbol group.
+        house_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on Clear Street's house margin methodology for the symbol group.
+        exchange_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on regulatory rules for the symbol group.
+        margin_percent:
+          type: number
+          format: double
+          description: 'The percentage effective margin requirement in terms of the symbol group market value.
+
+            Formula: `(effective_requirement / net_market_value)`
+
+            '
+        margin_percent_contribution:
+          type: number
+          format: double
+          description: 'The percentage effective margin requirement in terms of the total effective requirement.
+
+            Formula: `(effective_requirement / sum(effective_requirement))`
+
+            '
+        members:
+          type: array
+          description: A list of securities that comprise this group.
+          items:
+            $ref: '#/components/schemas/RegTGroupMember'
+      required:
+      - name
+      - market_value
+      - market_value_percent
+      - effective_requirement
+      - house_requirement
+      - exchange_requirement
+      - margin_percent
+      - margin_percent_contribution
+      - members
+    Shocks:
+      type: object
+      description: Maps shock scenarios to their resulting pnl.
+      additionalProperties:
+        type: number
+        format: double
+        description: The resulting pnl from the shock.
     RegTMargin:
       type: object
       properties:
@@ -137,6 +205,130 @@ components:
       - overnight_buying_power
       - day_trade_buying_power
       - groups
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    PortfolioMarginGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name of the group, typically the symbol of the underlier.
+        market_value:
+          type: number
+          format: double
+          description: The aggregated market value of all instruments for the group.
+        market_value_percent:
+          type: number
+          format: double
+          description: 'The percentage market value of the group in terms of the total net_market_value of all positions.
+
+            Formula: `(market_value / net_market_value)`
+
+            '
+        effective_requirement:
+          type: number
+          format: double
+          description: The enforced margin requirement in effect for the group.
+        margin_percent:
+          type: number
+          format: double
+          description: 'The percentage effective margin requirement in terms of the group market value.
+
+            Formula: `(effective_requirement / net_market_value)`
+
+            '
+        margin_percent_contribution:
+          type: number
+          format: double
+          description: 'The percentage effective margin requirement in terms of the total effective requirement.
+
+            Formula: `(effective_requirement / sum(effective_requirement))`
+
+            '
+        risk_based_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures base-case risk for the group under house margin methodology
+        non_marginable_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk for the group that are not margin eligible.
+        liquidity_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk for the group based on liquidity, Market Cap, and Average Daily Volume factors.
+        concentration_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures risk for the group based on gross exposure to total equity
+        discretionary_requirement:
+          type: number
+          format: double
+          description: A component margin requirement that captures miscellaneous risk factors for the group.
+        regulatory_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on OCC TIMS regulatory margin methodology
+        var_requirement:
+          type: number
+          format: double
+          description: Margin requirements based on value-at-risk over any 5-day period in a 2 year historic lookback
+        shocks:
+          $ref: '#/components/schemas/Shocks'
+        members:
+          type: array
+          description: A list of securities that comprise this group.
+          items:
+            $ref: '#/components/schemas/PortfolioMarginGroupMember'
+      required:
+      - name
+      - market_value
+      - market_value_percent
+      - effective_requirement
+      - house_requirement
+      - exchange_requirement
+      - margin_percent
+      - margin_percent_contribution
+      - members
+    RegTGroupMember:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+          description: The symbol for the instrument.
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity held for this instrument.
+        market_value:
+          type: number
+          format: double
+          description: Market value of the instrument.
+        market_value_percent:
+          type: number
+          format: double
+          description: 'The percentage market value of the instrument in terms of the total `net_market_value` of all positions held.
+
+            Formula: `market_value / net_market_value`
+
+            '
+      required:
+      - symbol
+      - asset_class
+      - quantity
+      - market_value
+      - market_value_percent
+    EntityId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Entity ID for the legal entity.
     PortfolioMarginGroupMember:
       type: object
       properties:
@@ -162,6 +354,12 @@ components:
             '
         shocks:
           $ref: '#/components/schemas/Shocks'
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
     ProblemDetails:
       type: object
       properties:
@@ -186,67 +384,16 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
-    RegTGroup:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Unique name of the group, typically the symbol of the underlier.
-        market_value:
-          type: number
-          format: double
-          description: The aggregated market value of all instruments for the symbol group.
-        market_value_percent:
-          type: number
-          format: double
-          description: 'The percentage market value of the symbol group in terms of the total net_market_value of all positions.
-
-            Formula: `(market_value / net_market_value)`
-
-            '
-        effective_requirement:
-          type: number
-          format: double
-          description: The enforced margin requirement in effect for the symbol group.
-        house_requirement:
-          type: number
-          format: double
-          description: Margin requirements based on Clear Street's house margin methodology for the symbol group.
-        exchange_requirement:
-          type: number
-          format: double
-          description: Margin requirements based on regulatory rules for the symbol group.
-        margin_percent:
-          type: number
-          format: double
-          description: 'The percentage effective margin requirement in terms of the symbol group market value.
-
-            Formula: `(effective_requirement / net_market_value)`
-
-            '
-        margin_percent_contribution:
-          type: number
-          format: double
-          description: 'The percentage effective margin requirement in terms of the total effective requirement.
-
-            Formula: `(effective_requirement / sum(effective_requirement))`
-
-            '
-        members:
-          type: array
-          description: A list of securities that comprise this group.
-          items:
-            $ref: '#/components/schemas/RegTGroupMember'
-      required:
-      - name
-      - market_value
-      - market_value_percent
-      - effective_requirement
-      - house_requirement
-      - exchange_requirement
-      - margin_percent
-      - margin_percent_contribution
-      - members
+    AssetClass:
+      type: string
+      enum:
+      - other
+      - currency
+      - equity
+      - option
+      - debt
+      - fund
+      description: The asset class of the symbol.
     PortfolioMargin:
       type: object
       properties:
@@ -361,158 +508,11 @@ components:
           description: Portfolio margin groups
           items:
             $ref: '#/components/schemas/PortfolioMarginGroup'
-    RegTGroupMember:
-      type: object
-      properties:
-        symbol:
-          $ref: '#/components/schemas/Symbol'
-          description: The symbol for the instrument.
-        asset_class:
-          $ref: '#/components/schemas/AssetClass'
-        quantity:
-          $ref: '#/components/schemas/Quantity'
-          description: The quantity held for this instrument.
-        market_value:
-          type: number
-          format: double
-          description: Market value of the instrument.
-        market_value_percent:
-          type: number
-          format: double
-          description: 'The percentage market value of the instrument in terms of the total `net_market_value` of all positions held.
-
-            Formula: `market_value / net_market_value`
-
-            '
-      required:
-      - symbol
-      - asset_class
-      - quantity
-      - market_value
-      - market_value_percent
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
-    EntityId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Entity ID for the legal entity.
-    AssetClass:
-      type: string
-      enum:
-      - other
-      - currency
-      - equity
-      - option
-      - debt
-      - fund
-      description: The asset class of the symbol.
     Symbol:
       type: string
       minLength: 1
       maxLength: 32
       example: AAPL
-    Shocks:
-      type: object
-      description: Maps shock scenarios to their resulting pnl.
-      additionalProperties:
-        type: number
-        format: double
-        description: The resulting pnl from the shock.
-    PortfolioMarginGroup:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Unique name of the group, typically the symbol of the underlier.
-        market_value:
-          type: number
-          format: double
-          description: The aggregated market value of all instruments for the group.
-        market_value_percent:
-          type: number
-          format: double
-          description: 'The percentage market value of the group in terms of the total net_market_value of all positions.
-
-            Formula: `(market_value / net_market_value)`
-
-            '
-        effective_requirement:
-          type: number
-          format: double
-          description: The enforced margin requirement in effect for the group.
-        margin_percent:
-          type: number
-          format: double
-          description: 'The percentage effective margin requirement in terms of the group market value.
-
-            Formula: `(effective_requirement / net_market_value)`
-
-            '
-        margin_percent_contribution:
-          type: number
-          format: double
-          description: 'The percentage effective margin requirement in terms of the total effective requirement.
-
-            Formula: `(effective_requirement / sum(effective_requirement))`
-
-            '
-        risk_based_requirement:
-          type: number
-          format: double
-          description: A component margin requirement that captures base-case risk for the group under house margin methodology
-        non_marginable_requirement:
-          type: number
-          format: double
-          description: A component margin requirement that captures risk for the group that are not margin eligible.
-        liquidity_requirement:
-          type: number
-          format: double
-          description: A component margin requirement that captures risk for the group based on liquidity, Market Cap, and Average Daily Volume factors.
-        concentration_requirement:
-          type: number
-          format: double
-          description: A component margin requirement that captures risk for the group based on gross exposure to total equity
-        discretionary_requirement:
-          type: number
-          format: double
-          description: A component margin requirement that captures miscellaneous risk factors for the group.
-        regulatory_requirement:
-          type: number
-          format: double
-          description: Margin requirements based on OCC TIMS regulatory margin methodology
-        var_requirement:
-          type: number
-          format: double
-          description: Margin requirements based on value-at-risk over any 5-day period in a 2 year historic lookback
-        shocks:
-          $ref: '#/components/schemas/Shocks'
-        members:
-          type: array
-          description: A list of securities that comprise this group.
-          items:
-            $ref: '#/components/schemas/PortfolioMarginGroupMember'
-      required:
-      - name
-      - market_value
-      - market_value_percent
-      - effective_requirement
-      - house_requirement
-      - exchange_requirement
-      - margin_percent
-      - margin_percent_contribution
-      - members
-    Timestamp:
-      type: integer
-      format: int64
-      minimum: 1710613560668
-      maximum: 2900000000000
-      description: Milliseconds since epoch.
   responses:
     error:
       description: Error response

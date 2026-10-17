@@ -72,12 +72,58 @@ paths:
       - BearerAuth: []
 components:
   schemas:
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
     AccountNumber:
       type: string
       minLength: 1
       maxLength: 256
       example: ACC0001
       description: Account number for the account.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    Date:
+      type: integer
+      format: int32
+      minimum: 20150101
+      maximum: 29999999
+      example: 20240101
+      description: Integer in YYYYMMDD representing a date.
+    Holding:
+      type: object
+      properties:
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        symbol_description:
+          type: string
+          description: Description of the symbol.
+        asset_class:
+          $ref: '#/components/schemas/AssetClass'
+        quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity held for the given symbol. This is an EOD quantity if querying historically, else the current real-time quantity for the current date.
+        sod_quantity:
+          $ref: '#/components/schemas/Quantity'
+          description: The quantity held for the given symbol at the start of the day.
+      required:
+      - symbol
+      - asset_class
+      - quantity
+      - sod_quantity
+    Timestamp:
+      type: integer
+      format: int64
+      minimum: 1710613560668
+      maximum: 2900000000000
+      description: Milliseconds since epoch.
     ProblemDetails:
       type: object
       properties:
@@ -102,33 +148,6 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
-    Holding:
-      type: object
-      properties:
-        symbol:
-          $ref: '#/components/schemas/Symbol'
-        symbol_description:
-          type: string
-          description: Description of the symbol.
-        asset_class:
-          $ref: '#/components/schemas/AssetClass'
-        quantity:
-          $ref: '#/components/schemas/Quantity'
-          description: The quantity held for the given symbol. This is an EOD quantity if querying historically, else the current real-time quantity for the current date.
-        sod_quantity:
-          $ref: '#/components/schemas/Quantity'
-          description: The quantity held for the given symbol at the start of the day.
-      required:
-      - symbol
-      - asset_class
-      - quantity
-      - sod_quantity
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
     AssetClass:
       type: string
       enum:
@@ -144,25 +163,6 @@ components:
       minLength: 1
       maxLength: 32
       example: AAPL
-    AccountId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Account ID for the account.
-    Date:
-      type: integer
-      format: int32
-      minimum: 20150101
-      maximum: 29999999
-      example: 20240101
-      description: Integer in YYYYMMDD representing a date.
-    Timestamp:
-      type: integer
-      format: int64
-      minimum: 1710613560668
-      maximum: 2900000000000
-      description: Milliseconds since epoch.
   responses:
     error:
       description: Error response

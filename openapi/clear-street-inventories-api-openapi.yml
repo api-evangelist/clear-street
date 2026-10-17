@@ -44,12 +44,39 @@ paths:
       - BearerAuth: []
 components:
   schemas:
+    AccountId:
+      type: string
+      minLength: 1
+      maxLength: 256
+      example: '100000'
+      description: Account ID for the account.
     AccountNumber:
       type: string
       minLength: 1
       maxLength: 256
       example: ACC0001
       description: Account number for the account.
+    Quantity:
+      type: string
+      minLength: 1
+      maxLength: 16
+      example: '100'
+      description: String representation of quantity.
+    LocateInventory:
+      type: object
+      properties:
+        account_id:
+          $ref: '#/components/schemas/AccountId'
+        account_number:
+          $ref: '#/components/schemas/AccountNumber'
+        symbol:
+          $ref: '#/components/schemas/Symbol'
+        available:
+          $ref: '#/components/schemas/Quantity'
+        reserved:
+          $ref: '#/components/schemas/Quantity'
+        used:
+          $ref: '#/components/schemas/Quantity'
     ProblemDetails:
       type: object
       properties:
@@ -74,38 +101,11 @@ components:
           description: An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
       additionalProperties: false
       description: A Problem Details object (RFC 9457)
-    LocateInventory:
-      type: object
-      properties:
-        account_id:
-          $ref: '#/components/schemas/AccountId'
-        account_number:
-          $ref: '#/components/schemas/AccountNumber'
-        symbol:
-          $ref: '#/components/schemas/Symbol'
-        available:
-          $ref: '#/components/schemas/Quantity'
-        reserved:
-          $ref: '#/components/schemas/Quantity'
-        used:
-          $ref: '#/components/schemas/Quantity'
-    Quantity:
-      type: string
-      minLength: 1
-      maxLength: 16
-      example: '100'
-      description: String representation of quantity.
     Symbol:
       type: string
       minLength: 1
       maxLength: 32
       example: AAPL
-    AccountId:
-      type: string
-      minLength: 1
-      maxLength: 256
-      example: '100000'
-      description: Account ID for the account.
   responses:
     error:
       description: Error response
