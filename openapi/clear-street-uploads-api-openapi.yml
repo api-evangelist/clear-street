@@ -244,3 +244,9 @@ components:
           - upload_not_found
           - trade_already_canceled
           - missing_account_id
+x-provenance:
+  method: harvested
+  publisher: Clear Street
+  source: https://clear-street.github.io/docs/api_0.0.4.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
